@@ -25,6 +25,8 @@ typedef TOptions = {
     var useSaveDataMenu:Bool;
     var preferredSave:Int;
     var showSongPos:Bool;
+    var showTimings:Bool;
+    var showNoteSplashes:Bool;
     var style:Bool;
     var stressTankmen:Bool;
     // var ignoreShittyTiming:Bool;
@@ -49,6 +51,8 @@ typedef TOptions = {
     var titleToggle:Bool;
     var fpsCap:Int;
     var ignoreVile:Bool;
+    var scrollSpeed:Float;
+    var camNotes:Bool;
 }
 /**
  * All options that can display on the savedatamenu. Used with mask

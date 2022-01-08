@@ -364,7 +364,7 @@ class ChartingState extends MusicBeatState
 	var check_mustHitSection:FlxUICheckBox;
 	var check_changeBPM:FlxUICheckBox;
 	var stepperSectionBPM:FlxUINumericStepper;
-	// var check_altAnim:FlxUICheckBox;
+	var check_altAnim:FlxUICheckBox;
 
 	function addSectionUI():Void
 	{
@@ -406,8 +406,8 @@ class ChartingState extends MusicBeatState
 		check_mustHitSection.checked = true;
 		// _song.needsVoices = check_mustHit.checked;
 
-		// check_altAnim = new FlxUICheckBox(10, 400, null, null, "Alt Animation", 100);
-		// check_altAnim.name = 'check_altAnim';
+		check_altAnim = new FlxUICheckBox(10, 400, null, null, "Alt Animation", 100);
+		check_altAnim.name = 'check_altAnim';
 
 		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
 		check_changeBPM.name = 'check_changeBPM';
@@ -416,7 +416,7 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(stepperSectionBPM);
 		tab_group_section.add(stepperCopy);
 		tab_group_section.add(check_mustHitSection);
-		// tab_group_section.add(check_altAnim);
+		tab_group_section.add(check_altAnim);
 		tab_group_section.add(stepperAltAnim);
 		tab_group_section.add(check_changeBPM);
 		tab_group_section.add(copyButton);
@@ -478,20 +478,19 @@ class ChartingState extends MusicBeatState
 			// vocals.stop();
 		}
 		#if sys
-		FlxG.sound.playMusic(Sound.fromFile("assets/music/"+daSong+"_Inst"+TitleState.soundExt), 0.6);
+		FlxG.sound.playMusic(Sound.fromFile("assets/songs/" + _song.song.toLowerCase() + '/' + daSong + "_Inst" + TitleState.soundExt), 0.6);
 		#else
-		FlxG.sound.playMusic('assets/music/' + daSong + "_Inst" + TitleState.soundExt, 0.6);
+		FlxG.sound.playMusic('assets/songs/' + _song.song.toLowerCase() + '/' + daSong + "_Inst" + TitleState.soundExt, 0.6);
 		#end
 		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
 		if (_song.needsVoices) {
 			#if sys
-			var vocalSound = Sound.fromFile("assets/music/"+daSong+"_Voices"+TitleState.soundExt);
+			var vocalSound = Sound.fromFile("assets/songs/" + _song.song.toLowerCase() + '/' + daSong + "_Voices" + TitleState.soundExt);
 			vocals = new FlxSound().loadEmbedded(vocalSound);
 			#else
-			vocals = new FlxSound().loadEmbedded("assets/music/" + daSong + "_Voices" + TitleState.soundExt);
+			vocals = new FlxSound().loadEmbedded("assets/songs/" + _song.song.toLowerCase() + '/' + daSong + "_Voices" + TitleState.soundExt);
 			#end
 			FlxG.sound.list.add(vocals);
-
 		}
 
 		FlxG.sound.music.pause();
@@ -548,7 +547,7 @@ class ChartingState extends MusicBeatState
 					_song.notes[curSection].changeBPM = check.checked;
 					FlxG.log.add('changed bpm shit');
 				case "Alt Animation":
-					// _song.notes[curSection].altAnim = check.checked;
+					_song.notes[curSection].altAnim = check.checked;
 				case "Is Moody":
 					_song.isMoody = check.checked;
 				case "Is Spooky":
@@ -1019,12 +1018,12 @@ class ChartingState extends MusicBeatState
 	{
 		if (check_mustHitSection.checked)
 		{
-			leftIcon.setPosition(0, 100);
+			leftIcon.setPosition(0, -100);
 			rightIcon.setPosition(gridBG.width / 2, -100);
 		}
 		else
 		{
-			rightIcon.setPosition(0, 100);
+			rightIcon.setPosition(0, -100);
 			leftIcon.setPosition(gridBG.width / 2, -100);
 		}
 	}

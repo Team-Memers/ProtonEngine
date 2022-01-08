@@ -1,5 +1,12 @@
 
 function start(song) {
+    getHaxeActor("bf").x += 320;
+    getHaxeActor("dad").y -= 80;
+
+    // char swap offsets [0 = bf.x, 1 = bf.y, 2 = gf.x, 3 = gf.y, 4 = dad.x, 5 = dad.y];
+    swapOffsets[0] += 320;
+    swapOffsets[5] -= 80;
+
     var bg = new FlxSprite(-400, -500).loadGraphic(hscriptPath + 'evilBG.png');
     bg.scrollFactor.set(0.2, 0.2);
     bg.antialiasing = true;
@@ -11,13 +18,10 @@ function start(song) {
     tree.antialiasing = true;
     tree.scrollFactor.set(0.2, 0.2);
     addSprite(tree, BEHIND_ALL);
+
     var snow = new FlxSprite(-200, 700).loadGraphic(hscriptPath + 'evilSnow.png');
     snow.antialiasing = true;
     addSprite(snow, BEHIND_ALL);
-    boyfriend.x += 320;
-    getHaxeActor("bf").followCamY -= 60;
-    getHaxeActor("bf").followCamX -= 100;
-    dad.y -=80;
 }
 
 

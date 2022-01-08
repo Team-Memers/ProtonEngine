@@ -1,10 +1,9 @@
 var bg;
 function start(song) {
     bg = new FlxSprite(-200, -100);
-    var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'halloween_bg.png', hscriptPath + 'halloween_bg.xml');
-    bg.frames = tex;
+    bg.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'halloween_bg.png', hscriptPath + 'halloween_bg.xml');
     bg.animation.addByPrefix("idle", "halloweem bg0", 24, true);
-    bg.animation.addByPrefix("lightning", "halloweem bg lightning strike",24,false );
+    bg.animation.addByPrefix("lightning", "halloweem bg lightning strike", 24, false);
     bg.animation.play("idle");
     bg.antialiasing = true;
     addSprite(bg, BEHIND_ALL);

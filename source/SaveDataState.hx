@@ -57,6 +57,7 @@ class SaveDataState extends MusicBeatState
 	var preferredSave:Int = 0;
 	var description:FlxText;
 	var forbiddenIndexes:Array<Int> = [];
+	public static var prevPath:String = 'title';
 	override function create()
 	{
 		FlxG.sound.music.stop();
@@ -71,14 +72,17 @@ class SaveDataState extends MusicBeatState
 							{name: "Always Show Cutscenes", intName: "alwaysDoCutscenes", value: false, desc: "Force show cutscenes, even in freeplay"}, 
 							{name: "Skip Modifier Menu", value: false, intName: "skipModifierMenu", desc: "Skip the modifier menu"}, 
 							{name: "Skip Victory Screen", value: false, intName : "skipVictoryScreen", desc: "Skip the victory screen at the end of songs."},
-							{name: "Skip Debug Screen", value: false, intName : "skipDebugScreen", desc: "Skip the warning screen that happens when you enter charting mode."},
+							{name: "Scroll Speed", value: false, intName: "scrollSpeed", desc: "Sets the scroll speed (1 uses the song's scroll speed)", amount: 1, defAmount: 1, max: 10, min: 1, precision: 0.1,},
 							{name: "Downscroll", value: false, intName: "downscroll", desc: "Put da arrows on the bottom and have em scroll down"},
 							{name: "Don't mute on miss", intName: "dontMuteMiss", value: false, desc: "When missing notes, don't mute vocals"},
 							{name: "Judge", value: false, intName: "judge", desc: "The Judge to use.", amount: cast Judge.Jury.Classic, defAmount: cast Judge.Jury.Classic, max: 10},
 							{name: "Ghost Tapping", value: false, intName: "useCustomInput", desc: "Whether to allow spamming"},
+							{name: "Move cam with notes", value: false, intName: "camNotes", desc: "Moves the camera in the direction of the notes."},
 							// sorry, always ignore bad timing :penisve:
 							/*{name: "Ignore Bad Timing", value: false, intName:"ignoreShittyTiming", desc: "Even with new input on, if you hit a note really poorly, it counts as a miss. This disables that."},*/
 							{name: "Show Song Position", value: false, intName: "showSongPos", desc: "Whether to show the song bar."},
+							{name: "Show Timings", value: false, intName: "showTimings", desc: "Whether to show the timings after hitting a note."},
+							{name: "Show Note Splashes", value: false, intName: "showNoteSplashes", desc: "Whether to show the note splahes for getting a sick."},
 							{name: "Style", value: false, intName: "style", desc: "Whether to use fancy style or default to base game."},
 							{
 								name: "Ignore Unlocks",
@@ -235,7 +239,10 @@ class SaveDataState extends MusicBeatState
 				saveOptions();
 				saveOptions();
 				FlxG.sound.music.stop();
-				LoadingState.loadAndSwitchState(new MainMenuState());
+				if (prevPath == 'freeplay')
+					LoadingState.loadAndSwitchState(new PlayState());
+				else
+					LoadingState.loadAndSwitchState(new MainMenuState());
 			} else {
 				if (saves.members[curSelected].askingToConfirm)
 					saves.members[curSelected].askToConfirm(false);

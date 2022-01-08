@@ -34,7 +34,7 @@ class ChooseCharState extends MusicBeatState
     var anim:String = PlayState.SONG.player1;
     var grpAlphabet:FlxTypedGroup<Alphabet>;
 
-    var curSelected:Int = 0;
+    static var curSelected:Int = 0;
     var curChar:String = PlayState.SONG.player1;
 
     var dadMenu:Bool = false;

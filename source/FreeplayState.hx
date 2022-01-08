@@ -39,7 +39,7 @@ class FreeplayState extends MusicBeatState
 	var bgs:Array<String> = [];
 
 	var selector:FlxText;
-	var curSelected:Int = 0;
+	static var curSelected:Int = 0;
 	var curDifficulty:Int = 1;
 	var soundTestSong:Song.SwagSong;
 	var scoreText:FlxText;
@@ -199,6 +199,19 @@ class FreeplayState extends MusicBeatState
 			// songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 			// songText.screenCenter(X);
+			var starCount:Int = 0;
+			for (diff in 0...3) { //make it detect the other difficulties
+				if (Highscore.getFCLevel(songs[i].songName, diff, 'best-accuracy') != 0) {
+					var rankStar:RankStar = new RankStar(songs[i].songName, diff);
+					rankStar.sprTracker = icon;
+					rankStar.starNum = starCount;
+					rankStar.visible = !OptionsHandler.options.style;
+					add(rankStar);
+					starCount += 1;
+				} else {
+					var rankStar:FlxSprite = new FlxSprite();
+				}
+			}
 		}
 
 		
@@ -381,18 +394,37 @@ class FreeplayState extends MusicBeatState
 			}
 			else
 			{
+			    var randomValue:Int = FlxG.random.int(1, songs.length);
 				var poop:String = songs[curSelected].songName.toLowerCase() + DifficultyIcons.getEndingFP(curDifficulty);
+				if (songs[curSelected].songName.toLowerCase() == 'random-song') {
+					switch(songs[randomValue].songName.toLowerCase()) {
+						case 'expurgation':
+							curDifficulty = 3;
+						case 'test':
+							if (curDifficulty == 2)
+								curDifficulty = 1;
+					}
+					poop = songs[randomValue].songName.toLowerCase() + DifficultyIcons.getEndingFP(curDifficulty);
+				}
 				trace(poop);
-				if (!FNFAssets.exists('assets/data/' + songs[curSelected].songName.toLowerCase() + '/' + poop.toLowerCase() + '.json'))
-				{
+				if (songs[curSelected].songName.toLowerCase() == 'random-song' && !FNFAssets.exists('assets/data/' + songs[randomValue].songName.toLowerCase() + '/' + poop.toLowerCase() + '.json')) {
+					// assume we pecked up the difficulty, return to default difficulty
+					trace("UH OH RANDOM SONG IN SPECIFIED DIFFICULTY DOESN'T EXIST\nUSING DEFAULT DIFFICULTY");
+					poop = songs[randomValue].songName;
+					curDifficulty = DifficultyIcons.getDefaultDiffFP();
+				} else if (!FNFAssets.exists('assets/data/' + songs[curSelected].songName.toLowerCase() + '/' + poop.toLowerCase() + '.json')) {
 					// assume we pecked up the difficulty, return to default difficulty
 					trace("UH OH SONG IN SPECIFIED DIFFICULTY DOESN'T EXIST\nUSING DEFAULT DIFFICULTY");
 					poop = songs[curSelected].songName;
 					curDifficulty = DifficultyIcons.getDefaultDiffFP();
-				}
+				} 
 				trace(poop);
-
-				PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+				if (songs[curSelected].songName.toLowerCase() == 'random-song') {
+					trace(songs[randomValue].songName.toLowerCase());
+					PlayState.SONG = Song.loadFromJson(poop, songs[randomValue].songName.toLowerCase());
+				} else {
+					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+				}
 				PlayState.isStoryMode = false;
 				ModifierState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;

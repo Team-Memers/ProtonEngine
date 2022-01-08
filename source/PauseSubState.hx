@@ -87,6 +87,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Change Modifiers":
 					LoadingState.loadAndSwitchState(new ModifierState());
 				case "Change Options":
+					SaveDataState.prevPath = 'freeplay';
 					LoadingState.loadAndSwitchState(new SaveDataState());
 			}
 		}

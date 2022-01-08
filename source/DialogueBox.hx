@@ -321,14 +321,15 @@ class DialogueBox extends FlxSpriteGroup
 		});
 		remove(portrait);
 		portrait = new FlxSprite(-20, 40);
-		portrait.frames = FlxAtlasFrames.fromSparrow(FNFAssets.getBitmapData('assets/images/custom_chars/$curCharacter/portrait.png'),
+		/*portrait.frames = FlxAtlasFrames.fromSparrow(FNFAssets.getBitmapData('assets/images/custom_chars/$curCharacter/portrait.png'),
 			FNFAssets.getText('assets/images/custom_chars/$curCharacter/portrait.xml'));
-		portrait.animation.addByPrefix(curEmotion, curEmotion, 24, false);
+		portrait.animation.addByPrefix(curEmotion, curEmotion, 24, false);*/
+		portrait.loadGraphic(FNFAssets.getBitmapData('assets/images/custom_chars/$curCharacter/portraits/' + curEmotion + '.png'));
 		portrait.setGraphicSize(Std.int(portrait.width * 0.9));
 		portrait.updateHitbox();
 		portrait.scale.set(charScale, charScale);
 		portrait.updateHitbox();
-		portrait.animation.play(curEmotion);
+		//portrait.animation.play(curEmotion);
 		portrait.scrollFactor.set();
 		add(portrait);
 

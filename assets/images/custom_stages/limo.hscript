@@ -1,24 +1,32 @@
-
-// flx sprite
 var bg;
 var bgLimo;
 var dancers;
 var limo;
 var fastcar;
 function start(song) {
-    trace("start :)");
-    bg = new FlxSprite(-120,-50).loadGraphic(hscriptPath + 'limoSunset.png');
+    setDefaultZoom(0.9);
+
+    getHaxeActor("bf").x += 260;
+    getHaxeActor("bf").y -= 220;
+    getHaxeActor("bf").followCamX -= 200;
+
+    // char swap offsets [0 = bf.x, 1 = bf.y, 2 = gf.x, 3 = gf.y, 4 = dad.x, 5 = dad.y];
+    swapOffsets[0] += 260;
+    swapOffsets[1] -= 220;
+
+    bg = new FlxSprite(-120, -50).loadGraphic(hscriptPath + 'limoSunset.png');
     bg.scrollFactor.set(0.1, 0.1);
     bg.antialiasing = true;
     addSprite(bg, BEHIND_ALL);
-    bgLimo = new FlxSprite(-200,480);
-    var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'bgLimo.png', hscriptPath + 'bgLimo.xml');
-    bgLimo.frames = tex;
+
+    bgLimo = new FlxSprite(-200, 480);
+    bgLimo.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'bgLimo.png', hscriptPath + 'bgLimo.xml');
     bgLimo.animation.addByPrefix('idle', 'background limo pink', 24, true);
     bgLimo.animation.play('idle', true);
     bgLimo.scrollFactor.set(0.4, 0.4);
     bgLimo.antialiasing = true;
     addSprite(bgLimo, BEHIND_ALL);
+
     dancers = new FlxGroup();
 	var bootex = FlxAtlasFrames.fromSparrow(hscriptPath + 'limoDancer.png',hscriptPath + 'limoDancer.xml');
     for (i in 0...5) {
@@ -32,22 +40,18 @@ function start(song) {
         dancers.add(boogie);
     }
     addSprite(dancers, BEHIND_ALL);
+
     limo = new FlxSprite(-120, 550);
-    var limotex = FlxAtlasFrames.fromSparrow(hscriptPath + 'limoDrive.png', hscriptPath  + 'limoDrive.xml');
-    limo.frames = limotex;
+    limo.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'limoDrive.png', hscriptPath  + 'limoDrive.xml');
     limo.animation.addByPrefix('drive', 'Limo stage', 24, true);
     limo.animation.play('drive', false);
     limo.antialiasing = true;
     addSprite(limo, BEHIND_DAD | BEHIND_BF);
+
     fastcar = new FlxSprite(-300, 160).loadGraphic(hscriptPath + 'fastCarLol.png');
     addSprite(fastcar, BEHIND_NONE);
-    setDefaultZoom(0.9);
-    getHaxeActor("bf").x += 260;
-    getHaxeActor("bf").y -= 220;
-    getHaxeActor("bf").followCamX -= 200;
-    resetVroomVroom();
-    trace("finish start :)");
 
+    resetVroomVroom();
 }
 
 var vroomVroomCanVroom = true;

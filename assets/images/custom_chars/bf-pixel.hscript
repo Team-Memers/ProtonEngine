@@ -1,4 +1,3 @@
-// char is a Character
 function init(char) {
     if (!char.isDie) {
         char.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'char.png', hscriptPath + 'char.xml');
@@ -30,9 +29,8 @@ function init(char) {
         char.addOffset("singRIGHTmiss");
         char.addOffset("singLEFTmiss");
         char.addOffset("singDOWNmiss");
-        trace("SCale"+char.width);
+
         char.setGraphicSize(Std.int(char.width * 6));
-        trace("Scale:" +char.width);
         char.updateHitbox();
 
         char.playAnim('idle');
@@ -47,12 +45,10 @@ function init(char) {
         char.likeBf = true;
         char.followCamX = -50;
         if (char.isPlayer) {
-            
-            char.followCamY = -20;
+            char.followCamY = -120;
         } else {
             char.followCamY = -200;
         }
-        
     } else {
         char.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'dead.png', hscriptPath + 'dead.xml');
         char.animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
@@ -77,6 +73,8 @@ function init(char) {
         char.followCamX = -100;
         char.followCamY = -100;
     }
+    char.playerOffsetX = 150;
+    char.playerOffsetY = 160;
     char.enemyOffsetX = 230;
     char.enemyOffsetY = 500;
     char.isPixel = true;

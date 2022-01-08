@@ -31,7 +31,7 @@ class CategoryState extends MusicBeatState
 	var categorySongs:Array<Array<OneOfTwo<JsonMetadata, String>>> =[];
 	var categorybgs:Array<Array<String>> =[];
 	var selector:FlxText;
-	var curSelected:Int = 0;
+	static var curSelected:Int = 0;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
@@ -156,16 +156,29 @@ class CategoryState extends MusicBeatState
 		if (accepted && categorySongs[curSelected].length > 0 && choosingFor == "freeplay")
 		{
 			var songsButData:Array<JsonMetadata> = [];
-			for (song in categorySongs[curSelected])
-			{
-				if ((song is String))
-				{
-					// we have to generate our own metadata
-					songsButData.push({name: song, week: -1, character: "face"});
+			if (categories[curSelected] == 'All') {
+			    songsButData.push({name: "Random-Song", week: 0, character: "bf"});
+				for (i in 1...categories.length) {
+					for (song in categorySongs[i]) {
+						if ((song is String))
+						{
+							// we have to generate our own metadata
+							songsButData.push({name: song, week: -1, character: "face"});
+						}
+						else
+						{
+							songsButData.push(cast(song : JsonMetadata));
+						}
+					}
 				}
-				else
-				{
-					songsButData.push(cast(song : JsonMetadata));
+			} else {
+				for (song in categorySongs[curSelected]) {
+					if ((song is String)) {
+						// we have to generate our own metadata
+						songsButData.push({name: song, week: -1, character: "face"});
+					} else {
+						songsButData.push(cast(song : JsonMetadata));
+					}
 				}
 			}
 			FreeplayState.currentSongList = songsButData;

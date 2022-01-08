@@ -64,6 +64,8 @@ class Character extends FlxSprite
 	public var enemyOffsetY:Int = 0;
 	public var playerOffsetX:Int = 0;
 	public var playerOffsetY:Int = 0;
+	public var gfOffsetX:Int = 0;
+	public var gfOffsetY:Int = 0;
 	public var camOffsetX:Int = 0;
 	public var camOffsetY:Int = 0;
 	public var followCamX:Int = 150;
@@ -158,6 +160,11 @@ class Character extends FlxSprite
 		{
 			isDie = true;
 			curCharacter = curCharacter.substr(0, curCharacter.length - 5);
+		}
+		// failsafe so you dont crash when loading a nonexistant character :)
+		if (!FileSystem.exists('assets/images/custom_chars/' + character) && !isDie) {
+			curCharacter = 'dad';
+			trace(character + ' doesnt exist!');
 		}
 		trace(curCharacter);
 		var charJson:Dynamic = null;
@@ -318,6 +325,11 @@ class Character extends FlxSprite
 			{
 				playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 			}
+		} else {
+			if (0 < animationNotes.length && Conductor.songPosition > animationNotes[0][0]) {
+				sing(animationNotes[0][1]);
+				animationNotes.shift();
+			}
 		}
 		if (animation.curAnim != null && animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 			playAnim('danceRight');
@@ -388,15 +400,15 @@ class Character extends FlxSprite
 	}
 	public function loadMappedAnims() {
 		// todo, make better
-		var picoAnims = Song.loadFromJson(curCharacter, "stress").notes;
-		for (anim in picoAnims) {
-			// this code looks fucking awful because I am reading the compiled
-			// html build
+		// wish granted
+		var mappedAnims = Song.loadFromJson(curCharacter, PlayState.SONG.song).notes;
+		for (anim in mappedAnims) {
 			for (note in anim.sectionNotes) {
 				animationNotes.push(note);
 			}
 		} 
 		animationNotes.sort(sortAnims);
+		trace('mapped anims');
 	}
 	function sortAnims(a, b) {
 		var aThing = a[0];

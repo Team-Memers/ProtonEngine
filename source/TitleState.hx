@@ -183,7 +183,7 @@ class TitleState extends MusicBeatState
 		logoBl = new FlxSprite(logoTitle.curX, logoTitle.curY);
 		logoBl.frames = FlxAtlasFrames.fromSparrow('assets/images/logoBumpin.png', 'assets/images/logoBumpin.xml');
 		logoBl.antialiasing = !logoTitle.isPixel;
-		logoBl.animation.addByPrefix('bump', logoTitle.curName, logoTitle.curFPS);
+		logoBl.animation.addByPrefix('bump', logoTitle.curName, logoTitle.curFPS, false);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 		if (!!logoTitle.shouldScale){

@@ -34,6 +34,7 @@ typedef SwagSong =
 	var forceJudgements:Null<Bool>;
 	var convertMineToNuke:Null<Bool>;
 	var mania:Null<Int>;
+	var stageID:Int = 0;
 }
 
 class Song
@@ -208,6 +209,9 @@ class Song
 				default:
 					'normal';
 			}
+		}
+		if (parsedJson.stageID == null) {
+			parsedJson.stageID == 0;
 		}
 		if (parsedJson.player1 == "bf-pixel" && OptionsHandler.options.stressTankmen) {
 			parsedJson.player1 = "bulb-pixel";

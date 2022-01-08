@@ -1,5 +1,15 @@
 [
   {
+    "name" : "All"
+    "songs" : [
+     {
+       "week" : 0,
+       "character" : "bf",
+       "name" : "Random-Song"
+     }
+    ]
+  },
+  {
     "name": "Base Game",
     "songs": [
       // we use tjson so we can do comments and do some incorrect things
@@ -100,27 +110,7 @@
         "name": "Test",
         "character": "face",
         "week": 6,
-        "flags" : ["debug"]
       }
     ]
-  },
-  // trailing commas don't matter with tjson
-  // visual studio code is just pissy
-  /*
-  uncomment this for an example
-   {
-    "name": "Custom 1",
-    "songs": [
-    {
-      "name": "Bopeebo",
-      "character": "dad",
-      "week": 1
-    },
-    {
-      "name": "Fresh",
-      "character": "dad",
-        "week" : 1
-   ]
-   },
-  */
+  }
 ]

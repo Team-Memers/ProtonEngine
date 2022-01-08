@@ -38,7 +38,7 @@ typedef VersionJson = {
 	
 class MainMenuState extends MusicBeatState
 {
-	var curSelected:Int = 0;
+	static var curSelected:Int = 0;
 	var customMenuConfirm: Array<Array<String>>;
 	var customMenuScroll: Array<Array<String>>;
 	var parsedcustomMenuConfirmJson:Array<Array<String>>;
@@ -254,6 +254,7 @@ class MainMenuState extends MusicBeatState
 										}
 										
 									case 'options':
+										SaveDataState.prevPath = 'title';
 										LoadingState.loadAndSwitchState(new SaveDataState());
 								}
 							});
