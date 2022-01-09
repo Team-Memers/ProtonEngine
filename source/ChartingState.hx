@@ -171,7 +171,8 @@ class ChartingState extends MusicBeatState
 				preferredNoteAmount: 4,
 				forceJudgements: false,
 				convertMineToNuke: false,
-				mania: 0
+				mania: 0,
+				stageID: 0
 			};
 		}
 

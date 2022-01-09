@@ -34,7 +34,7 @@ typedef SwagSong =
 	var forceJudgements:Null<Bool>;
 	var convertMineToNuke:Null<Bool>;
 	var mania:Null<Int>;
-	var stageID:Int = 0;
+	var stageID:Null<Int>;
 }
 
 class Song

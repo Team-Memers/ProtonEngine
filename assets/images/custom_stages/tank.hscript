@@ -1,4 +1,3 @@
-
 var steve;
 var johns;
 var tower;
@@ -8,35 +7,53 @@ var goingRightJohn = [];
 var strumTimeJohn = [];
 var endingOffsetJohn = [];
 function start(song) {
+	setDefaultZoom(0.9);
+
+	getHaxeActor("gf").y += 10;
+	getHaxeActor("gf").x -= 30;
+	getHaxeActor("boyfriend").x += 40;
+	getHaxeActor("dad").y += 60;
+	getHaxeActor("dad").x -= 80;
+
+    // char swap offsets [0 = bf.x, 1 = bf.y, 2 = gf.x, 3 = gf.y, 4 = dad.x, 5 = dad.y];
+    swapOffsets[0] += 40;
+    swapOffsets[2] -= 30;
+    swapOffsets[3] += 10;
+    swapOffsets[4] -= 80;
+    swapOffsets[5] += 60;
+
     var bg = new FlxSprite(-400, -400).loadGraphic(hscriptPath + 'tankSky.png');
     bg.scrollFactor.set();
     bg.antialiasing = true;
     addSprite(bg, BEHIND_ALL);
 
     var clouds = new FlxSprite(FlxG.random.int(-700, -100), FlxG.random.int(-20, 20)).loadGraphic(hscriptPath + 'tankClouds.png');
-
 	clouds.antialiasing = true;
 	clouds.scrollFactor.set(0.1, 0.1);
     clouds.velocity.x = FlxG.random.float(5,15);
     addSprite(clouds, BEHIND_ALL);
+
     var mountains = new FlxSprite(-300, -20).loadGraphic(hscriptPath + 'tankMountains.png');
     mountains.antialiasing = true;
     mountains.setGraphicSize(Std.int(mountains.width * 1.2));
     mountains.updateHitbox();
     mountains.scrollFactor.set(0.2, 0.2);
     addSprite(mountains, BEHIND_ALL);
+
     var building = new FlxSprite(-200).loadGraphic(hscriptPath + 'tankBuildings.png');
     building.setGraphicSize(Std.int(building.width * 1.1));
     building.antialiasing = true;
     building.updateHitbox();
     building.scrollFactor.set(0.3, 0.3);
     addSprite(building, BEHIND_ALL);
+
     var ruins = new FlxSprite(-200).loadGraphic(hscriptPath + 'tankRuins.png');
     ruins.scrollFactor.set(0.35, 0.35);
     ruins.setGraphicSize(Std.int(1.1 * ruins.width));
     ruins.updateHitbox();
     ruins.antialiasing = true;
     addSprite(ruins, BEHIND_ALL);
+
     var smokeLeft = new FlxSprite(-200 , -100);
     smokeLeft.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'smokeLeft.png', hscriptPath + 'smokeLeft.xml');
     smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft', 24, true);
@@ -45,8 +62,6 @@ function start(song) {
     smokeLeft.antialiasing = true;
     addSprite(smokeLeft, BEHIND_ALL);
 
-
-    trace(":weary:");
 	var smokeRight = new FlxSprite(1100, -100);
 	smokeRight.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'smokeRight.png', hscriptPath + 'smokeRight.xml');
 	smokeRight.animation.addByPrefix('idle', 'SmokeRight', 24, true);
@@ -54,19 +69,16 @@ function start(song) {
 	smokeRight.scrollFactor.set(0.4, 0.4);
     smokeRight.antialiasing = true;
 	addSprite(smokeRight, BEHIND_ALL);
-    trace(":hueh:");
+
 	tower = new MetroSprite(100, 50, true);
-    trace("WAH tower");
 	tower.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'tankWatchtower.png', hscriptPath + 'tankWatchtower.xml');
-    trace("RED ALERT: ioajfha");
 	tower.animation.addByPrefix('idle', 'watchtower gradient color', 24, false);
 	tower.animation.play('idle', true);
-    trace("eugh");
 	tower.scrollFactor.set(0.5, 0.5);
 	tower.updateHitbox();
 	tower.antialiasing = true;
 	addSprite(tower, BEHIND_ALL);
-    trace(":pensive:");
+
     steve = new FlxSprite(300, 300);
     steve.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'tankRolling.png', hscriptPath + 'tankRolling.xml');
     steve.animation.addByPrefix('idle', "BG tank w lighting", 24, true);
@@ -76,15 +88,17 @@ function start(song) {
     addSprite(steve, BEHIND_ALL);
 
     // note to gamers, type classes don't work
-    trace("before johnathan");
     johns = new FlxGroup();
     addSprite(johns, BEHIND_ALL);
+
     var ground = new FlxSprite(-420, -150).loadGraphic(hscriptPath + 'tankGround.png');
     ground.setGraphicSize(Std.int(1.15 * ground.width));
     ground.updateHitbox();
     ground.antialiasing = true;
     addSprite(ground, BEHIND_ALL);
+
     losers = new FlxGroup();
+    
     var tank0 = new MetroSprite(-500, 650, true);
     tank0.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'tank0.png', hscriptPath + 'tank0.xml');
     tank0.antialiasing = true;
@@ -132,23 +146,15 @@ function start(song) {
 	tank3.scrollFactor.set(3.5, 2.5);
 	tank3.animation.play("idle");
 	losers.add(tank3);
-
     addSprite(losers, BEHIND_NONE);
 
-	getHaxeActor("gf").y += 10;
-	getHaxeActor("gf").x -= 30;
-	getHaxeActor("boyfriend").x += 40;
-	trace(getHaxeActor("dad"));
-	getHaxeActor("dad").y += 60;
-	getHaxeActor("dad").x -= 80;
-	setDefaultZoom(0.9);
 	if (!getHaxeActor("gf").hasGun) {
         getHaxeActor("gf").x -= 170;
 		getHaxeActor("gf").y -= 75;
     } else {
 		getHaxeActor("gf").y -= 200;
 		getHaxeActor("gf").x -= 50;
-		trace("finna instance");
+
 		var john = new FlxSprite(FlxG.width + 1000, 500);
         john.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'tankmanKilled1.png', hscriptPath + 'tankmanKilled1.xml');
         john.antialiasing = true;
@@ -191,13 +197,9 @@ function start(song) {
 			}
 		}
     }
-    
 }
 
-
-
-function beatHit(beat)
-{
+function beatHit(beat) {
     losers.forEach(function (spr) {
         spr.dance();
     });
@@ -223,8 +225,7 @@ function resetJohn(x, y, goingRight, spr, johnNum) {
     tankSpeedJohn[johnNum] = FlxG.random.float(0.6, 1);
      spr.flipX = if (goingRight) true else false;
 }
-function update(elapsed)
-{
+function update(elapsed) {
     moveTank();
     var i = 0;
     for (spr in johns.members) {
