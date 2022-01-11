@@ -14,7 +14,7 @@ class Ratings
 				ranking = "(MFC)";
 			case Good:
 				ranking = "(GFC)";
-			case Shit | Bad:
+			case Bad:
 				ranking = "(FC)";
 			case Sdcb:
 				ranking = "(SDCB)";
@@ -146,10 +146,10 @@ class Ratings
 				PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0;
 			case Bad:
 				PlayState.misses == 0 && PlayState.shits == 0;
-			case Shit:
-				PlayState.misses == 0;
 			case Sdcb:
 				PlayState.misses < 10;
+			case Clear:
+				PlayState.misses >= 10;
 			default:
 				false;
 		}
@@ -161,10 +161,10 @@ class Ratings
 			return Good;
 		if (CalculateFullCombo(Bad))
 			return Bad;
-		if (CalculateFullCombo(Shit))
-			return Shit;
 		if (CalculateFullCombo(Sdcb))
 			return Sdcb;
+		if (CalculateFullCombo(Clear))
+			return Clear;
 		return None;
 	}
 	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, accuracy:Float):String

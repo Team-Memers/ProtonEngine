@@ -2370,7 +2370,7 @@ class PlayState extends MusicBeatState
 			else
 				health = -50;
 		}
-		if (fullComboMode && !Ratings.CalculateFullCombo(Shit)) {
+		if (fullComboMode && !Ratings.CalculateFullCombo(Bad)) {
 			if (opponentPlayer)
 				health = 50;
 			else

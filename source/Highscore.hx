@@ -6,8 +6,8 @@ import flixel.FlxG;
 @:forward
 enum abstract FCLevel(Int) from Int to Int {
 	var None;
+	var Clear;
 	var Sdcb;
-	var Shit;
 	var Bad;
 	var Good;
 	var Sick;

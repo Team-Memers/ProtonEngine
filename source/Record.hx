@@ -112,7 +112,7 @@ class Record extends FlxTypedSpriteGroup<FlxSprite> {
         var rating = Highscore.getFCLevel(song, diff, "best");
         if (week == -1)
         {
-            if (rating >= Shit)
+            if (rating >= Bad)
                 sussyRecordGraphic = FNFAssets.getBitmapData('assets/images/campaign-ui-week/default-gold.png');
             else
                 sussyRecordGraphic = FNFAssets.getBitmapData('assets/images/campaign-ui-week/default-record.png');
@@ -124,7 +124,7 @@ class Record extends FlxTypedSpriteGroup<FlxSprite> {
         }
         else
         {
-            if (rating >= Shit)
+            if (rating >= Bad)
             {
                 if (FNFAssets.exists('assets/images/campaign-ui-week/week$week-gold.png'))
                 {

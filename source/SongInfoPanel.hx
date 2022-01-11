@@ -92,12 +92,12 @@ class SongInfoPanel extends FlxTypedSpriteGroup<FlxSprite> {
                 fcUse += "Good";
             case Bad:
                 fcUse += "Bad";
-            case Shit:
-                fcUse += "Shit";
             case Sdcb:
                 fcUse += "Sdcb";
-            case None:
+            case Clear:
                 fcUse += "Clear";
+            case None:
+                fcUse += "None";
         } 
         scoreTxt.text += '\n' + fcUse;
         var sussyjudge = switch (cast (Highscore.getJudge(song, diff, displaying) : Judge.Jury)) {
