@@ -1,4 +1,3 @@
-// char is a Character
 function init(char) {
     if (!char.isDie) {
         var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'char.png', hscriptPath + 'char.xml');
@@ -6,17 +5,17 @@ function init(char) {
         if (char.isPlayer) {
             char.animation.addByPrefix('singLEFT','BF NOTE LEFT0', 24, false);
             char.animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS',24, false);
-            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS',24,false);
+            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
         } else {
             char.animation.addByPrefix('singRIGHT','BF NOTE LEFT0', 24, false);
             char.animation.addByPrefix('singLEFT', 'BF NOTE RIGHT0', 24, false);
-            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE LEFT MISS',24, false);
-            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE RIGHT MISS',24,false);
+            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE LEFT MISS', 24, false);
+            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE RIGHT MISS', 24, false);
         }
-        char.animation.addByPrefix('idle', 'BF idle dance', 24, true);
-        char.animation.addByPrefix('singUP', 'BF NOTE UP0', 24, true);
-        char.animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, true);
+        char.animation.addByPrefix('idle', 'BF idle dance', 24, false);
+        char.animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+        char.animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
         char.animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
         char.animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 
@@ -33,7 +32,7 @@ function init(char) {
 
         char.playAnim('idle');
     } else {
-        var tex = FlxAtlasFrames.fromSparrow('assets/images/custom_chars/bf/char.png', 'assets/images/custom_chars/bf/char.xml');
+        var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'dead.png', hscriptPath + 'dead.xml');
         
         char.frames = tex;
         char.animation.addByPrefix('firstDeath', 'BF dies', 24, false);

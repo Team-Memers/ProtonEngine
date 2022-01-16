@@ -1,10 +1,14 @@
-trace(": )");
-// char is a Character
 function init(char) {
     char.frames = FlxAtlasFrames.fromSparrow(hscriptPath + 'char.png', hscriptPath + 'char.xml');
+
     char.animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-    char.animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-    char.animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
+    if (char.isPlayer) {
+        char.animation.addByPrefix('singLEFT', 'GF Right Note', 24, false);
+        char.animation.addByPrefix('singRIGHT', 'GF left note', 24, false);
+    } else {
+        char.animation.addByPrefix('singLEFT', 'GF left note', 24, false);
+        char.animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
+    }
     char.animation.addByPrefix('singUP', 'GF Up Note', 24, false);
     char.animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
     char.animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
@@ -13,7 +17,7 @@ function init(char) {
     char.animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
     char.animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
     char.animation.addByPrefix('scared', 'GF FEAR', 24);
-    trace("finish anim");
+
     char.addOffset('cheer',0);
     char.addOffset('sad', -2, -21);
     char.addOffset('danceLeft', 0, -9);
@@ -27,12 +31,16 @@ function init(char) {
     char.addOffset('hairFall', 0, -9);
 
     char.addOffset('scared', -2, -17);
-    trace("finish offset");
+
+    if (char.isPlayer) {
+	char.flipX = true;
+	char.followCamY = 150;
+    }
+
     char.playAnim('danceRight');
     char.like = "gf";
     char.likeGf = true;
     char.gfEpicLevel = Level_Sing;
-    trace("finish");
 }
 portraitOffset = [0, 0];
 dadVar = 4.0;
@@ -52,4 +60,3 @@ function dance(char) {
             char.playAnim('danceLeft');
     }
 }
-trace("done");

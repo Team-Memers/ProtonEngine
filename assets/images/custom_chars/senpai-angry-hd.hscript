@@ -1,9 +1,6 @@
-trace(": )");
-// char is a Character
 function init(char) {
-    trace(": )");
     var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'char.png', hscriptPath + 'char.xml');
-    trace(": )");
+
     char.frames = tex;
     char.animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
     char.animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
@@ -11,7 +8,6 @@ function init(char) {
     char.animation.addByPrefix('singRIGHT', 'Angry Senpai RIGHT NOTE', 24, false);
     char.animation.addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
     
-
     char.addOffset('idle', -200, -100);
     char.addOffset('singUP', -190, -29);
     char.addOffset('singRIGHT', -190, -29);
@@ -28,7 +24,6 @@ function init(char) {
     char.camOffsetY = 0;
     char.followCamX = 450;
     char.followCamY = 50;
-
 }
 portraitOffset = [0, 0];
 dadVar = 4.0;
@@ -38,7 +33,5 @@ function update(elapsed, char) {
 }
 var danced = false;
 function dance(char) {
-    trace(": )");
     char.playAnim('idle');
 }
-trace("done");

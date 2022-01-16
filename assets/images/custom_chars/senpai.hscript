@@ -1,9 +1,6 @@
-trace(": )");
-// char is a Character
 function init(char) {
-    trace(": )");
     var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'char.png', hscriptPath + 'char.xml');
-    trace(": )");
+
     char.frames = tex;
     char.animation.addByPrefix('idle', 'Senpai Idle', 20, false);
     char.animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
@@ -11,8 +8,7 @@ function init(char) {
     char.animation.addByPrefix('singRIGHT', 'SENPAI RIGHT NOTE', 24, false);
     char.animation.addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
     
-
-    char.addOffset('idle',0);
+    char.addOffset('idle');
     char.addOffset('singUP', 5, 37);
     char.addOffset('singRIGHT');
     char.addOffset('singLEFT', 40);
@@ -24,10 +20,17 @@ function init(char) {
 
     char.enemyOffsetX = 150;
     char.enemyOffsetY = 360;
-    char.camOffsetX = 370;
-    char.camOffsetY = 300;
-    char.followCamX = -93;
-    char.followCamY = -430;
+    char.playerOffsetX = 270;
+    char.playerOffsetY = -30;
+    if (char.isPlayer) {
+        char.followCamX = -450;
+        char.followCamY = -410;
+    } else {
+        char.camOffsetX = 370;
+        char.camOffsetY = 300;
+        char.followCamX = -93;
+        char.followCamY = -430;
+    }
 
     char.setGraphicSize(Std.int(char.width * 6));
     char.updateHitbox();
@@ -42,7 +45,5 @@ function update(elapsed, char) {
 }
 var danced = false;
 function dance(char) {
-    trace(": )");
     char.playAnim('idle');
 }
-trace("done");

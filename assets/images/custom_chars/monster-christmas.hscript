@@ -1,22 +1,25 @@
-trace(": )");
-// char is a Character
 function init(char) {
-    trace(": )");
     var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'char.png', hscriptPath + 'char.xml');
-    trace(": )");
+
     char.frames = tex;
-    char.animation.addByPrefix('idle', 'monster idle', 24, true);
-    char.animation.addByPrefix('singUP', 'monster up note', 24, true);
-    char.animation.addByPrefix('singLEFT','Monster left note', 24, true);
-    char.animation.addByPrefix('singRIGHT', 'Monster Right note', 24, true);
-    char.animation.addByPrefix('singDOWN', 'monster down', 24, true);
+    char.animation.addByPrefix('idle', 'monster idle', 24, false);
+    char.animation.addByPrefix('singUP', 'monster up note', 24, false);
+    char.animation.addByPrefix('singLEFT','Monster left note', 24, false);
+    char.animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
+    char.animation.addByPrefix('singDOWN', 'monster down', 24, false);
 
-
-    char.addOffset('idle',0);
-    char.addOffset('singUP', -20, 50);
-    char.addOffset('singRIGHT',-51, 0);
-    char.addOffset('singLEFT', -30);
-    char.addOffset('singDOWN', -30, -94);
+    char.addOffset('idle');
+    if (char.isPlayer) {
+	char.addOffset('singUP', -20, 84);
+	char.addOffset('singRIGHT', 40);
+	char.addOffset('singLEFT', -51, 0);
+	char.addOffset('singDOWN', 2, -94);
+    } else {
+	char.addOffset('singUP', -20, 85);
+	char.addOffset('singRIGHT', -51, 0);
+	char.addOffset('singLEFT', -30);
+	char.addOffset('singDOWN', -30, -94);
+    }
 
     char.playAnim('idle');
 
@@ -25,9 +28,14 @@ function init(char) {
     char.enemyOffsetX = 0;
     char.enemyOffsetY = 100;
     char.playerOffsetX = 0;
-    char.playerOffsetY = 0;
-    char.followCamX = 150;
-    char.followCamY = -100;
+    char.playerOffsetY = -240;
+    if (char.isPlayer) {
+        char.followCamX = -50;
+        char.followCamY = 30;
+    } else {
+        char.followCamX = 150;
+        char.followCamY = -100;
+    }
     char.midpointX = 0;
     char.midpointY = 0;
 }
@@ -39,7 +47,5 @@ function update(elapsed, char) {
 }
 var danced = false;
 function dance(char) {
-    trace(": )");
     char.playAnim('idle');
 }
-trace("done");

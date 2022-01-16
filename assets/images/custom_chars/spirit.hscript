@@ -1,9 +1,6 @@
-trace(": )");
-// char is a Character
 function init(char) {
-    trace(": )");
     var tex = FlxAtlasFrames.fromSpriteSheetPacker(hscriptPath + 'char.png', hscriptPath + 'char.txt');
-    trace(": )");
+
     char.frames = tex;
     char.animation.addByPrefix('idle', 'idle spirit_', 24, false);
     char.animation.addByPrefix('singUP', 'up_', 24, false);
@@ -11,11 +8,15 @@ function init(char) {
     char.animation.addByPrefix('singRIGHT', 'right_', 24, false);
     char.animation.addByPrefix('singDOWN', 'spirit down_', 24, false);
     
-
     char.addOffset('idle', -220, -280);
     char.addOffset('singUP', -220, -240);
-    char.addOffset('singRIGHT', -220, -280);
-    char.addOffset('singLEFT', -200, -280);
+    if (char.isPlayer) {
+        char.addOffset('singLEFT', -220, -280);
+        char.addOffset('singRIGHT', -240, -280);
+    } else {
+        char.addOffset('singRIGHT', -220, -280);
+        char.addOffset('singLEFT', -200, -280);
+    }
     char.addOffset('singDOWN', 170, 110);
 
     char.playAnim('idle');
@@ -24,8 +25,15 @@ function init(char) {
 
     char.enemyOffsetX = -150;
     char.enemyOffsetY = 100;
-    char.camOffsetX = 300;
-    char.camOffsetY = 0;
+    char.playerOffsetX = 50;
+    char.playerOffsetY = -300;
+    if (char.isPlayer) {
+        char.followCamX = -200;
+        char.followCamY = 70;
+    } else {
+        char.camOffsetX = 300;
+        char.camOffsetY = 0;
+    }
 
     char.setGraphicSize(Std.int(char.width * 6));
     char.updateHitbox();
@@ -40,7 +48,5 @@ function update(elapsed, char) {
 }
 var danced = false;
 function dance(char) {
-    trace(": )");
     char.playAnim('idle');
 }
-trace("done");

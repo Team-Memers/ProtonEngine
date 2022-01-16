@@ -1,31 +1,34 @@
 {
-    "skipVictoryScreen": false,
-    "skipModifierMenu": false,
-    "alwaysDoCutscenes": false,
-    "useCustomInput": true,
-    "allowEditOptions": true,
-    "useSaveDataMenu": true, 
-    "downscroll": false,
-    "preferredSave": 0,
-    "showSongPos": true,
-    "style": true,
-    "stressTankmen": false,
-    "ignoreUnlocks": false,
-    "preferJudgement": 0,
-    "judge": 9,
-    "newJudgementPos": false,
-    "emuOsuLifts": false,
-    "showComboBreaks": true,
-    "useKadeHealth": false,
-    "useMissStun": false,
-    "offset": 0,
-    "accuracyMode": 0,
-    "danceMode": false,
-    "moddingOptions": true,
-    "funnyOptions": true,
-    "allowStoryMode": true,
-    "allowFreeplay": true,
-    "allowDonate": true,
-    "fpsCap": 60,
-    "titleToggle": true
+     "style" : false
+    ,"showSongPos" : true
+    ,"camNotes" : true
+    ,"useCustomInput" : true
+    ,"offset" : 0
+    ,"emuOsuLifts" : false
+    ,"showNoteSplashes" : true
+    ,"skipModifierMenu" : false
+    ,"preferJudgement" : 0
+    ,"showComboBreaks" : true
+    ,"dontMuteMiss" : false
+    ,"judge" : 9
+    ,"hitSounds" : false
+    ,"allowDonate" : false
+    ,"stressTankmen" : false
+    ,"fpsCap" : 120
+    ,"allowFreeplay" : true
+    ,"scrollSpeed" : 1
+    ,"useKadeHealth" : false
+    ,"showTimings" : null
+    ,"accuracyMode" : 0
+    ,"ignoreUnlocks" : false
+    ,"useMissStun" : false
+    ,"ignoreVile" : false
+    ,"newJudgementPos" : false
+    ,"skipVictoryScreen" : false
+    ,"alwaysDoCutscenes" : true
+    ,"downscroll" : false
+    ,"allowStoryMode" : true
+    ,"preferredSave" : 0
+    ,"allowEditOptions" : true
+    ,"useSaveDataMenu" : true
 }

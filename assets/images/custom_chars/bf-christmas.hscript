@@ -1,4 +1,3 @@
-// char is a Character
 function init(char) {
     if (!char.isDie) {
         var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'char.png', hscriptPath + 'char.xml');
@@ -7,19 +6,18 @@ function init(char) {
         if (char.isPlayer) {
             char.animation.addByPrefix('singLEFT','BF NOTE LEFT0', 24, false);
             char.animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS',24, false);
-            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS',24,false);
+            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24,false);
         } else {
             char.animation.addByPrefix('singRIGHT','BF NOTE LEFT0', 24, false);
             char.animation.addByPrefix('singLEFT', 'BF NOTE RIGHT0', 24, false);
-            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE LEFT MISS',24, false);
-            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE RIGHT MISS',24,false);
+            char.animation.addByPrefix('singRIGHTmiss', 'BF NOTE LEFT MISS', 24, false);
+            char.animation.addByPrefix('singLEFTmiss', 'BF NOTE RIGHT MISS', 24,false);
         }
         char.animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
         char.animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
         char.animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
         char.animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-
 
         char.addOffset('idle', -5);
         char.addOffset('singUP', -29, 27);
@@ -33,7 +31,7 @@ function init(char) {
 
         char.playAnim('idle');
     } else {
-        var tex = FlxAtlasFrames.fromSparrow('assets/images/custom_chars/bf/char.png', 'assets/images/custom_chars/bf/char.xml');
+        var tex = FlxAtlasFrames.fromSparrow(hscriptPath + 'dead.png', hscriptPath + 'dead.xml');
         
         char.frames = tex;
         char.animation.addByPrefix('firstDeath', 'BF dies', 24, false);
@@ -44,7 +42,6 @@ function init(char) {
         char.addOffset('deathLoop', 37, 5);
         char.addOffset('deathConfirm', 37, 69);
     }
-    
 
     char.flipX = true;
     char.like = "bf";
@@ -54,8 +51,13 @@ function init(char) {
     char.enemyOffsetY = 350;
     char.playerOffsetX = 0;
     char.playerOffsetY = 0;
-    char.followCamX = -50;
-    char.followCamY = 0;
+    if (char.isPlayer) {
+        char.followCamX = 0;
+        char.followCamY = 0;
+    } else {
+        char.followCamX = 250;
+        char.followCamY = -200;
+    }
     char.midpointX = 0;
     char.midpointY = 0;
 }
