@@ -35,13 +35,14 @@ function start(song) {
 	timeBar.scrollFactor.set();
 	timeBar.numDivisions = 800;
 	timeBar.cameras = [camHUD];
-	removeSprite(songPosBG);
-	removeSprite(songPosBar);
-	removeSprite(songName);
+
+	songPosBG.visible = false;
+	songPosBar.visible = false;
+	songName.visible = false;
 	if (useSongBar) {
 	    addSprite(timeBarBG);
 	    addSprite(timeBar);
-	    addSprite(songName);
+	    songName.visible = true
 	}
 
 	botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);

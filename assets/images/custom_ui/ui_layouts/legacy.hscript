@@ -6,18 +6,17 @@ function start(song) {
     difficTxt.y = FlxG.height - difficTxt.height;
 
     disableScoreChange(true);
-    removeSprite(songPosBar);
-    removeSprite(songPosBG);
-    removeSprite(songName);
+    songPosBar.visible = false;
+    songPosBG.visible = false;
+    songName.visible = false;
 
     scoreTxt.x = healthBarBG.x + healthBarBG.width - 90;
     //scoreTxt.setFormat("assets/fonts/vcr.ttf", 20, FlxColor.WHITE, RIGHT);
     scoreTxt.size = 20;
-    if (downscroll) {
-	scoreTxt.y = healthBarBG.y - 30;
-    } else {
-	scoreTxt.y = healthBarBG.y + 30;
-    }
+    if (downscroll)
+	    scoreTxt.y = healthBarBG.y - 30;
+    else
+	    scoreTxt.y = healthBarBG.y + 30;
 
     healthTxt = new FlxText(healthBarBG.x + healthBarBG.width - 300, scoreTxt.y, 0, "", 200);
     //healthTxt.setFormat("assets/fonts/vcr.ttf", 20, FlxColor.WHITE, RIGHT);
@@ -39,9 +38,8 @@ function start(song) {
 function update(elapsed) {
     scoreTxt.text = "Score:" + songScore + "(" + songScoreDef + ")";
     healthTxt.text = "Health:" + Math.round(health * 50) + "%";
-    if (PlayState.misses == 0) {
-	accuracyTxt.text = "Accuracy:100%";
-    } else {
-	accuracyTxt.text = "Accuracy:" + Math.round(accuracy) + "%";
-    }
+    if (PlayState.misses == 0)
+	    accuracyTxt.text = "Accuracy:100%";
+    else
+	    accuracyTxt.text = "Accuracy:" + Math.round(accuracy) + "%";
 }

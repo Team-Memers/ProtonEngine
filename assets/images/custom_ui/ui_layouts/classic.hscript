@@ -1,19 +1,18 @@
 function start(song) {
-    removeSprite(difficTxt);
+    difficTxt.visible = false;
 
     disableScoreChange(true);
-    removeSprite(songPosBar);
-    removeSprite(songPosBG);
-    removeSprite(songName);
+    songPosBar.visible = false;
+    songPosBG.visible = false;
+    songName.visible = false;
 
     scoreTxt.x = healthBarBG.x + healthBarBG.width - 190;
     //scoreTxt.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.NONE, FlxColor.TRANSPARENT);
     scoreTxt.size = 20;
-    if (downscroll) {
-	scoreTxt.y = healthBarBG.y - 30;
-    } else {
-	scoreTxt.y = healthBarBG.y + 30;
-    }
+    if (downscroll)
+	    scoreTxt.y = healthBarBG.y - 30;
+    else
+	    scoreTxt.y = healthBarBG.y + 30;
 }
 
 function update(elapsed) {

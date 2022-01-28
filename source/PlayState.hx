@@ -349,6 +349,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("bpm", Conductor.bpm);
 		interp.variables.set("songData", SONG);
 		interp.variables.set("curSong", SONG.song);
+		interp.variables.set("scrollSpeed", daScrollSpeed);
 		interp.variables.set("curStep", 0);
 		interp.variables.set("curBeat", 0);
 		interp.variables.set("camHUD", camHUD);
@@ -892,10 +893,10 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		if (OptionsHandler.options.scrollSpeed != 1)
-			daScrollSpeed = OptionsHandler.options.scrollSpeed;
-		else
+		if (OptionsHandler.options.scrollSpeed == 1)
 			daScrollSpeed = SONG.speed;
+		else
+			daScrollSpeed = OptionsHandler.options.scrollSpeed;
 		
 		trace(SONG.gf);
 		gf = new Character(400, 130, SONG.gf);
@@ -1717,7 +1718,7 @@ class PlayState extends MusicBeatState
 				unspawnNotes.push(swagNote);
 				// when the imposter is sus XD
 				if (susLength != 0) {
-					for (susNote in 0...(Math.floor(susLength) + 2))
+					for (susNote in 0...Math.floor(susLength)) // no + 2 please and thanks <3
 					{
 						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 						if (OptionsHandler.options.emuOsuLifts && susLength < susNote)
@@ -2048,6 +2049,7 @@ class PlayState extends MusicBeatState
 				    add(boyfriend);
 				    add(dad);
 				}
+				setAllHaxeVar("boyfriend", boyfriend);
 			case 'dad' | 'opponent' | 'player2':
 				remove(dad);
 				dad.destroy();
@@ -2070,6 +2072,7 @@ class PlayState extends MusicBeatState
 				    add(dad);
 				    add(boyfriend);
 				}
+				setAllHaxeVar("dad", dad);
 			case 'gf' | 'girlfriend':
 				remove(gf);
 				gf.destroy();
@@ -2082,6 +2085,7 @@ class PlayState extends MusicBeatState
 				add(gf);
 				add(dad);
 				add(boyfriend);
+				setAllHaxeVar("gf", gf);
 		}
 	}
 
