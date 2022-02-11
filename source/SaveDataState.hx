@@ -72,7 +72,7 @@ class SaveDataState extends MusicBeatState
 							{name: "Always Show Cutscenes", intName: "alwaysDoCutscenes", value: false, desc: "Force show cutscenes, even in freeplay"}, 
 							{name: "Skip Modifier Menu", value: false, intName: "skipModifierMenu", desc: "Skip the modifier menu"}, 
 							{name: "Skip Victory Screen", value: false, intName : "skipVictoryScreen", desc: "Skip the victory screen at the end of songs."},
-							{name: "Scroll Speed", value: false, intName: "scrollSpeed", desc: "Sets the scroll speed (1 uses the song's scroll speed)", amount: 1, defAmount: 1, max: 10, min: 1, precision: 0.1,},
+							{name: "Scroll Speed", value: false, intName: "scrollSpeed", desc: "Sets the scroll speed (1 uses the song's scroll speed)", amount: 1.0, defAmount: 1.0, max: 10.0, min: 1.0, precision: 0.1,},
 							{name: "Downscroll", value: false, intName: "downscroll", desc: "Put da arrows on the bottom and have em scroll down"},
 							{name: "Don't mute on miss", intName: "dontMuteMiss", value: false, desc: "When missing notes, don't mute vocals"},
 							{name: "Judge", value: false, intName: "judge", desc: "The Judge to use.", amount: cast Judge.Jury.Classic, defAmount: cast Judge.Jury.Classic, max: 10},
@@ -116,6 +116,7 @@ class SaveDataState extends MusicBeatState
 							#if sys
 							{name: "Toggle Title Background", value: true, intName:'titleToggle', desc:"Turn on/off the title screen background.", ignore: true,},
 							{name: "Import Assets...", value: false, intName:'newassets', desc: "Import assets from other versions of Modding Plus! (COMING SOON)", ignore: true,},
+							//{name: "UI Layout...", value: false, intName:'newui', desc: "Change the layout of the UI in-game!", ignore: true,},
 							{name:"New Character...", value: false, intName:'newchar', desc: "Make a new character!", ignore: true,},
 							{name:"New Stage...", value:false, intName:'newstage', desc: "Make a new stage!", ignore: true,},
 							{name: "New Song...", value: false, intName:'newsong', desc: "Make a new song!", ignore: true,},
@@ -350,6 +351,10 @@ class SaveDataState extends MusicBeatState
 						//saveOptions();
 						trace('Coming soon');
 						//LoadingState.loadAndSwitchState(new ModPlusCarryState());
+					case "UI Layout...":
+						//saveOptions();
+
+						//LoadingState.loadAndSwitchState(new SongUIState());
 					case "Sound Test...":
 						saveOptions();
 						FreeplayState.soundTest = true;

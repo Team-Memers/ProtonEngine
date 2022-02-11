@@ -1,7 +1,7 @@
 // This is a template. Rename this file to "noteInfo.json" and put it in a song folder to use it.
 [
     {
-        // star note
+        "noteName": "Star Note",
         "animNames": [
             "purple star", // left note
             "blue star", // down note

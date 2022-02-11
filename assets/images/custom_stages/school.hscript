@@ -1,4 +1,5 @@
 var gorls;
+var bruh;
 function start(song) {
     getHaxeActor("bf").x += 50;
     getHaxeActor("bf").y += 60;
@@ -68,7 +69,7 @@ function start(song) {
     gorls.antialiasing = false;
     addSprite(gorls, BEHIND_ALL);
 
-    var bruh = new FlxSprite().loadGraphic(hscriptPath + 'Scanlines.png');
+    bruh = new FlxSprite().loadGraphic(hscriptPath + 'Scanlines.png');
     bruh.alpha = 0.8;
     bruh.antialiasing = true;
     bruh.cameras = [camHUD];
@@ -83,6 +84,8 @@ function beatHit(beat)
 
 function update(elapsed)
 {
+    if (FlxG.keys.justPressed.SPACE)
+	bruh.visible = !bruh.visible;
 }
 
 function stepHit(step)

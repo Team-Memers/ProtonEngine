@@ -38,11 +38,11 @@ function start(song) {
 
 	songPosBG.visible = false;
 	songPosBar.visible = false;
-	songName.visible = false;
+	removeSprite(songName);
 	if (useSongBar) {
 	    addSprite(timeBarBG);
 	    addSprite(timeBar);
-	    songName.visible = true
+	    addSprite(songName);
 	}
 
 	botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);

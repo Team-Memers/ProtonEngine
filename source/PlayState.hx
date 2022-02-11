@@ -379,6 +379,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("gfSpeed", gfSpeed);
 		interp.variables.set("tweenCamIn", tweenCamIn);
 		interp.variables.set("health", health);
+		interp.variables.set("healthChange", healthChange);
 		interp.variables.set("iconP1", iconP1);
 		interp.variables.set("iconP2", iconP2);
 		interp.variables.set("currentPlayState", this);
@@ -641,6 +642,7 @@ class PlayState extends MusicBeatState
         }
 		#end
 		Note.getFrames = true;
+		Note.getSpecialFrames = true;
 		Note.specialNoteJson = null;
 		if (FNFAssets.exists('assets/data/${SONG.song.toLowerCase()}/noteInfo.json')) {
 			Note.specialNoteJson = CoolUtil.parseJson(FNFAssets.getText('assets/data/${SONG.song.toLowerCase()}/noteInfo.json'));
@@ -1825,7 +1827,7 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
+			var babyArrow:FlxSprite = new FlxSprite(42, strumLine.y);
 			if (!uiSmelly.isPixel)
 			{
 				var noteXml = FNFAssets.getText('assets/images/custom_ui/ui_packs/' + uiSmelly.uses + "/NOTE_assets.xml");
@@ -2024,6 +2026,17 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
 	}
 
+	 function healthChange(healthVar:Float = -69, additive:Bool = false) {
+		trace('changing health');
+		if (healthVar != -69) { //lol thats the funny number
+			trace('health changed');
+			if (additive == true)
+				health += healthVar;
+			else
+				health = healthVar;
+		}
+	}
+
 	function switchCharacter(charTo:String, charState:String) { //the non sus version
 	    switch(charState) {
 			case 'boyfriend' | 'bf' | 'player1':
@@ -2073,11 +2086,13 @@ class PlayState extends MusicBeatState
 				    add(boyfriend);
 				}
 				setAllHaxeVar("dad", dad);
-			case 'gf' | 'girlfriend':
+			case 'gf' | 'girlfriend' | 'player3':
 				remove(gf);
 				gf.destroy();
 				gf = new Character(swapOffsets[2], swapOffsets[3], charTo);
 				gf.scrollFactor.set(0.95, 0.95);
+				gf.x += gf.gfOffsetX;
+				gf.y += gf.gfOffsetY;
 
 				// Layering nonsense
 				remove(boyfriend);
@@ -2317,8 +2332,7 @@ class PlayState extends MusicBeatState
 			}
 			camZooming = getHaxeVar("camZooming", "modchart");
 			gfSpeed = getHaxeVar("gfSpeed", "modchart");
-			health = getHaxeVar("health", "modchart");
-
+			//health = getHaxeVar("health", "modchart");
 		}
 
 		var joe = notesHitArray.length-1;
@@ -2344,8 +2358,7 @@ class PlayState extends MusicBeatState
 				if (daNote.isSustainNote)
 					daNote.x += defaultNoteWidth / 2 - daNote.width / 2; 
 			});
-			for (i in 0...playerStrums.members.length)
-			{
+			for (i in 0...playerStrums.members.length)  {
 				playerComboBreak.members[i].x = playerStrums.members[i].x;
 			}
 			for (i in 0...enemyStrums.members.length) {
@@ -2962,7 +2975,7 @@ class PlayState extends MusicBeatState
 						{
 							if (Math.abs(daNote.noteData) == spr.ID)
 							{
-								spr.animation.play('confirm');
+								spr.animation.play('confirm', true);
 								sustain2(spr.ID, spr, daNote);
 							}
 						});
@@ -2970,6 +2983,11 @@ class PlayState extends MusicBeatState
 							boyfriend.sing(daNote.oppntSing.direction, daNote.oppntSing.miss, daNote.oppntSing.alt);
 						}
 					}
+
+					if (daNote.noteHit != null) {
+						callHscript(daNote.noteHit, [], "modchart");
+					}
+
 					dad.holdTimer = 0;
 
 					if (SONG.needsVoices)
@@ -2987,7 +3005,7 @@ class PlayState extends MusicBeatState
 						{
 							if (Math.abs(daNote.noteData % 4) == spr.ID)
 							{
-								spr.animation.play('confirm');
+								spr.animation.play('confirm', true);
 								sustain2(spr.ID, spr, daNote);
 							}
 						});
@@ -2996,8 +3014,11 @@ class PlayState extends MusicBeatState
 							// don't strum it because there isn't actually a note
 						}
 					}
-						
-						
+
+					if (daNote.noteHit != null) {
+						callHscript(daNote.noteHit, [], "modchart");
+					}
+
 					boyfriend.holdTimer = 0;
 
 					if (SONG.needsVoices)
@@ -3032,13 +3053,19 @@ class PlayState extends MusicBeatState
 				// WIP interpolation shit? Need to fix the pause issue
 				// daNote.y = (strumLine.y - (songTime - daNote.strumTime) * (0.45 * PlayState.SONG.speed));
 
+				if ((daNote.y >= getHaxeActor('0').y - 20 && daNote.y <= getHaxeActor('0').y + 20) && daNote.noteStrum != null) {
+					callHscript(daNote.noteStrum, [], "modchart");
+					daNote.noteStrum = null;
+				}
+
 				if (((daNote.y < -daNote.height && !downscroll) || (daNote.y > FlxG.height + daNote.height && downscroll)) && !daNote.dontCountNote)
 				{
 
 						if ((daNote.tooLate || !daNote.wasGoodHit) /* && !daNote.isSustainNote */)
 						{
 							// always show the graphic
-							popUpScore(Conductor.songPosition, daNote, daNote.mustPress, true);
+							noteMiss(daNote.noteData, true, daNote, false);
+							//popUpScore(Conductor.songPosition, daNote, daNote.mustPress, true);
 							if (!OptionsHandler.options.dontMuteMiss)
 								vocals.volume = 0;
 							if (poisonPlus && poisonTimes < 3)
@@ -3072,7 +3099,7 @@ class PlayState extends MusicBeatState
 					{
 						if (strumming2[spr.ID])
 						{
-							spr.animation.play("confirm");
+							spr.animation.play("confirm", true);
 						}
 
 						if (spr.animation.curAnim != null && spr.animation.curAnim.name == 'confirm' && !daNote.isPixel)
@@ -3090,7 +3117,7 @@ class PlayState extends MusicBeatState
 					{
 						if (strumming1[spr.ID])
 						{
-							spr.animation.play("confirm");
+							spr.animation.play("confirm", true);
 						}
 
 						if (spr.animation.curAnim.name == 'confirm' && !daNote.isPixel)
@@ -3992,7 +4019,7 @@ class PlayState extends MusicBeatState
 	}
 	var mashing:Int = 0;
 	var mashViolations:Int = 0;
-	function noteMiss(direction:Int = 1, playerOne:Bool, ?note:Null<Note>):Void
+	function noteMiss(direction:Int = 1, playerOne:Bool, ?note:Null<Note>, ?playMissSound:Bool = true):Void
 	{
 		var actingOn = playerOne ? boyfriend : dad;
 		var onActing = playerOne ? dad : boyfriend;
@@ -4000,6 +4027,9 @@ class PlayState extends MusicBeatState
 		{
 			misses += 1;
 			setAllHaxeVar("misses", misses);
+			if (note.noteMiss != null) {
+				callHscript(note.noteMiss, [], "modchart");
+			}
 			var healthBonus = -0.04 * healthLossMultiplier;
 			if (note != null) {
 				healthBonus = note.getHealth('miss');
@@ -4008,8 +4038,7 @@ class PlayState extends MusicBeatState
 				health += healthBonus;
 			else
 				health -= healthBonus;
-			if (combo > 5 && gf.gfEpicLevel >= EpicLevel.Level_Sadness)
-			{
+			if (combo > 5 && gf.gfEpicLevel >= EpicLevel.Level_Sadness) {
 				gf.playAnim('sad');
 			}
 			updateAccuracy();
@@ -4020,7 +4049,8 @@ class PlayState extends MusicBeatState
 			}
 			setAllHaxeVar('songScore', songScore);
 			trueScore -= 5;
-			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
+			if (playMissSound)
+				FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
 			// FlxG.log.add('played imss note');
 
@@ -4163,6 +4193,13 @@ class PlayState extends MusicBeatState
 			else
 				player2GoodHitSignal.trigger(note);
 			callAllHScript("noteHit", [playerOne, note, goodhit]);
+			if (note.noteHit != null) {
+				callHscript(note.noteHit, [], "modchart");
+			}
+			if (note.noteStrum != null && ((note.y < getHaxeActor('0').y - 20 && !downscroll) || (note.y > getHaxeActor('0').y + 20 && downscroll))) {
+				callHscript(note.noteStrum, [], "modchart");
+				note.noteStrum = null;
+			}
 			note.kill();
 			notes.remove(note, true);
 			note.destroy();

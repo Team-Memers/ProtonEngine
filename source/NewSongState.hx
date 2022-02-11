@@ -164,8 +164,8 @@ class NewSongState extends MusicBeatState
 	function writeCharacters() {
 		// check to see if directory exists
 		#if sys
-		if (!FileSystem.exists('assets/data/'+nameText.text.toLowerCase())) {
-			FileSystem.createDirectory('assets/data/'+nameText.text.toLowerCase());
+		if (!FileSystem.exists('assets/data/' + nameText.text.toLowerCase())) {
+			FileSystem.createDirectory('assets/data/' + nameText.text.toLowerCase());
 		}
 		for (i in 0...coolDiffFiles.length) {
 			if (coolDiffFiles[i] != null) {
@@ -186,9 +186,12 @@ class NewSongState extends MusicBeatState
 			}
 		}
 		// probably breaks on non oggs haha weeeeeeeeeee
-		File.copy(instPath,'assets/music/'+nameText.text+'_Inst.ogg');
+		if (!FileSystem.exists('assets/songs/' + nameText.text.toLowerCase())) {
+			FileSystem.createDirectory('assets/songs/' + nameText.text.toLowerCase());
+		}
+		File.copy(instPath,'assets/songs/' + nameText.text.toLowerCase() + '/' + nameText.text + '_Inst.ogg');
 		if (voicePath != null) {
-			File.copy(voicePath,'assets/music/'+nameText.text+'_Voices.ogg');
+			File.copy(voicePath,'assets/songs/' + nameText.text.toLowerCase() + '/' + nameText.text + '_Voices.ogg');
 		}
 		var coolSongListFile:Array<Dynamic> = CoolUtil.parseJson(FNFAssets.getJson('assets/data/freeplaySongJson'));
 		var foundSomething:Bool = false;
@@ -201,7 +204,7 @@ class NewSongState extends MusicBeatState
 		}
 		if (!foundSomething) {
 			// must be a new category
-			coolSongListFile.push({"name": categoryText.text, "songs": [nameText.text]});
+			coolSongListFile.push({"name": categoryText.text, "songs": [{"name": nameText.text, "character": p2Text.text, "week": 0}]});
 		}
 		File.saveContent('assets/data/freeplaySongJson.jsonc',CoolUtil.stringifyJson(coolSongListFile));
 		#end

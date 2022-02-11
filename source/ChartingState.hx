@@ -95,6 +95,7 @@ class ChartingState extends MusicBeatState
 	var cutsceneTextField:FlxInputText;
 	var uiTextField:FlxInputText;
 	var stageTextField:FlxInputText;
+	var stageID:FlxUINumericStepper;
 	var isAltNoteCheck:FlxUICheckBox;
 	
 	var playerText:FlxText;
@@ -214,7 +215,7 @@ class ChartingState extends MusicBeatState
 		UI_box.x = FlxG.width / 2;
 		UI_box.y = 20;
 		add(UI_box);
-		noteTypeText = new FlxText(FlxG.width / 2, FlxG.height, 0, "Normal Type", 16);
+		noteTypeText = new FlxText(FlxG.width / 2, FlxG.height, 0, "Normal Note", 16);
 		noteTypeText.y -= noteTypeText.height;
 		noteTypeText.scrollFactor.set();
 		add(noteTypeText);
@@ -328,6 +329,7 @@ class ChartingState extends MusicBeatState
 		player2TextField = new FlxUIInputText(120, 100, 70, _song.player2, 8);
 		gfTextField = new FlxUIInputText(10, 120, 70, _song.gf, 8);
 		stageTextField = new FlxUIInputText(120, 120, 70, _song.stage, 8);
+		stageID = new FlxUINumericStepper(120, 160, 1, _song.stageID, 0, 999, 0);
 		cutsceneTextField = new FlxUIInputText(120, 140, 70, _song.cutsceneType, 8);
 		uiTextField = new FlxUIInputText(10, 140, 70, _song.uiType, 8);
 
@@ -352,6 +354,7 @@ class ChartingState extends MusicBeatState
 		tab_group_char.add(uiTextField);
 		tab_group_char.add(cutsceneTextField);
 		tab_group_char.add(stageTextField);
+		tab_group_char.add(stageID);
 		tab_group_char.add(gfTextField);
 		tab_group_char.add(player1TextField);
 		tab_group_char.add(player2TextField);
@@ -468,7 +471,16 @@ class ChartingState extends MusicBeatState
 				// drain
 				noteTypeText.text = "Drain Note";
 			default:
-				noteTypeText.text = 'Custom Note ${noteType - 4}';
+				var noteJson = CoolUtil.parseJson(FNFAssets.getText('assets/data/${_song.song.toLowerCase()}/noteInfo.json'));
+				if ((noteType - 4) - 1 < noteJson.length) {
+					var thingie = noteJson[(noteType - 4) - 1];
+					trace(thingie.noteName);
+					if (thingie.noteName != null)
+						noteTypeText.text = thingie.noteName + ' (${noteType - 4})';
+					else
+						noteTypeText.text = 'Custom Note ${noteType - 4}';
+				} else
+					noteTypeText.text = 'Custom Note ${noteType - 4}';
 		}
 	}
 	function loadSong(daSong:String):Void
@@ -647,6 +659,7 @@ class ChartingState extends MusicBeatState
 		_song.player2 = player2TextField.text;
 		_song.gf = gfTextField.text;
 		_song.stage = stageTextField.text;
+		_song.stageID = Std.parseInt(Std.string(stageID.value)); // what
 		_song.cutsceneType = cutsceneTextField.text;
 		_song.uiType = uiTextField.text;
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
@@ -712,45 +725,36 @@ class ChartingState extends MusicBeatState
 				dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
 		}
 
-		if (FlxG.keys.justPressed.ENTER)
-		{
-			lastSection = curSection;
+		if (!typingShit.hasFocus && !player1TextField.hasFocus && !player2TextField.hasFocus && !gfTextField.hasFocus && !stageTextField.hasFocus && !cutsceneTextField.hasFocus && !uiTextField.hasFocus) {
+			if (FlxG.keys.justPressed.ENTER) {
+				lastSection = curSection;
 
-			PlayState.SONG = _song;
-			FlxG.sound.music.stop();
-			if (_song.needsVoices) {
-				vocals.stop();
+				PlayState.SONG = _song;
+				FlxG.sound.music.stop();
+				if (_song.needsVoices) {
+					vocals.stop();
+				}
+				FlxG.mouse.visible = false;
+				LoadingState.loadAndSwitchState(new PlayState());
 			}
-			FlxG.mouse.visible = false;
-			LoadingState.loadAndSwitchState(new PlayState());
-		}
-
-		if (FlxG.keys.justPressed.E)
-		{
-			changeNoteSustain(Conductor.stepCrochet);
-		}
-		if (FlxG.keys.justPressed.Q)
-		{
-			changeNoteSustain(-Conductor.stepCrochet);
-		}
-		if (FlxG.keys.justPressed.TAB)
-		{
-			if (FlxG.keys.pressed.SHIFT)
-			{
-				UI_box.selected_tab -= 1;
-				if (UI_box.selected_tab < 0)
-					UI_box.selected_tab = 2;
+			if (FlxG.keys.justPressed.E) {
+				changeNoteSustain(Conductor.stepCrochet);
 			}
-			else
-			{
-				UI_box.selected_tab += 1;
-				if (UI_box.selected_tab >= 3)
-					UI_box.selected_tab = 0;
+			if (FlxG.keys.justPressed.Q) {
+				changeNoteSustain(-Conductor.stepCrochet);
 			}
-		}
-		var shiftThing:Int = 1;
-		if (!typingShit.hasFocus && !player1TextField.hasFocus && !player2TextField.hasFocus && !gfTextField.hasFocus && !stageTextField.hasFocus && !cutsceneTextField.hasFocus && !uiTextField.hasFocus)
-		{
+			if (FlxG.keys.justPressed.TAB) {
+				if (FlxG.keys.pressed.SHIFT) {
+					UI_box.selected_tab -= 1;
+					if (UI_box.selected_tab < 0)
+						UI_box.selected_tab = 2;
+				} else {
+					UI_box.selected_tab += 1;
+					if (UI_box.selected_tab >= 3)
+						UI_box.selected_tab = 0;
+				}
+			}
+			var shiftThing:Int = 1;
 			if (FlxG.keys.justPressed.SPACE)
 			{
 				if (FlxG.sound.music.playing)
@@ -821,16 +825,12 @@ class ChartingState extends MusicBeatState
 					}
 
 				}
-			}
-			else
-			{
-				if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S)
-				{
+			} else {
+				if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S) {
 					FlxG.sound.music.pause();
 					if (_song.needsVoices) {
 						vocals.pause();
 					}
-
 
 					var daTime:Float = Conductor.stepCrochet * 2;
 
@@ -843,25 +843,20 @@ class ChartingState extends MusicBeatState
 					if (_song.needsVoices) {
 						vocals.time = FlxG.sound.music.time;
 					}
-
 				}
+			}
+			/* if (FlxG.keys.justPressed.UP)
+				Conductor.changeBPM(Conductor.bpm + 1);
+				if (FlxG.keys.justPressed.DOWN)
+					Conductor.changeBPM(Conductor.bpm - 1); */
+			if (FlxG.keys.justPressed.I) {
+				changeKeyType(-1);
+			} else if (FlxG.keys.justPressed.O) {
+				changeKeyType(1);
 			}
 		}
 
 		_song.bpm = tempBpm;
-
-		/* if (FlxG.keys.justPressed.UP)
-				Conductor.changeBPM(Conductor.bpm + 1);
-			if (FlxG.keys.justPressed.DOWN)
-				Conductor.changeBPM(Conductor.bpm - 1); */
-		if (FlxG.keys.justPressed.I) {
-			changeKeyType(-1);
-		} else if (FlxG.keys.justPressed.O) {
-			changeKeyType(1);
-		}
-
-
-
 
 		bpmTxt.text = bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 			+ " / "

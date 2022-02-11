@@ -88,10 +88,6 @@ class CategoryState extends MusicBeatState
 			// songText.screenCenter(X);
 		}
 
-
-
-
-
 		changeSelection();
 		// FlxG.sound.playMusic('assets/music/title' + TitleState.soundExt, 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);

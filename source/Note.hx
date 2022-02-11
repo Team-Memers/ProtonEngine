@@ -31,6 +31,10 @@ enum abstract Direction(Int) from Int to Int {
  */
 typedef NoteInfo = {
 	/**
+	 * The name of the note that appears in charting state
+	 */
+	var noteName:String;
+	/**
 	 * The animation names of the notes. 1-4
 	 * left, down, up, right
 	 */
@@ -101,6 +105,22 @@ typedef NoteInfo = {
 	 * A unique string that can be checked for. 
 	 */
 	var ?id:Null<String>;
+	/**
+	 * The function for when a note is hit
+	 */
+	var ?noteHit:Null<String>;
+		/**
+	 * The function for when a note is missed
+	 */
+	var ?noteMiss:Null<String>;
+	/**
+	 * The function for when a note is at the strumline
+	 */
+	var ?noteStrum:Null<String>;
+	/**
+	 * Custom note path for if your note isn't in the selected note path
+	 */
+	var ?customNotePath:Null<String>;
 }
 /**
  * Used to make opponent sing.
@@ -125,6 +145,9 @@ class Note extends DynamicSprite
 	public var strumTime:Float = 0;
 	public static var getFrames:Bool = true;
 	static var gotFrames:FlxAtlasFrames = null;
+	public static var getSpecialFrames:Bool = true;
+	static var specialFramesKey:Array<String> = [];
+	static var gotSpecialFrames:Array<FlxAtlasFrames> = [];
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var canBeHit:Bool = false;
@@ -172,15 +195,19 @@ class Note extends DynamicSprite
 	var specialNoteInfo:NoteInfo;
 	public var dontCountNote = false;
 	public var dontStrum = false;
+	public var noteHit:Null<String> = null;
+	public var noteMiss:Null<String> = null;
+	public var noteStrum:Null<String> = null;
 	public var oppntAnim:Null<String> = null;
 	public var classes:Null<Array<String>> = [];
 	public var coolId:Null<String> = null;
 	public var oppntSing:Null<SingInfo>;
+	public var customNotePath:Null<String> = null;
 	// altNote can be int or bool. int just determines what alt is played
 	// format: [strumTime:Float, noteDirection:Int, sustainLength:Float, altNote:Union<Bool, Int>, isLiftNote:Bool, healMultiplier:Float, damageMultipler:Float, consistentHealth:Bool, timingMultiplier:Float, shouldBeSung:Bool, ignoreHealthMods:Bool, animSuffix:Union<String, Int>]
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?customImage:Null<BitmapData>, ?customXml:Null<String>, ?customEnds:Null<BitmapData>, ?LiftNote:Bool=false, ?animSuffix:String, ?numSuffix:Int)
 	{
-		super();
+		super(42);
 		// uh oh notedata sussy :flushed:
 		if (prevNote == null)
 			prevNote = this;
@@ -249,6 +276,15 @@ class Note extends DynamicSprite
 			if (thingie.dontStrum != null) {
 				dontStrum = thingie.dontStrum;
 			}
+			if (thingie.noteHit != null) {
+				noteHit = thingie.noteHit;
+			}
+			if (thingie.noteMiss != null) {
+				noteMiss = thingie.noteMiss;
+			}
+			if (thingie.noteStrum != null) {
+				noteStrum = thingie.noteStrum;
+			}
 			if (thingie.classes != null) {
 				classes = thingie.classes;
 			}
@@ -262,6 +298,9 @@ class Note extends DynamicSprite
 				}
 				if (oppntSing.miss == null)
 					oppntSing.miss = false;
+			}
+			if (thingie.customNotePath != null) {
+				customNotePath = thingie.customNotePath;
 			}
 			specialNoteInfo = thingie;
 			ignoreHealthMods = cast thingie.ignoreHealthMods;
@@ -277,24 +316,36 @@ class Note extends DynamicSprite
 		}
 		var curUiType:TUI = Reflect.field(Judgement.uiJson, PlayState.SONG.uiType);
 		// var daStage:String = PlayState.curStage;
-		if (!curUiType.isPixel)
-		{	
-			if (getFrames) {
-				getFrames = false;
-				gotFrames = DynamicAtlasFrames.fromSparrow('assets/images/custom_ui/ui_packs/'
-					+ curUiType.uses
-					+ "/NOTE_assets.png",
-					'assets/images/custom_ui/ui_packs/'
-					+ curUiType.uses
-					+ "/NOTE_assets.xml");
+		if (!curUiType.isPixel) {	
+			if (customNotePath != null) {
+				if (getSpecialFrames) {
+					getSpecialFrames = false;
+					specialFramesKey = [];
+					gotSpecialFrames = [];
+				}
+				var funnyNum = specialFramesKey.indexOf(customNotePath);
+				if (funnyNum == -1) {
+					var daFrames = DynamicAtlasFrames.fromSparrow(customNotePath + '.png', customNotePath + '.xml');
+					specialFramesKey.push(customNotePath);
+					gotSpecialFrames.push(daFrames);
+					funnyNum = specialFramesKey.length - 1;
+				}
+				frames = gotSpecialFrames[funnyNum];
+			} else {
+				if (getFrames) {
+					getFrames = false;
+					gotFrames = DynamicAtlasFrames.fromSparrow('assets/images/custom_ui/ui_packs/'
+						+ curUiType.uses
+						+ "/NOTE_assets.png",
+						'assets/images/custom_ui/ui_packs/'
+						+ curUiType.uses
+						+ "/NOTE_assets.xml");
+				}
+				frames = gotFrames;
 			}
-			frames = gotFrames;
-			if (animSuffix == null)
-			{
+			if (animSuffix == null) {
 				animSuffix = '';
-			}
-			else
-			{
+			} else {
 				animSuffix = ' ' + animSuffix;
 			}
 			animation.addByPrefix('greenScroll', 'green${animSuffix}0');
@@ -311,23 +362,20 @@ class Note extends DynamicSprite
 			animation.addByPrefix('greenhold', 'green hold piece${animSuffix}');
 			animation.addByPrefix('redhold', 'red hold piece${animSuffix}');
 			animation.addByPrefix('bluehold', 'blue hold piece${animSuffix}');
-			if (isLiftNote)
-			{
+			if (isLiftNote) {
 				animation.addByPrefix('greenScroll', 'green lift${animSuffix}');
 				animation.addByPrefix('redScroll', 'red lift${animSuffix}');
 				animation.addByPrefix('blueScroll', 'blue lift${animSuffix}');
 				animation.addByPrefix('purpleScroll', 'purple lift${animSuffix}');
 			}
-			if (nukeNote)
-			{
+			if (nukeNote) {
 				animation.addByPrefix('greenScroll', 'green nuke${animSuffix}');
 				animation.addByPrefix('redScroll', 'red nuke${animSuffix}');
 				animation.addByPrefix('blueScroll', 'blue nuke${animSuffix}');
 				animation.addByPrefix('purpleScroll', 'purple nuke${animSuffix}');
 			}
 			
-			if (mineNote)
-			{
+			if (mineNote) {
 				animation.addByPrefix('greenScroll', 'green mine${animSuffix}');
 				animation.addByPrefix('redScroll', 'red mine${animSuffix}');
 				animation.addByPrefix('blueScroll', 'blue mine${animSuffix}');
@@ -348,20 +396,21 @@ class Note extends DynamicSprite
 		else
 		{
 			isPixel = true;
-			loadGraphic('assets/images/custom_ui/ui_packs/' + curUiType.uses + "/arrows-pixels.png", true, 17, 17);
-			if (animSuffix != null && numSuffix == null)
-			{
+			if (customNotePath != null)
+				loadGraphic(customNotePath + '.png', true, 17, 17);
+			else
+				loadGraphic('assets/images/custom_ui/ui_packs/' + curUiType.uses + "/arrows-pixels.png", true, 17, 17);
+
+			if (animSuffix != null && numSuffix == null) {
 				numSuffix = Std.parseInt(animSuffix);
 			}
-			if (numSuffix != null)
-			{
+			if (numSuffix != null) {
 				var intSuffix = numSuffix;
 				animation.add('greenScroll', [intSuffix]);
 				animation.add('redScroll', [intSuffix]);
 				animation.add('blueScroll', [intSuffix]);
 				animation.add('purpleScroll', [intSuffix]);
-				if (isSustainNote)
-				{
+				if (isSustainNote) {
 					loadGraphic('assets/images/custom_ui/ui_packs/' + curUiType.uses + "/arrowEnds.png", true, 7, 6);
 
 					animation.add('purpleholdend', [intSuffix]);
@@ -374,16 +423,13 @@ class Note extends DynamicSprite
 					animation.add('redhold', [intSuffix]);
 					animation.add('bluehold', [intSuffix]);
 				}
-			}
-			else
-			{
+			} else {
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
 				animation.add('blueScroll', [5]);
 				animation.add('purpleScroll', [4]);
 
-				if (isSustainNote)
-				{
+				if (isSustainNote) {
 					loadGraphic('assets/images/custom_ui/ui_packs/' + curUiType.uses + "/arrowEnds.png", true, 7, 6);
 
 					animation.add('purpleholdend', [4]);
@@ -396,8 +442,7 @@ class Note extends DynamicSprite
 					animation.add('redhold', [3]);
 					animation.add('bluehold', [1]);
 				}
-				if (isLiftNote)
-				{
+				if (isLiftNote) {
 					animation.add('greenScroll', [22]);
 					animation.add('redScroll', [23]);
 					animation.add('blueScroll', [21]);
@@ -416,8 +461,7 @@ class Note extends DynamicSprite
 					animation.add('purpleScroll', [28]);
 				}
 			}
-			if (dontEdit)
-			{
+			if (dontEdit) {
 				animation.add('greenScroll', [specialNoteInfo.animInt[2]]);
 				animation.add('redScroll', [specialNoteInfo.animInt[3]]);
 				animation.add('purpleScroll', [specialNoteInfo.animInt[0]]);
@@ -426,8 +470,7 @@ class Note extends DynamicSprite
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 			updateHitbox();
 		}
-		switch (noteData % NOTE_AMOUNT)
-		{
+		switch (noteData % NOTE_AMOUNT) {
 			case 0:
 				x += swagWidth * 0;
 				animation.play('purpleScroll');
@@ -446,15 +489,13 @@ class Note extends DynamicSprite
 		if (isSustainNote && OptionsHandler.options.downscroll) {
 			flipY = true;
 		}
-		if (isSustainNote && prevNote != null)
-		{
+		if (isSustainNote && prevNote != null) {
 			noteScore * 0.2;
 			alpha = 0.6;
 
 			x += width / 2;
 
-			switch (noteData % NOTE_AMOUNT)
-			{
+			switch (noteData % NOTE_AMOUNT) {
 				case 2:
 					animation.play('greenholdend');
 				case 3:
@@ -472,11 +513,9 @@ class Note extends DynamicSprite
 			if (isPixel)
 				x += 30;
 
-			if (prevNote.isSustainNote)
-			{
+			if (prevNote.isSustainNote) {
 				// DO mod it because we DIDN'T do that
-				switch (prevNote.noteData % NOTE_AMOUNT)
-				{
+				switch (prevNote.noteData % NOTE_AMOUNT) {
 					case 0:
 						prevNote.animation.play('purplehold');
 					case 1:
@@ -494,30 +533,25 @@ class Note extends DynamicSprite
 		}
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 		// if we are player one and it's bf's note or we are duo mode or we are player two and it's p2's note
 		// and it isn't demo mode
-		if ((((mustPress && !oppMode) || duoMode) || (oppMode && !mustPress)) && !funnyMode)
-		{
+		if ((((mustPress && !oppMode) || duoMode) || (oppMode && !mustPress)) && !funnyMode) {
 			var signedDiff = Conductor.songPosition - strumTime;
 			// ok.... so if strumTime is bigger than songPosition that means it is waiting to be hit because well the song hasn't reached it???
 			// negative is early, positive is late
 			var noteDiff = Math.abs(signedDiff);
 			// The * 0.5 us so that its easier to hit them too late, instead of too early
-			if (noteDiff < Judge.wayoffJudge * timingMultiplier)
-			{
+			if (noteDiff < Judge.wayoffJudge * timingMultiplier) {
 				canBeHit = true;
-			}
-			else
+			} else
 				canBeHit = false;
 			// Nuke notes can only be hit with a bad or better because nuke notes are weird champ
 			if (nukeNote && !(noteDiff < Judge.badJudge * timingMultiplier)) {
 				canBeHit = false;
 			}
-			if (mineNote && !(noteDiff < Judge.shitJudge * timingMultiplier))
-			{
+			if (mineNote && !(noteDiff < Judge.shitJudge * timingMultiplier)) {
 				canBeHit = false;
 			}
 			if (signedDiff > Judge.wayoffJudge)
@@ -528,22 +562,18 @@ class Note extends DynamicSprite
 			if (mineNote && signedDiff > Judge.shitJudge) {
 				tooLate = true;
 			}
-		}
-		else
-		{
+		} else {
 			if (!dontStrum) {
 				canBeHit = false;
 
-				if (strumTime <= Conductor.songPosition)
-				{
+				if (strumTime <= Conductor.songPosition) {
 					wasGoodHit = true;
 				}
 			}
 			
 		}
 
-		if (tooLate)
-		{
+		if (tooLate) {
 			if (alpha > 0.3)
 				alpha = 0.3;
 		}

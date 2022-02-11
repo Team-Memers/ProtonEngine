@@ -124,7 +124,10 @@ class OptionsHandler {
             lastOptions.hitSounds = false;
             lastOptions.titleToggle = true;
             lastOptions.fpsCap = 60;
-
+            lastOptions.scrollSpeed = 1;
+            lastOptions.camNotes = false;
+            lastOptions.showTimings = true;
+            lastOptions.showNoteSplashes = true;
         }
 		return lastOptions;
         #else
