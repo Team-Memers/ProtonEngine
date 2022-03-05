@@ -70,7 +70,7 @@ class FreeplayState extends MusicBeatState
 	override function create()
 	{
 		for (songSnippet in currentSongList) {
-			var songData = new SongMetadata(songSnippet.name, songSnippet.week, songSnippet.character);
+			var songData = new SongMetadata(songSnippet.name, songSnippet.week, songSnippet.character, songSnippet.display);
 			if (songSnippet.flags == null || songSnippet.flags.length == 0)
 				songs.push(songData);
 			else {
@@ -182,7 +182,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, false, null, null, null, true);
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].display, true, false, false, null, null, null, true);
 			if (!OptionsHandler.options.style) {
 				songText.itemType = "Classic";
 			}
@@ -585,17 +585,21 @@ class SongMetadata
 	public var songName:String = "";
 	public var week:Int = 0;
 	public var songCharacter:String = "";
+	public var display:String = "";
 
-	public function new(song:String, week:Int, songCharacter:String)
+	public function new(song:String, week:Int, songCharacter:String, ?display:String)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
+		if (display == null) display = song;
+		this.display = display;
 	}
 }
 typedef JsonMetadata = {
 	var name:String;
 	var week:Int;
 	var character:String;
+	var ?display:String;
 	var ?flags:Array<String>;
 }

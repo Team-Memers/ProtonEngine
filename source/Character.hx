@@ -54,6 +54,7 @@ typedef TCharacterRefJson = {
 class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
+	public var camOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 
 	public var isPlayer:Bool = false;
@@ -145,6 +146,7 @@ class Character extends FlxSprite
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		animOffsets = new Map<String, Array<Dynamic>>();
+		camOffsets = new Map<String, Array<Dynamic>>();
 		super(x, y);
 
 		curCharacter = character;
@@ -415,9 +417,11 @@ class Character extends FlxSprite
 		var bThing = b[0];
 		return aThing < bThing ? -1 : 1;
 	}
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
+	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
 		animOffsets[name] = [x, y];
+	}
+	public function addCamOffset(name:String, camX:Float = 0, camY:Float = 0) {
+		camOffsets[name] = [camX, camY];
 	}
 	public static function getAnimInterp(char:String):Interp {
 		var interp = PluginManager.createSimpleInterp();
