@@ -82,6 +82,8 @@ class NewSongState extends MusicBeatState
 	var displayText:FlxUIInputText;
 	var importText:FlxUIInputText;
 	var importButton:FlxUIButton;
+	var exportText:FlxUIInputText;
+	var exportButton:FlxUIButton;
 	var finishButton:FlxButton;
 	var cancelButton:FlxUIButton;
 	var coolFile:FileReference;
@@ -136,6 +138,85 @@ class NewSongState extends MusicBeatState
 				for (i in 0...diffJson.difficulties.length) {
 					if (FileSystem.exists(basePath + '/' + diffJson.difficulties[i].name + '.json'))
 						coolDiffFiles[i] = basePath + '/' + diffJson.difficulties[i].name + '.json';
+				}
+			}
+		});
+
+		exportText = new FlxUIInputText(490,10,70,"Dadbattle");
+		exportButton = new FlxUIButton(490,50, "Export Song", function():Void {
+			var exportPath:String = "assets/module/export/songs/" + exportText.text;
+			var songPath:String = "assets/songs/" + exportText.text;
+			var dataPath:String = "assets/data/" + exportText.text;
+
+			if (!FileSystem.exists(exportPath))
+				FileSystem.createDirectory(exportPath);
+
+			if (FileSystem.exists(songPath + '/' + exportText.text + '_Inst.ogg'))
+				File.copy(songPath + '/' + exportText.text + '_Inst.ogg', exportPath + '/Inst.ogg');
+
+			if (FileSystem.exists(songPath + '/' + exportText.text + '_Voices.ogg'))
+				File.copy(songPath + '/' + exportText.text + '_Voices.ogg', exportPath + '/Voices.ogg');
+
+			if (FileSystem.exists(dataPath + '/dialog.txt'))
+				File.copy(dataPath + '/dialog.txt', exportPath + '/dialog.txt');
+
+			if (FileSystem.exists(dataPath + '/modchart.hscript'))
+				File.copy(dataPath + '/modchart.hscript', exportPath + '/modchart.hscript');
+
+			var daInfo:Array<String> = [];
+			var songInfo = null;
+			if (FileSystem.exists(dataPath + '/' + exportText.text + '.json'))
+				songInfo = dataPath + '/' + exportText.text + '.json';
+			else
+				for (i in 0...diffJson.difficulties.length) {
+					if (songInfo == null)
+						switch(diffJson.difficulties[i].name) {
+							case 'normal':
+								//do nothing
+								//why would you need this
+							default:
+								if (FileSystem.exists(dataPath + '/' + exportText.text + '-' + diffJson.difficulties[i].name + '.json'))
+									songInfo = dataPath + '/' + exportText.text + '-' + diffJson.difficulties[i].name + '.json';
+						}
+				}
+			var coolSong:Dynamic = CoolUtil.parseJson(File.getContent(songInfo));
+			var coolSongSong:Dynamic = coolSong.song;
+			//var epicCategoryJs:Array<Dynamic> = CoolUtil.parseJson(FNFAssets.getText('assets/data/freeplaySongJson.jsonc'));
+			//how do I make this better???
+			daInfo.push("This song info was made using Disappointing Plus");
+			daInfo.push("I would recommend changing the nulls to your desired values before importing!");
+			daInfo.push("");
+			daInfo.push("songname:" + coolSongSong.song);
+			daInfo.push("player1:" + coolSongSong.player1);
+			daInfo.push("player2:" + coolSongSong.player2);
+			daInfo.push("gf:" + coolSongSong.gf);
+			daInfo.push("stage:" + coolSongSong.stage);
+			daInfo.push("uiType:" + coolSongSong.uiType);
+			daInfo.push("cutsceneType:" + coolSongSong.cutsceneType);
+			daInfo.push("isHey:" + coolSongSong.isHey);
+			daInfo.push("isCheer:" + coolSongSong.isCheer);
+			daInfo.push("isMoody:" + coolSongSong.isMoody);
+			daInfo.push("isSpooky:" + coolSongSong.isSpooky);
+			daInfo.push("category:null");
+			daInfo.push("stageID:" + coolSongSong.stageID);
+			daInfo.push("week:0");
+			daInfo.push("char:null");
+			daInfo.push("display:null");
+			//haha among us funny
+			var sussyInfo = StringTools.replace(daInfo.toString(), ',', '\n');
+			sussyInfo = StringTools.replace(sussyInfo, '[', '');
+			sussyInfo = StringTools.replace(sussyInfo, ']', '');
+			trace(sussyInfo);
+			File.saveContent(exportPath + '/info.txt', sussyInfo);
+
+			for (i in 0...diffJson.difficulties.length) {
+				switch(diffJson.difficulties[i].name) {
+					case 'normal':
+						if (FileSystem.exists(dataPath + '/' + exportText.text + '.json'))
+							File.copy(dataPath + '/' + exportText.text + '.json', exportPath + '/' + diffJson.difficulties[i].name + '.json');
+					default:
+						if (FileSystem.exists(dataPath + '/' + exportText.text + '-' + diffJson.difficulties[i].name + '.json'))
+							File.copy(dataPath + '/' + exportText.text + '-' + diffJson.difficulties[i].name + '.json', exportPath + '/' + diffJson.difficulties[i].name + '.json');
 				}
 			}
 		});

@@ -39,7 +39,6 @@ class ChooseCharState extends MusicBeatState
 
     var dadMenu:Bool = false;
 
-
     public function new(anim:String = "bf")
     {
         super();
@@ -59,13 +58,13 @@ class ChooseCharState extends MusicBeatState
 
         var charJson:Dynamic = null;
 
-        char = new Character(400, 100, anim);
+        char = new Character(600, 250, anim);
+        char.x += char.playerOffsetX;
+		char.y += char.playerOffsetY;
         add(char);
 
-        char.flipX = false;
+        //char.flipX = false;
 
-
-    
         charJson = CoolUtil.parseJson(FNFAssets.getJson('assets/images/custom_chars/custom_chars'));
 
         if (characters == null) {
@@ -74,7 +73,6 @@ class ChooseCharState extends MusicBeatState
             // reg characters should be first
             characters = Reflect.fields(charJson);
         }
-
 
         for(character in 0...characters.length){ //add chars
             var awesomeChar = new Alphabet(0, 10, "   "+characters[character], true, false, false);
@@ -88,6 +86,7 @@ class ChooseCharState extends MusicBeatState
 
         super.create();
 
+        changeSelection();
     }
     // i'd recommend moving smth like this to coolutil but w/e
     function mergeArray(base:Dynamic, ext:Dynamic){ //need this to combine regular chars and customs, CHANGE THIS if you know a better way
@@ -98,28 +97,23 @@ class ChooseCharState extends MusicBeatState
 
     override function update(elapsed:Float) {
         super.update(elapsed);
-        if (controls.BACK) {
+        if (controls.BACK)
 			LoadingState.loadAndSwitchState(new ModifierState());
-        }
-        if (controls.UP_MENU)
-        {
-            changeSelection(-1);
-        }
-        if (controls.DOWN_MENU)
-        {
-            changeSelection(1);
-        }
 
-        if (controls.RIGHT_MENU || controls.LEFT_MENU) {
+        if (controls.UP_MENU)
+            changeSelection(-1);
+
+        if (controls.DOWN_MENU)
+            changeSelection(1);
+
+        if (controls.RIGHT_MENU || controls.LEFT_MENU)
                 swapMenus();
-        }
 
         if (controls.ACCEPT)
             chooseSelection();
     }
 
-    function changeSelection(change:Int = 0)
-    {
+    function changeSelection(change:Int = 0) {
 
         FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt, 0.4);
 
@@ -153,16 +147,16 @@ class ChooseCharState extends MusicBeatState
     function chooseSelection()
     {
         remove(char);
-        char = new Character(400, 100, curChar);
-        if (!dadMenu) //cleaned up
-        {
-            char.flipX = true;
+        if (!dadMenu) {
+            char = new Character(600, 250, curChar, true);
+            char.x += char.playerOffsetX;
+		    char.y += char.playerOffsetY;
             PlayState.SONG.player1 = curChar;
             trace("BF is now " + curChar);
-        }
-        else
-        {
-            char.flipX = false;
+        } else {
+            char = new Character(600, 250, curChar);
+            char.x += char.enemyOffsetX;
+		    char.y += char.enemyOffsetY;
             PlayState.SONG.player2 = curChar;
             trace("DAD is now " + curChar);
         }
@@ -176,13 +170,14 @@ class ChooseCharState extends MusicBeatState
         FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt, 0.4);
         dadMenu = !dadMenu;
         remove(char);
-        if (!dadMenu){ //cleaned this too
-            char = new Character(400, 100, PlayState.SONG.player1);
-            char.flipX = true;
-        }
-        else{
-            char = new Character(400, 100, PlayState.SONG.player2);
-            char.flipX = false;
+        if (!dadMenu) {
+            char = new Character(600, 250, PlayState.SONG.player1, true);
+            char.x += char.playerOffsetX;
+		    char.y += char.playerOffsetY;
+        } else {
+            char = new Character(600, 250, PlayState.SONG.player2);
+            char.x += char.enemyOffsetX;
+		    char.y += char.enemyOffsetY;
         }
         add(char);
         trace('switchin the swag');

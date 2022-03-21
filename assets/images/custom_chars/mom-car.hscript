@@ -20,7 +20,7 @@ function init(char) {
 
     char.enemyOffsetX = 0;
     char.enemyOffsetY = 0;
-    char.playerOffsetX = 200;
+    char.playerOffsetX = 0;
     char.playerOffsetY = -350;
     if (char.isPlayer) {
         char.followCamX = -50;

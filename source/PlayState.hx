@@ -157,7 +157,7 @@ class PlayState extends MusicBeatState
 	public var gfSpeed:Int = 1;
 	public var health:Float = 1;
 	private var combo:Int = 0;
-	private var daScrollSpeed:Float = 1;
+	public static var daScrollSpeed:Float = 1;
 	public static var duoMode:Bool = false;
 	public var healthBarBG:FlxSprite;
 	public var healthBar:FlxBar;
@@ -3955,7 +3955,7 @@ class PlayState extends MusicBeatState
 		{
 			misses += 1;
 			setAllHaxeVar("misses", misses);
-			if (note.noteMiss != null) {
+			if (note != null && note.noteMiss != null) {
 				callHscript(note.noteMiss, [], "modchart");
 			}
 			var healthBonus = -0.04 * healthLossMultiplier;
