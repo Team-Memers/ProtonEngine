@@ -16,6 +16,22 @@ If an author gives express disapproval, and the mod is up, you should take your 
 take down mods that don't follow this rule.
 
 
+Once again, this is a fork of The Roblox Disappointment build, with a few changes by me.
+
+
+CHANGES FROM ORIGINAL M+/ROBLOX BUILD:
+Fully custom playable character vocals (format is songnamecharactername_Voices)
+Reverted back to music folder
+Fully custom countdowns for stuff like Indie Cross
+Sonic.exe Sound Test (Not fully custom yet but will be soon i hope)
+Mario's Madness Warp Zone (Same as Sound Test)
+Dave and Bambi Character Select Screen (old one is still in modifier menu)
+
+SOON TO COME:
+Fully custom game over sequence
+Healthbar in custom_ui
+
+
 - Get the cutting edge build: https://dev.azure.com/benharless820/FNF%20Modding%20Plus/_build
 - Play the Original Game: https://github.com/ninjamuffin99/Funkin
 - Need Help? FNF Modding Plus Discord: https://discord.gg/xeC748FR
