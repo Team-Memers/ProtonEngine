@@ -65,71 +65,9 @@ class ChooseCharState extends MusicBeatState
 	
 	public var characters:Array<CharacterInSelect> = 
 	[
-		new CharacterInSelect(['bf', 'bf-christmas', 'bf-pixel', 'bf-holding-gf', 'girlbf', 'bbibf', 'beachbf', 'bfflippy', 'evilbf', 'evilbfdemon', 'bfwii', 'salty', 'bsidebf', 'bsidecbf', 'bsidepbf', 'dsidebf', 'neobf', 'softbf', 'b3bf', 'corruptionbf', 'ena', 'xianxibf', 'bfv', 'bfbb', 'spookythecat', 'rappergf', 'playablespooky', 'photoshopbf', 'oldbf', 'brewstew', 'bfex', 'bf3d'], ["Boyfriend", 'Christmas Boyfriend', 'Pixel Boyfriend', 'BF Holding GF', 'Girl Boyfriend', 'Blueballs Incident Boyfriend', 'Beach Boyfriend', 'Flipped Out Boyfriend', 'Soul BF', "Soul BF (Demon)", 'Mii Boyfriend', 'Salty', 'B-Sides Boyfriend', "B-Sides Boyfriend (Christmas)", "B-Sides Boyfriend (Pixel)", 'D-Sides Boyfriend', 'Neo Boyfriend', 'Soft Boyfriend', 'B3 Remixed Boyfriend', 'Corruption Boyfriend', 'ENA', 'Xianxi Boyfriend', '/v/-tan Boyfriend', 'Background Boogie Boyfriend', 'Jinx', 'Rapper Girlfriend', 'Playable Spooky Kids', 'Photoshop Boyfriend', 'Paradox Boyfriend', 'BrewStew', 'EX Boyfriend', '3D Boyfriend']),
-		new CharacterInSelect(['bf', 'superbf', 'bfdoki', 'bfexepixel', 'bfghost', 'bfkendo', 'bfmii', 'bfpixelskeld', 'bfwimpy', 'bwbf', 'infidelitybf', 'sticky', 'complexkidstv', 'joker', 'bsidejoker', 'playableneonight', 'corruptionglitchbf', 'cum', 'hdbf2', 'infinitebf', 'loggobf', 'minusbf', 'minusbf2', 'minusbf3', 'bfwire', 'tari', 'tardbf', 'tardbf2', 'tardbf3', 'sonicbf', 'shyrell'], ['Boyfriend Page 2', 'Super Boyfriend', 'Doki Doki Boyfriend', "Boyfriend Pixel (EXE)", 'Ghost Boyfriend', 'Kendo Boyfriend', "Mii Boyfriend (Boss Rush)", "Boyfriend Pixel (Skeld)", 'Wimpy Boyfriend', 'Black and White Boyfriend', 'Infidelity Boyfriend', 'StickyBM', 'ComplexKidsTV', 'Joker', 'B-Sides Joker', 'Neonight', 'Corruption Glitch Boyfriend', 'cum', 'HD Boyfriend', 'Infinite Boyfriend', "Loggo Boyfriend", "Beta Boyfriend", "Blue Boyfriend", "Mean Boyfriend", "Wireframe Boyfriend", 'Tari', "Troll Boyfriend (Chapter 1)", "Troll Boyfriend (Chapter 2)", "Troll Boyfriend (Chapter 3)", "Sonic the Hedgehog", "Shyrell"]),
-		new CharacterInSelect(['bf', 'seabf', 'cartman', 'corruptionbfpixel4', 'fever', 'freeman', 'gunbf', 'smg4mario', 'bfreanimated', 'bfaurora', 'playablelylace', 'phantombf', 'tigersoldier', 'coolbf', 'bfgb', 'bffatal', 'bfwacky', "minimum_wage", 'bfnitty', 'bfball', 'richter'], ['Boyfriend Page 3', "TeamSeas Boyfriend", "Eric Cartman (I use any pronouns thank you for asking)", "Corruption BF (Pixel)", "Fever", "Gordon Freeman", "Boyfriend with a Gun", "SMG4 Mario", "Boyfriend (Reanimated)", "Boyfriend (Angry)", "Lylace", "Phantom Boyfriend", "Tiger Soldier", "Cool Boyfriend", "Boyfriend (Golden Land)", "Boyfriend (Fatality)", "Boyfriend (Wacky)", "Boyfriend (Minimum Wage)", "The Boof", "Boyfriend (BALLIN)", "Richter"]),
-		new CharacterInSelect(['pico', 'bsidepico', 'dsidepico', 'neopico', 'corruptionpicodm', 'bfpico', 'corruptionglitchpico', 'minuspico', 'stickpico'], ['Pico', 'B-Sides Pico', 'D-Sides Pico', 'Neo Pico', 'Corrupted Pico', "Shootin' Pico", 'Corruption Glitch Pico', "Minus Pico", 'Stickfigure Pico']),
-		new CharacterInSelect(['hankvs', 'antihank', 'highefforthank', 'hankmask', 'hank', 'maghank', 'hankvsr', 'whitehanka'], ['Accelerant Hank', 'Antipathy Hank', 'High Effort Hank', 'Hank over Tricky', "Hank over Tricky (Unmasked)", 'MAG Hank', "Accelerant Hank (Reanimated)", "White Hank (Fanmade)"]),
-		new CharacterInSelect(['tankman', 'hetankman'], ['Tankman', 'High Effort Tankman']),
-		new CharacterInSelect(['majinsonicnew', 'majinsonic', 'majinsonic2', 'majinsex', 'mazinsonic'], ['Majin Sonic', "Majin Sonic (Old)", "Majin Sonic (Chaotic Endeavors)", "Majin Sonic (Sex)", "Mazin Sonic"]),
-		new CharacterInSelect(['xianxihf', 'akuma', 'xianxi', 'xianxihfpoop', 'xianxihfpoop2', 'chxca', 'chxcabutreal', 'realchxca', 'poopfart'], ['Akuma', 'Hell Akuma', 'Xianxi', "Xianxi (Old)", "Xianxi (Old 2)", "chxca", "chxca but real", "real chxca", "Poopfart"]),
-		new CharacterInSelect(['pootisre', 'pootisreal', 'pootiscrazed', 'soulpootis', 'soulpootisoverlay', 'pootisycr', 'fakerpootisexe', 'pootistv', 'pootiscys', 'poopis', 'poopisalt', 'pootis'], ["DaPootisBird", "DaPootisBird (Old)", "DaPootisBird (Crazed)", "DaPootisBird (Soul)", "DaPootisBird (Soul Overlay)", "DaPootisBird (YCR)", "DaPootisBird (FAKER FAKER FAKER FAKER FAKER)", "Pootis (TV)", "Pootis (CYS)", "Poopis", "Poopis (Alt)", 'Poop']),
-		new CharacterInSelect(['eteled', 'eteledinsane', 'eteledinsane2', 'eteledcreepy', 'eteledcreepy2', 'eteledboss', 'eteledboss2', 'minuseteled', 'minuseteledcrazed'], ['eteled', "eteled (Insane)", "eteled (Insane 2)", "eteled (Creepy)", "eteled (Creepy 2)", "eteled (Boss Rush)", "eteled (Boss Rush 2)", "Minus eteled", "Minus eteled (Crazed)"]),
-		new CharacterInSelect(['austin', 'austinglitch'], ['Austin', "Austin (Glitch)"]),
-		new CharacterInSelect(['derpmaster', 'spookmaster', 'fakerderp'], ['DerpMaster', 'SpookMaster', 'FAKER FAKER FAKER FAKER FAKER FAKER FAKER FAKER FAKER FAKER FAKER FAKER']),
-		new CharacterInSelect(['v-tan', 'v-tancalm', 'v-tanmic'], ["/v/-tan", "/v/-tan (Calm)", "/v/-tan (Mic)"]),
-		new CharacterInSelect(['cancer2d', 'cancer', 'supercancer'], ['Cancer Lord', "Cancer Lord (Flipped Perspective)", "Cancer Lord (Super)"]),
-		new CharacterInSelect(['flippy', 'flippyslaughter', 'flippyneil', 'flippyeteled', 'flippypissed', 'flippykp'], ['Fliqpy', "Fliqpy (Slaughter)", 'Neil Cicierega', "Fliqpy (eteled)", "Fliqpy (Pissed)", "Fliqpy (KAPOW!)"]),
-		new CharacterInSelect(['trolls1', 'trollr1', 'trolli1', 'trollre'], ["Smiler (Sad)", "Smiler (Angry)", "Smiler (Trolling)", "Smiler (Redemption)"]),
-		new CharacterInSelect(['sonic.exe','sonic.exep2', 'xenophanes', 'sonic.exe2', 'sonic.exe3', 'sonic.exepixelbetter', 'sonic.exepixel', 'sonic.exeslaybells', 'sonic.exehotv', 'sonic.exep2beta', 'sonic.exep2lean', 'leanophanes'], ['Sonic.exe', "Sonic.exe (You Can't Run)", 'Xenophanes', "Sonic.exe (YCR Fanmade)", "Sonic.exe (Chaotic Endeavors)", "Sonic.exe (YCR Pixel Better)", "Sonic.exe (YCR Pixel)", "Sonic.exe (Slaybells)", "Sonic.exe (Hill of the Void)", "Sonic.exe (YCR Beta)", "Sonic.exe (Lean Edition)", "Leanophanes"]),
-		new CharacterInSelect(['shadowbonniere', 'shadowbonnieremaster', 'shadowbonnie', 'foreheadman', 'demonbonnie', 'godbonnie'], ['Shadowbonnie', "Shadowbonnie (Old)", "Shadowbonnie (Older)", "Forehead Man", 'Bizzarobonnie', "GODBONNIE"]),
-		new CharacterInSelect(['playablesenpai','senpai', 'senpai-angry', 'spirit', '2vplussenpai', '2vplussenpaiangry', 'hdsenpai', 'hdsenpaiangry', 'hdsenpaispirit', 'bsidesenpai', 'bsideasenpai', 'bsidespirit', 'susspirit', 'corruptionsenpaiangry', 'corruptionspirit', "glitch", "glitchangry", "glitchdestroyed"], ['Senpai', "Senpai but not playable", "Senpai (Angry)", 'Spirit', "2VPLUS Senpai", "2VPLUS Senpai (Angry)", "HD Senpai", "HD Senpai (Angry)", "HD Senpai (Spirit)", "B-Sides Senpai", "B-Sides Senpai (Angry)", "B-Sides Spirit", "SUS SPIRIT!!!", "Corruption Senpai (Angry)", "Corruption Spirit", "Glitch", "Glitch (Angry)", "Glitch (Destroyed)"]),
-		new CharacterInSelect(['lordxnew','lordxfatenew', 'lordxfate', 'lordx', 'lordxbroken', 'lordxslaybells', 'lordxhd', 'lordsex'], ['Lord X', "Lord X (Fate)", "Lord X (Fate Old)", "Lord X (Old)", "Lord X (Broken)", "Lord X (Slaybells)", "Lord X (HD)", "Lord SeX"]),
-		new CharacterInSelect(['aldryx'], ['Aldryx Andromeda']),
-		new CharacterInSelect(['vsgf', 'gfhypno'], ['Girlfriend', 'Lullaby Girlfriend']),
-		new CharacterInSelect(['brownmario', 'brownmarioangry', 'brownmarioinsane'], ['Brown Mario', "Brown Mario (Angry)", "Brown Mario (Insane)"]),
-		new CharacterInSelect(['brownluigi'], ["Brown Luigi"]),
-		new CharacterInSelect(['agoti', 'agotipissed'], ["A.G.O.T.I", "A.G.O.T.I (Pissed)"]),
-		new CharacterInSelect(['solazar'], ["Solazar"]),
-		new CharacterInSelect(['bbpanzu'], ["bbpanzu"]),
-		new CharacterInSelect(['whitty', 'whittycrazy', 'agrowhitty', 'corruptionwhittydm'], ["Whitty", "Whitty (Crazy)", "Whitty (Agro)", "Corruption Whitty"]),
-		new CharacterInSelect(['redimpostor', 'redimpostorpissed'], ["Red Impostor", "Red Impostor (Scared)"]),
-		new CharacterInSelect(['greencrewmate', 'greenimpostor', 'greenimpostordark', 'greenparasite'], ["Green Crewmate", "Green Impostor", "Green Impostor (Dark)", "Green Parasite"]),
-		new CharacterInSelect(['blackimpostor'], ["Black Impostor"]),
-		new CharacterInSelect(['sonic', 'sonicpissed', 'sonicforced', 'sonicdark', 'scourge', 'scourgeangry', 'scourgeforced'], ["TGT Sonic", "TGT Sonic (Angry)", "TGT Sonic (Forced)", "TGT Sonic (Dark)", "TGT Scourge", "TGT Scourge (Angry)", "TGT Scourge (Forced)"]),
-		new CharacterInSelect(['tails', 'tailsswag'], ["TGT Tails", "TGT Tails (Swag)"]),
-		new CharacterInSelect(['monika', 'monikareal', 'hdmonika'], ["Monika", "Monika (Real)", "HD Monika"]),
-		new CharacterInSelect(['sayori'], ["Sayori"]),
-		new CharacterInSelect(['natsuki'], ["Natsuki"]),
-		new CharacterInSelect(['yuri', 'yuricrazy'], ["Yuri", "Yuri (Crazy)"]),
-		new CharacterInSelect(['bob', 'bobannoyed', 'bobhell', 'bobgloop', 'bobonslaught', 'gloopie'], ["Bob", "Bob (Annoyed)", "run", "Bob (Gloop)", "onslaught", "Gloopie"]),
-		new CharacterInSelect(['ron', 'ronsip'], ["Ron", "Ronsip"]),
-		new CharacterInSelect(['bobgd', 'worriedbob', 'bobex'], ["Bob (Bob and Bosip)", "Bob (Worried)", "EX Bob"]),
-		new CharacterInSelect(['bosip', 'bosipex'], ["Bosip", "EX Bosip"]),
-		new CharacterInSelect(['sadmouse', 'happymouse', 'suicidemouse', 'bipolarmouse', 'sadmouser', 'happymouser', 'suicidemouser'], ["Suicide Mouse (Sad)", "Suicide Mouse (Happy)", "Suicide Mouse", "Suicide Mouse (Insane)", "Suicide Mouse (Sad Remastered)", "Suicide Mouse (Happy Remastered)", "Suicide Mouse (Remastered)"]),
-		new CharacterInSelect(['smilemouse'], ["Alt Suicide Mouse"]),
-		new CharacterInSelect(['infidelitymouse', 'infidelitymouse2', 'infidelitymouse3', 'infidelitymouse4', 'infidelitymouse5', 'infidelitymouse6', 'infidelitymousehank'], ["Suicide Mouse (Infidelity)", "Suicide Mouse (Infidelity Happy)", "Suicide Mouse (Infidelity Losing Sanity)", "Suicide Mouse (Infidelity Very Happy)", "Suicide Mouse (Infidelity Crazy)", "Suicide Mouse (Infidelity Insane)", "Suicide Mouse (Infidelity Hank)"]),
-		new CharacterInSelect(['casandragood', 'casspider'], ["Casandra", "Casandra (Spider)"]),
-		new CharacterInSelect(['jebus'], ["Jebus Christ"]),
-		new CharacterInSelect(['skippa', 'egoskippa'], ["Skipper", "EGO Skipper"]),
-		new CharacterInSelect(['sunky'], ["Sunky.mpeg"]),
-		new CharacterInSelect(['tails.exe', 'tailsnotexe', 'tails.exedark'], ["Tails.exe", "Tails?", "Tails.exe (Dark)"]),
-		new CharacterInSelect(['knuckles.exe'], ["Knuckles.exe"]),
-		new CharacterInSelect(['robotnik.exe'], ["Robotnik.exe"]),
-		new CharacterInSelect(['fleetway'], ["Fleetway Super Sonic"]),
-		new CharacterInSelect(['spiderman'], ["Spiderman"]),
-		new CharacterInSelect(['edd'], ["Edd Gould"]),
-		new CharacterInSelect(['tordvs'], ["Tord Larsson"]),
-		new CharacterInSelect(['dorklysonic'], ["Dorkly Sonic"]),
-		new CharacterInSelect(['dorklyknuckles'], ["Dorkly Knuckles"]),
-		new CharacterInSelect(['shadow', 'shadowcrazy', 'shadowhigh'], ["TGT Shadow", "TGT Shadow (Pissed)", "TGT Shadow (High)"]),
-		new CharacterInSelect(['disabilitydave', 'davetp'], ["Disability Dave", "Dave (Triple Phonebreakers)"]),
-		new CharacterInSelect(['mrtrololo', 'mrtrololocough'], ["Mr. Trololo/The Baritone", "Mr. Trololo/The Baritone (Sick)"]),
-		new CharacterInSelect(['trollge'], ["The Maestro"]),
-		new CharacterInSelect(['juilan', 'juilanswag', 'juilanswagger', 'juilanwacky', 'the-burger', 'juilanwackyhqr'], ["Julian T. Whitmore", "Julian T. Whitmore (Swag)", "Julian T. Whitmore (Swagger)", "Julian T. Whitmore (Wacky)", "Julian T. Whitmore (Hungry)", "Julian T. Whitmore (Wacky HQR)"]),
-
-
-
+		new CharacterInSelect(['bf', 'bf-christmas', 'bf-pixel', 'bf-holding-gf'], ["Boyfriend", 'Christmas Boyfriend', 'Pixel Boyfriend', 'BF Holding GF']),
+		new CharacterInSelect(['pico'], ["Pico"]),
+		new CharacterInSelect(['hankvs', 'antihank'], ["Accelerant Hank", "Antipathy Hank"]),
 	];
 	public function new() 
 	{
@@ -140,14 +78,6 @@ class ChooseCharState extends MusicBeatState
 	{
 		super.create();
 		Conductor.changeBPM(110);
-		if(PlayState.SONG.song.toLowerCase() == 'thigh-highs' || PlayState.SONG.song.toLowerCase() == 'homelesschrome')
-		{
-			characters = [new CharacterInSelect(['sonic.exe','sonic.exep2', 'xenophanes', 'sonic.exe2', 'sonic.exe3', 'sonic.exepixel', 'sonic.exeslaybells', 'sonic.exehotv'], ['Sonic.exe', "Sonic.exe (You Can't Run)", 'Xenophanes', "Sonic.exe (YCR Fanmade)", "Sonic.exe (Chaotic Endeavors)", "Sonic.exe (YCR Pixel)", "Sonic.exe (Slaybells)", "Sonic.exe (Hill of the Void)"])];
-		}
-		if(isScript == true)
-		{
-			characters = [new CharacterInSelect(['bf'], ["if you actually managed to find this, this is a work in progress. this is meant to load the custom chars json so it can include the full character list, instead of a manual one"])];
-		}
 		currentSelectedCharacter = characters[current];
 
 		FlxG.save.data.unlockedcharacters = [true,true,true,true,true,true,true,true]; //unlock everyone hi
