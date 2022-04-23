@@ -38,13 +38,13 @@ typedef VersionJson = {
 	
 class MainMenuState extends MusicBeatState
 {
-	static var curSelected:Int = 0;
+	var curSelected:Int = 0;
 	var customMenuConfirm: Array<Array<String>>;
 	var customMenuScroll: Array<Array<String>>;
 	var parsedcustomMenuConfirmJson:Array<Array<String>>;
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options', 'sound test', 'warp zone'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -254,8 +254,11 @@ class MainMenuState extends MusicBeatState
 										}
 										
 									case 'options':
-										SaveDataState.prevPath = 'title';
 										LoadingState.loadAndSwitchState(new SaveDataState());
+		case 'sound test':
+										LoadingState.loadAndSwitchState(new SoundTestState());
+		case 'warp zone':
+										LoadingState.loadAndSwitchState(new WarpState());
 								}
 							});
 						}
