@@ -53,6 +53,7 @@ class TitleState extends MusicBeatState
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
 	var shownWacky:Int = -1;
+        var code:Int = 0;
 	var curWacky:Array<String> = [];
 	var wackyEndBeat:Int = 0;
 	var wackyImage:FlxSprite;
@@ -183,7 +184,7 @@ class TitleState extends MusicBeatState
 		logoBl = new FlxSprite(logoTitle.curX, logoTitle.curY);
 		logoBl.frames = FlxAtlasFrames.fromSparrow('assets/images/logoBumpin.png', 'assets/images/logoBumpin.xml');
 		logoBl.antialiasing = !logoTitle.isPixel;
-		logoBl.animation.addByPrefix('bump', logoTitle.curName, logoTitle.curFPS, false);
+		logoBl.animation.addByPrefix('bump', logoTitle.curName, logoTitle.curFPS);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 		if (!!logoTitle.shouldScale){
@@ -308,7 +309,29 @@ class TitleState extends MusicBeatState
 				pressedEnter = true;
 			#end
 		}
+		if (FlxG.keys.justPressed.UP)
+			if (code == 0)
+				code = 1;
+			else
+				code == 0;
 
+		if (FlxG.keys.justPressed.DOWN)
+			if (code == 1)
+				code = 2;
+			else
+				code == 0;
+
+		if (FlxG.keys.justPressed.LEFT)
+			if (code == 2)
+				code = 3;
+			else
+				code == 0;
+
+		if (FlxG.keys.justPressed.RIGHT)
+			if (code == 3)
+				code = 4;
+			else
+				code == 0;
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
 
@@ -329,6 +352,24 @@ class TitleState extends MusicBeatState
 				LoadingState.loadAndSwitchState(new MainMenuState());
 			});
 			// FlxG.sound.play('assets/music/titleShoot' + TitleState.soundExt, 0.7);
+		}
+		else if (pressedEnter && !transitioning && skippedIntro && code == 4)
+		{
+			transitioning = true;
+
+			PlayStateChangeables.nocheese = false;
+			PlayState.SONG = Song.loadFromJson('milk--hard', 'milk-');
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = 1;
+			PlayState.storyWeek = 1;
+			FlxG.camera.fade(FlxColor.WHITE, 0.5, false);
+			FlxG.sound.play(Paths.sound('confirmMenu'));
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			new FlxTimer().start(1.5, function(tmr:FlxTimer)
+			{
+				LoadingState.loadAndSwitchState(new PlayState());
+			});
 		}
 
 		if (pressedEnter && !skippedIntro)

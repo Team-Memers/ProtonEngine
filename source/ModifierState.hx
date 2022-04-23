@@ -67,6 +67,15 @@ class ModifierState extends MusicBeatState
 			desc: "You can just select some custom characters"
 		},
 		{
+			name: "Old Char Select",
+			internName: "oldcharselect",
+			value: false,
+			conflicts: [],
+			multi: 1,
+			times: true,
+			desc: "Legacy custom char menu for selecting player2"
+		},
+		{
 			name: "Sick Mode",
 			internName: "mfc",
 			value: false,
@@ -476,7 +485,9 @@ class ModifierState extends MusicBeatState
 			case 'chart':
 				LoadingState.loadAndSwitchState(new ChartingState());
 			case 'charselect':
-				LoadingState.loadAndSwitchState(new ChooseCharState(PlayState.SONG.player1));
+				LoadingState.loadAndSwitchState(new ChooseCharState());
+			case 'oldcharselect':
+				LoadingState.loadAndSwitchState(new OldCharState());
 			case 'antijank':
 				// do nothi n
 			default:

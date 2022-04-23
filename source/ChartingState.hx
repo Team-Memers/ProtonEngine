@@ -92,9 +92,13 @@ class ChartingState extends MusicBeatState
 	var noteType:Int = Normal;
 	var typingShit:FlxInputText;
 	var player1TextField:FlxInputText;
+	var formTextField:FlxInputText;
 	var player2TextField:FlxInputText;
+	var form1TextField:FlxInputText;
+	var form2TextField:FlxInputText;
 	var gfTextField:FlxInputText;
 	var cutsceneTextField:FlxInputText;
+	var countdownTextField:FlxInputText;
 	var uiTextField:FlxInputText;
 	var stageTextField:FlxInputText;
 	var stageID:FlxUINumericStepper;
@@ -162,6 +166,7 @@ class ChartingState extends MusicBeatState
 				isSpooky: false,
 				isMoody: false,
 				cutsceneType: "none",
+				countdownType: "normal",
 				uiType: 'normal',
 				isCheer: false,
 				preferredNoteAmount: 4,
@@ -311,18 +316,22 @@ class ChartingState extends MusicBeatState
 
 	function addCharsUI():Void {
 		player1TextField = new FlxUIInputText(10, 100, 70, _song.player1, 8);
+		formTextField = new FlxUIInputText(10, 300, 70, PlayState.formoverride, 8);
 		player2TextField = new FlxUIInputText(120, 100, 70, _song.player2, 8);
 		gfTextField = new FlxUIInputText(10, 120, 70, _song.gf, 8);
 		stageTextField = new FlxUIInputText(120, 120, 70, _song.stage, 8);
 		stageID = new FlxUINumericStepper(120, 160, 1, _song.stageID, 0, 999, 0);
 		cutsceneTextField = new FlxUIInputText(120, 140, 70, _song.cutsceneType, 8);
+		countdownTextField = new FlxUIInputText(120, 180, 70, _song.countdownType, 8);
 		uiTextField = new FlxUIInputText(10, 140, 70, _song.uiType, 8);
 
 		var playerText = new FlxText(player1TextField.x + 70, player1TextField.y, 0, "Player", 8, false);
+		var formText = new FlxText(player1TextField.x + 70, player1TextField.y + 200, 0, "Player Skin", 8, false);
 		var enemyText = new FlxText(player2TextField.x + 70, player2TextField.y, 0, "Enemy", 8, false);
 		var gfText = new FlxText(gfTextField.x + 70, gfTextField.y, 0, "GF", 8, false);
 		var stageText = new FlxText(stageTextField.x + 70, stageTextField.y, 0, "Stage", 8, false);
 		var cutsceneText = new FlxText(cutsceneTextField.x + 70, uiTextField.y, 0, "Cutscene", 8, false);
+		var countdownText = new FlxText(countdownTextField.x + 70, uiTextField.y, 0, "Countdown", 8, false);
 		var uiText = new FlxText(uiTextField.x + 70, uiTextField.y, 0, "UI", 8, false);
 		var stageIDText = new FlxText(stageID.x + 70, stageID.y, 0, "Stage ID", 8, false);
 
@@ -330,19 +339,23 @@ class ChartingState extends MusicBeatState
 		tab_group_char.name = "Char";
 
 		tab_group_char.add(playerText);
+		tab_group_char.add(formText);
 		tab_group_char.add(enemyText);
 		tab_group_char.add(gfText);
 		tab_group_char.add(stageText);
 		tab_group_char.add(cutsceneText);
+		tab_group_char.add(countdownText);
 		tab_group_char.add(uiText);
 		tab_group_char.add(uiTextField);
 		tab_group_char.add(cutsceneTextField);
+		tab_group_char.add(countdownTextField);
 		tab_group_char.add(stageTextField);
 		tab_group_char.add(stageID);
 		tab_group_char.add(stageIDText);
 		tab_group_char.add(gfTextField);
 		tab_group_char.add(player1TextField);
 		tab_group_char.add(player2TextField);
+		tab_group_char.add(formTextField);
 
 		UI_box.addGroup(tab_group_char);
 		UI_box.scrollFactor.set();
@@ -393,8 +406,7 @@ class ChartingState extends MusicBeatState
 			}
 		});
 
-		// sonic.exe triple trouble 4k converter because lol
-		/*var funnyButton:FlxButton = new FlxButton(10, 300, "Triple Trouble", function() {
+		var funnyButton:FlxButton = new FlxButton(10, 300, "Triple Trouble", function() {
 			for (i in 0..._song.notes[curSection].sectionNotes.length) {
 				var note = _song.notes[curSection].sectionNotes[i];
 				switch(note[1]) {
@@ -415,7 +427,7 @@ class ChartingState extends MusicBeatState
 				note[4] = 0;
 				updateGrid();
 			}
-		});*/
+		});
 
 		check_mustHitSection = new FlxUICheckBox(10, 30, null, null, "Must hit section", 100);
 		check_mustHitSection.name = 'check_mustHit';
@@ -444,7 +456,7 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(copyButton);
 		tab_group_section.add(clearSectionButton);
 		tab_group_section.add(swapSection);
-		//tab_group_section.add(funnyButton);
+		tab_group_section.add(funnyButton);
 
 		UI_box.addGroup(tab_group_section);
 	}
@@ -505,18 +517,6 @@ class ChartingState extends MusicBeatState
 				// drain
 				noteTypeText.text = "Drain Note";
 			default:
-				if (FileSystem.exists('assets/data/${_song.song.toLowerCase()}/noteInfo.json')) {
-					var noteJson = CoolUtil.parseJson(FNFAssets.getText('assets/data/${_song.song.toLowerCase()}/noteInfo.json'));
-					if ((noteType - 4) - 1 < noteJson.length) {
-						var thingie = noteJson[(noteType - 4) - 1];
-						trace(thingie.noteName);
-						if (thingie.noteName != null)
-							noteTypeText.text = thingie.noteName + ' (${noteType - 4})';
-						else
-							noteTypeText.text = 'Custom Note ${noteType - 4}';
-					} else
-						noteTypeText.text = 'Custom Note ${noteType - 4}';
-				} else
 					noteTypeText.text = 'Custom Note ${noteType - 4}';
 				//this looks so bad lol
 		}
@@ -528,17 +528,17 @@ class ChartingState extends MusicBeatState
 			// vocals.stop();
 		}
 		#if sys
-		FlxG.sound.playMusic(Sound.fromFile("assets/songs/" + _song.song.toLowerCase() + '/' + daSong + "_Inst" + TitleState.soundExt), 0.6);
+		FlxG.sound.playMusic(Sound.fromFile("assets/music/" + daSong + "_Inst" + TitleState.soundExt), 0.6);
 		#else
-		FlxG.sound.playMusic('assets/songs/' + _song.song.toLowerCase() + '/' + daSong + "_Inst" + TitleState.soundExt, 0.6);
+		FlxG.sound.playMusic('assets/music/' + daSong + "_Inst" + TitleState.soundExt, 0.6);
 		#end
 		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
 		if (_song.needsVoices) {
 			#if sys
-			var vocalSound = Sound.fromFile("assets/songs/" + _song.song.toLowerCase() + '/' + daSong + "_Voices" + TitleState.soundExt);
+			var vocalSound = Sound.fromFile("assets/music/" + daSong +  "_Voices" + TitleState.soundExt);
 			vocals = new FlxSound().loadEmbedded(vocalSound);
 			#else
-			vocals = new FlxSound().loadEmbedded("assets/songs/" + _song.song.toLowerCase() + '/' + daSong + "_Voices" + TitleState.soundExt);
+			vocals = new FlxSound().loadEmbedded("assets/music/" + daSong +  "_Voices" + TitleState.soundExt);
 			#end
 			FlxG.sound.list.add(vocals);
 		}
@@ -675,6 +675,7 @@ class ChartingState extends MusicBeatState
 		_song.stageID = Std.parseInt(Std.string(stageID.value)); // what
 		_song.cutsceneType = cutsceneTextField.text;
 		_song.uiType = uiTextField.text;
+		_song.countdownType = countdownTextField.text;
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1)) {
@@ -737,7 +738,7 @@ class ChartingState extends MusicBeatState
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
 
-		if (!typingShit.hasFocus && !player1TextField.hasFocus && !player2TextField.hasFocus && !gfTextField.hasFocus && !stageTextField.hasFocus && !cutsceneTextField.hasFocus && !uiTextField.hasFocus) {
+		if (!typingShit.hasFocus && !player1TextField.hasFocus && !player2TextField.hasFocus && !gfTextField.hasFocus && !stageTextField.hasFocus && !cutsceneTextField.hasFocus && !uiTextField.hasFocus && !countdownTextField.hasFocus) {
 			if (FlxG.keys.justPressed.E) {
 				changeNoteSustain(Conductor.stepCrochet);
 			}

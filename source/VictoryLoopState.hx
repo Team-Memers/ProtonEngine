@@ -29,6 +29,7 @@ class VictoryLoopState extends MusicBeatSubstate
 	var camFollow:FlxObject;
 	var gf:Character;
 	var dad:Character;
+        var p1:String = "";
 	var stageSuffix:String = "";
 	var victoryTxt:Alphabet;
 	var retryTxt:Alphabet;
@@ -46,7 +47,12 @@ class VictoryLoopState extends MusicBeatSubstate
 		//add(background);
 		var daStage = PlayState.curStage;
 		this.accuracy = accuracy;
-		var p1 = PlayState.SONG.player1;
+if (PlayState.formoverride == 'none' || PlayState.formoverride == 'bf')
+   {
+		p1 = PlayState.SONG.player1;
+   } else {
+		p1 = PlayState.formoverride;
+   }
 		gf = new Character(gfX,gfY,PlayState.SONG.gf);
 		var daBf:String = 'bf';
 		trace(p1);
@@ -82,9 +88,12 @@ class VictoryLoopState extends MusicBeatSubstate
 		if (PlayState.opponentPlayer)
 		{
 			bf = new Character(dadX, dadY, PlayState.SONG.player2);
-		} else {
-			bf = new Character(x, y, PlayState.SONG.player1, true);
-		}
+		} else if (PlayState.formoverride == 'none' || PlayState.formoverride == 'bf')
+                          {
+			  bf = new Character(x, y, PlayState.SONG.player1, true);
+		          } else {
+			  bf = new Character(x, y, PlayState.formoverride, true);
+                          }
 		dad = new Character(dadX, dadY, PlayState.SONG.player2);
 		if (!PlayState.duoMode) {
 			dad.visible = false;

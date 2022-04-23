@@ -23,13 +23,19 @@ class GameOverSubstate extends MusicBeatSubstate
 {
 	var bf:Character;
 	var camFollow:FlxObject;
+        var p1:String = "";
 
 	var stageSuffix:String = "";
 
 	public function new(x:Float, y:Float)
 	{
 		var daStage = PlayState.curStage;
-		var p1 = PlayState.SONG.player1;
+if (PlayState.formoverride == 'none' || PlayState.formoverride == 'bf')
+   {
+		p1 = PlayState.SONG.player1;
+   } else {
+		p1 = PlayState.formoverride;
+   }
 		// hscript means everything is custom
 		// and they don't  fucking lose their shit if 
 		// they don't have the proper animation
@@ -48,6 +54,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		add(camFollow);
 		if (bf.isPixel)
 			stageSuffix = "-pixel";
+		if (PlayState.SONG.player2 == 'fleetway')
+			stageSuffix = "-chaos";
+		if (PlayState.SONG.player2 == 'scunt' || PlayState.SONG.player2 == 'demoman' || PlayState.SONG.player2 == 'spy')
+			stageSuffix = "-tf2";
 		FlxG.sound.play('assets/sounds/fnf_loss_sfx' + stageSuffix + TitleState.soundExt);
 		Conductor.changeBPM(100);
 
@@ -117,6 +127,14 @@ class GameOverSubstate extends MusicBeatSubstate
 				{
 					LoadingState.loadAndSwitchState(new PlayState());
 				});
+if (PlayState.SONG.player2 == 'fleetway')
+   {
+				FlxG.camera.fade(FlxColor.RED, 2, false, function()
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+   }
+  
 			});
 		}
 	}

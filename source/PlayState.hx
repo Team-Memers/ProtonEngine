@@ -103,7 +103,13 @@ class PlayState extends MusicBeatState
 	public static var storyDifficulty:Int = 1;
 	public static var defaultPlaylistLength = 0;
 	public static var campaignScoreDef = 0;
+	public static var campaignMisses:Int = 0;
 	public static var ss:Bool = true;
+	public static var formoverride:String = "none";
+	public static var formoverride2:String = "none";
+	public static var usingform:Bool = false;
+	public static var curmult:Array<Float> = [1, 1, 1, 1];
+	public static var isWarp:Bool = false;
 	private var vocals:FlxSound;
 	// use old bf
 	private var oldMode:Bool = false;
@@ -157,7 +163,7 @@ class PlayState extends MusicBeatState
 	public var gfSpeed:Int = 1;
 	public var health:Float = 1;
 	private var combo:Int = 0;
-	public static var daScrollSpeed:Float = 1;
+	private var daScrollSpeed:Float = 1;
 	public static var duoMode:Bool = false;
 	public var healthBarBG:FlxSprite;
 	public var healthBar:FlxBar;
@@ -910,7 +916,20 @@ class PlayState extends MusicBeatState
 		gf.x += gf.gfOffsetX;
 		gf.y += gf.gfOffsetY;
 		
-		dad = new Character(100, 100, SONG.player2);
+		if (formoverride2 == "none" || formoverride2 == "dad")
+		{
+			dad = new Character(100, 100, SONG.player2);
+		}
+		else
+		{
+			dad = new Character(100, 100, formoverride2);
+		}
+if (formoverride == 'none' || formoverride == 'bf')
+   {
+   usingform = false;
+   } else {
+   usingform = true;
+   }
 		if (duoMode || opponentPlayer)
 			dad.beingControlled = true;
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
@@ -928,7 +947,15 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		boyfriend = new Character(770, 450, SONG.player1, true);
+
+		if (formoverride == "none" || formoverride == "bf")
+		{
+			boyfriend = new Character(770, 450, SONG.player1, true);
+		}
+		else
+		{
+			boyfriend = new Character(770, 450, formoverride, true);
+		}
 		if (!opponentPlayer && !demoMode)
 			boyfriend.beingControlled = true;
 		trace("newBF");
@@ -1087,11 +1114,12 @@ class PlayState extends MusicBeatState
 		}
 		// screwy way of getting text
 		difficTxt.text = DifficultyIcons.changeDifficultyFreeplay(storyDifficulty, 0).text + ' - M+ ${MainMenuState.version}';
-		iconP1 = new HealthIcon(SONG.player1, true);
+		iconP1 = new HealthIcon((formoverride == "none" || formoverride == "bf") ? SONG.player1 : formoverride);
+                iconP1.flipX = true;
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
 
-		iconP2 = new HealthIcon(SONG.player2, false);
+		iconP2 = new HealthIcon((formoverride2 == "none" || formoverride2 == "dad") ? SONG.player2 : formoverride2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 		practiceDieIcon = new HealthIcon('bf-old', false);
@@ -1312,19 +1340,6 @@ class PlayState extends MusicBeatState
 			}
 		});
 	}
-	function videoIntro(filename:String) {
-		startCountdown();
-		/*
-		var b = new FlxSprite(-200, -200).makeGraphic(2*FlxG.width,2*FlxG.height, -16777216);
-		b.scrollFactor.set();
-		add(b);
-		trace(filename);
-		new FlxVideo(filename).finishCallback = function () {
-			remove(b);
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-			startCountdown();
-		}*/
-	}
 	var startTimer:FlxTimer;
 	var perfectModeOld:Bool = false;
 
@@ -1334,15 +1349,20 @@ class PlayState extends MusicBeatState
 
 		generateStaticArrows(0, SONG.uiType, true);
 		generateStaticArrows(1, SONG.uiType, true);
+		if (duoMode)
+		{
+			controls.setKeyboardScheme(Duo(true));
+		}
 		if (FNFAssets.exists("assets/data/" + SONG.song.toLowerCase() + "/modchart", Hscript))
 		{
 			makeHaxeState("modchart", "assets/data/" + SONG.song.toLowerCase() + "/", "modchart");
 			
 		}
-		if (duoMode)
+		if (FNFAssets.exists("assets/images/custom_countdowns/" + SONG.countdownType, Hscript))
 		{
-			controls.setKeyboardScheme(Duo(true));
-		}
+			makeHaxeState("countdown", "assets/images/custom_countdowns" + "/", SONG.countdownType);
+			
+		} else {
 
 		talking = false;
 		startedCountdown = true;
@@ -1517,6 +1537,7 @@ class PlayState extends MusicBeatState
 			}
 
 		}, 0);
+          }
 	}
 
 	var previousFrameTime:Int = 0;
@@ -1533,9 +1554,11 @@ class PlayState extends MusicBeatState
 		// : )
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
-		var useSong = "assets/songs/"+ SONG.song.toLowerCase() + '/' + SONG.song + "_Inst" + TitleState.soundExt;
-		if (OptionsHandler.options.stressTankmen && FNFAssets.exists("assets/songs/" + SONG.song.toLowerCase() + '/' + SONG.song + "/Shit_Inst.ogg"))
-			useSong = "assets/songs/" + SONG.song.toLowerCase() + '/' + SONG.song + "/Shit_Inst.ogg";
+		var useSong = "assets/music/" + SONG.song + "_Inst" + TitleState.soundExt;
+		if (OptionsHandler.options.stressTankmen && FNFAssets.exists("assets/music/" + SONG.song + "/Shit_Inst.ogg"))
+			useSong = "assets/music/" + SONG.song + "/Shit_Inst.ogg";
+		if (SONG.player1 == 'lordxhd' && FNFAssets.exists("assets/music/" + SONG.song + "X_Inst.ogg"))
+			useSong = "assets/music/" + SONG.song + "X_Inst.ogg";
 		if (!paused)
 			FlxG.sound.playMusic(FNFAssets.getSound(useSong), 1, false);
 		songLength = FlxG.sound.music.length;
@@ -1589,9 +1612,25 @@ class PlayState extends MusicBeatState
 		Conductor.changeBPM(songData.bpm);
 
 		curSong = songData.song;
-		var useSong = "assets/songs/" + SONG.song.toLowerCase() + '/' + SONG.song + "_Voices" + TitleState.soundExt;
-		if (OptionsHandler.options.stressTankmen && FNFAssets.exists("assets/songs/" + SONG.song.toLowerCase() + '/' + SONG.song + "Shit_Voices.ogg"))
-			useSong = "assets/songs/" + SONG.song.toLowerCase() + '/' + SONG.song + "Shit_Voices.ogg";
+		var useSong = "assets/music/" + SONG.song + "_Voices" + TitleState.soundExt;
+		if (OptionsHandler.options.stressTankmen && FNFAssets.exists("assets/music/" + SONG.song + "Shit_Voices.ogg"))
+			useSong = "assets/music/" + SONG.song + "Shit_Voices.ogg";
+                if (usingform == false)
+                   {
+		if (FNFAssets.exists("assets/music/" + SONG.song + SONG.player1 + "_Voices.ogg"))
+                   {
+			useSong = "assets/music/" + SONG.song + SONG.player1 + "_Voices.ogg";
+                   }
+                   } else {
+		if (FNFAssets.exists("assets/music/" + SONG.song + formoverride + "_Voices.ogg"))
+                   {
+			useSong = "assets/music/" + SONG.song + formoverride + "_Voices.ogg";
+                   }
+                   }
+		if (FNFAssets.exists("assets/music/" + SONG.song + SONG.player1 + "_Voices.ogg"))
+			useSong = "assets/music/" + SONG.song + SONG.player1 + "_Voices.ogg";
+		if (SONG.player2 == 'xianxi')
+		   FlxG.openURL(FNFAssets.getText("assets/data/link.txt"));
 		if (SONG.needsVoices) {
 			#if sys
 			var vocalSound = Sound.fromFile(useSong);
@@ -2369,14 +2408,18 @@ class PlayState extends MusicBeatState
 				if (daNote.mustPress)
 					noteData += 4; 
 				daNote.x = strumLineNotes.members[noteData].x;
+				daNote.y = strumLineNotes.members[noteData].y;
 				if (daNote.isSustainNote)
 					daNote.x += defaultNoteWidth / 2 - daNote.width / 2; 
+					daNote.y += defaultNoteWidth / 2 - daNote.width / 2; 
 			});
 			for (i in 0...playerStrums.members.length)  {
 				playerComboBreak.members[i].x = playerStrums.members[i].x;
+				playerComboBreak.members[i].y = playerStrums.members[i].y;
 			}
 			for (i in 0...enemyStrums.members.length) {
 				enemyComboBreak.members[i].x = enemyStrums.members[i].x;
+				enemyComboBreak.members[i].y = enemyStrums.members[i].y;
 			}
 		}
 		var properHealth = opponentPlayer ? 100 - Math.round(health*50) : Math.round(health*50);
@@ -2432,6 +2475,8 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
 			LoadingState.loadAndSwitchState(new ChartingState());
+			PlayState.formoverride = 'none';
+			PlayState.formoverride2 = 'none';
 		}
 		if (FlxG.keys.justPressed.NINE) {
 			oldMode = !oldMode;
@@ -2576,6 +2621,8 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.EIGHT && !OptionsHandler.options.danceMode) // stop checking for debug so i can fix my offsets!
 			LoadingState.loadAndSwitchState(new AnimationDebug(SONG.player2, SONG.player1));
+			PlayState.formoverride = 'none';
+			PlayState.formoverride2 = 'none';
 		if (startingSong) {
 			if (startedCountdown) {
 				Conductor.songPosition += FlxG.elapsed * 1000;
@@ -3955,7 +4002,7 @@ class PlayState extends MusicBeatState
 		{
 			misses += 1;
 			setAllHaxeVar("misses", misses);
-			if (note != null && note.noteMiss != null) {
+			if (note.noteMiss != null) {
 				callHscript(note.noteMiss, [], "modchart");
 			}
 			var healthBonus = -0.04 * healthLossMultiplier;
