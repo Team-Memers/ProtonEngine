@@ -8,6 +8,8 @@ import openfl.utils.Assets as OpenFlAssets;
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
+	inline public static var VIDEO_EXT = "mp4";
+
 
 	static var currentLevel:String;
 
@@ -73,6 +75,11 @@ class Paths
 	static public function sound(key:String, ?library:String)
 	{
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
+	}
+
+	static public function video(key:String)
+	{
+		return 'assets/videos/$key.$VIDEO_EXT';
 	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)

@@ -30,6 +30,7 @@ class WarpState extends MusicBeatState
 		['World 3',		'endless-cycles'],
 		['World 4',		'apparition'],
 		['World 5',		'powerdown'],
+		['World 6',		'hell-on-a-friday'],
 	];
 
 	var bg:FlxSprite;

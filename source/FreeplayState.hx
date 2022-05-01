@@ -347,7 +347,6 @@ class FreeplayState extends MusicBeatState
 			}
 				
 		}
-
 		if (accepted)
 		{
 			// im shortening this for my mind to be at rest
