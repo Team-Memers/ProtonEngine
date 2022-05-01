@@ -40,6 +40,10 @@
 
 	<classpath name="source" />
 
+	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits"/>
+	<assets path="plugins/"             rename=''               if="VIDEOS_ALLOWED windows" />
+	<assets path="dlls/"                rename=''               if="VIDEOS_ALLOWED windows" />
+
 	<assets path="assets/images" />
 	<assets path="assets/data" />
 	<assets path="assets/shaders" />
@@ -55,11 +59,11 @@
 	<assets path="assets/sounds"/>
 	<assets path="assets/module"/>
 	<assets path="assets/discord"/>
+	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED"/>
 	<assets path='TempFiles' rename='Templates' embed='false'/>
 
 	<assets path="CHANGELOG.md"/>
 	<assets path="USER-README.txt"/>
-        <assets path="FUCKING README.txt"/>
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY
 		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
 		THEN UHHH I USED THE NAME OF THE FONT WITH SETFORMAT() ON THE TEXT!!!
