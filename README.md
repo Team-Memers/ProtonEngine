@@ -32,6 +32,10 @@ Mario's Madness Warp Zone (Same as Sound Test)
 
 Dave and Bambi Character Select Screen (old one is still in modifier menu)
 
+Video support!! `currentPlayState.startVideo(video-name)`
+
+
+
 SOON TO COME:
 Fully custom game over sequence
 
