@@ -14,7 +14,7 @@ class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Change Options', 'Change Modifiers', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Change Options', 'Change Modifiers', 'Exit to menu', 'Exit to main menu', 'Exit to sound test'];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
@@ -84,6 +84,10 @@ class PauseSubState extends MusicBeatSubstate
 						LoadingState.loadAndSwitchState(new StoryMenuState());
 					else
 						LoadingState.loadAndSwitchState(new FreeplayState());
+				case "Exit to main menu":
+						LoadingState.loadAndSwitchState(new MainMenuState());
+				case "Exit to sound test":
+						LoadingState.loadAndSwitchState(new SoundTestState());
 				case "Change Modifiers":
 					LoadingState.loadAndSwitchState(new ModifierState());
 				case "Change Options":

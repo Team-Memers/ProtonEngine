@@ -134,14 +134,14 @@ class SoundTestState extends MusicBeatState
 		if (funnymonke)
 		{
 			pcmValue += selection;
-			if (pcmValue < 0) pcmValue = 69;
-			if (pcmValue > 69) pcmValue = 0;
+			if (pcmValue < 0) pcmValue = 99;
+			if (pcmValue > 99) pcmValue = 0;
 		}
 		else
 		{
 			daValue += selection;
-			if (daValue < 0) daValue = 69;
-			if (daValue > 69) daValue = 0;
+			if (daValue < 0) daValue = 99;
+			if (daValue > 99) daValue = 0;
 		}
 	}
 
@@ -369,7 +369,7 @@ class SoundTestState extends MusicBeatState
 					LoadingState.loadAndSwitchState(new PlayState());
 				});
 			}
-		else if (first == 01 && second == 02)
+		else if (first == 1 && second == 2)
 			{
 				woahmanstopspammin = false;
 				PlayStateChangeables.nocheese = false;
