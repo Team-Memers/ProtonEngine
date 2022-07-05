@@ -34,6 +34,17 @@ Dave and Bambi Character Select Screen (old one is still in modifier menu)
 
 Video support!! `currentPlayState.startVideo(video-name)`
 
+FlxGlitchEffect, FlxWaveEffect, FlxRainbowEffect support
+
+CoolUtil and LoadingState are now available for use in modcharts
+
+FlxBackdrop is now available for use
+
+Probably more stuff that i forgot about
+
+Do not set a character named "cum" as player 2.
+Seriously don't
+
 
 
 SOON TO COME:
