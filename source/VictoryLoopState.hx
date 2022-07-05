@@ -37,6 +37,7 @@ class VictoryLoopState extends MusicBeatSubstate
 	var scoreTxt:Alphabet;
 	var rating:Alphabet;
 	var selectingRetry:Bool = false;
+	var selectingSound:Bool = false;
 	var canPlayHey:Bool = true;
 	var accuracy:Float;
 	var accuracyTxt:FlxText;
@@ -156,6 +157,8 @@ if (PlayState.formoverride == 'none' || PlayState.formoverride == 'bf')
 		{
 			if (selectingRetry && !PlayState.isStoryMode) {
 				endBullshit();
+			} else if (FlxG.keys.pressed.SHIFT) {
+                        LoadingState.loadAndSwitchState(new SoundTestState());
 			} else {
 				FlxG.sound.music.stop();
 
@@ -163,7 +166,7 @@ if (PlayState.formoverride == 'none' || PlayState.formoverride == 'bf')
 					LoadingState.loadAndSwitchState(new StoryMenuState());
 				else
 					LoadingState.loadAndSwitchState(new FreeplayState());
-			}
+                 }
 		}
 
 		if ((controls.UP_MENU || controls.DOWN_MENU)) {
