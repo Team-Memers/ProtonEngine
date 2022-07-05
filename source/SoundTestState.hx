@@ -261,7 +261,7 @@ class SoundTestState extends MusicBeatState
 			{
 				woahmanstopspammin = false;
 				PlayStateChangeables.nocheese = false;
-				PlayState.SONG = Song.loadFromJson('repressed-hard', 'repressed');
+				PlayState.SONG = Song.loadFromJson('hill-of-the-void-hard', 'hill-of-the-void');
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 2;
 				PlayState.storyWeek = 1;
@@ -293,7 +293,7 @@ class SoundTestState extends MusicBeatState
 			{
 				woahmanstopspammin = false;
 				PlayStateChangeables.nocheese = false;
-				PlayState.SONG = Song.loadFromJson('infinigger-hard', 'infinigger');
+				PlayState.SONG = Song.loadFromJson('thigh-highs-hard', 'thigh-highs');
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 2;
 				PlayState.storyWeek = 1;
@@ -309,7 +309,7 @@ class SoundTestState extends MusicBeatState
 			{
 				woahmanstopspammin = false;
 				PlayStateChangeables.nocheese = false;
-				PlayState.SONG = Song.loadFromJson('beastfunkin-hard', 'beastfunkin');
+				PlayState.SONG = Song.loadFromJson('blood-red-snow-hard', 'blood-red-snow');
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 2;
 				PlayState.storyWeek = 1;
@@ -341,7 +341,55 @@ class SoundTestState extends MusicBeatState
 			{
 				woahmanstopspammin = false;
 				PlayStateChangeables.nocheese = false;
-				PlayState.SONG = Song.loadFromJson('deathmatch-renx-hard', 'deathmatch-renx');
+				PlayState.SONG = Song.loadFromJson('fatality-hard', 'fatality');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr:FlxTimer)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 60 && second == 6)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('prey-hard', 'prey');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr:FlxTimer)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 01 && second == 02)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('fight-or-flight-hard', 'fight-or-flight');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr:FlxTimer)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 33 && second == 3)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('round-a-bout-hard', 'round-a-bout');
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = 2;
 				PlayState.storyWeek = 1;
