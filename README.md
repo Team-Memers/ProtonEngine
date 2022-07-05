@@ -38,7 +38,7 @@ FlxGlitchEffect, FlxWaveEffect, FlxRainbowEffect support
 
 CoolUtil and LoadingState are now available for use in modcharts
 
-FlxBackdrop is now available for use
+FlxBackdrop is now available for use, but you need to recompile with the assets you want to use put into the main source assets (the assets folder in main source)
 
 Probably more stuff that i forgot about
 
