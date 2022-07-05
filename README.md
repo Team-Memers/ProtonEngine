@@ -18,6 +18,8 @@ take down mods that don't follow this rule.
 
 Once again, this is a fork of The Roblox Disappointment build, with a few changes by me.
 
+HOLD DOWN SHIFT ON THE VICTORY SCREEN IF YOU HAVE BEATEN A SONG ACCESSED FROM SOUND TEST
+
 
 CHANGES FROM ORIGINAL M+/ROBLOX BUILD:
 Fully custom playable character vocals (format is songnamecharactername_Voices)
