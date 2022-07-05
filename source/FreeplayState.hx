@@ -310,6 +310,10 @@ class FreeplayState extends MusicBeatState
 		if (FlxG.keys.justPressed.F5) {
 			Highscore.saveScore('Tutorial', 0, 1, 0, Sick);
 		}
+if (FlxG.keys.justPressed.SPACE)
+   {
+   FlxG.sound.playMusic("assets/music" + PlayState.SONG.song + "_Inst");
+   }
 		#end
 		if (soundTest && soundTestSong != null) {
 			Conductor.songPosition += FlxG.elapsed * 1000;

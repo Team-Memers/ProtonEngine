@@ -6,8 +6,13 @@ import flixel.system.FlxAssets.FlxSoundAsset;
 import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxSoundGroup;
+import flixel.addons.effects.chainable.FlxEffectSprite;
+import flixel.addons.effects.chainable.FlxWaveEffect;
+import flixel.addons.effects.chainable.FlxRainbowEffect;
+import flixel.addons.effects.chainable.FlxGlitchEffect;
 import flixel.system.frontEnds.SoundFrontEnd;
 import openfl.display.DisplayObject;
+import flixel.addons.display.FlxBackdrop;
 import flixel.input.keyboard.FlxKeyboard;
 import flixel.system.frontEnds.InputFrontEnd;
 import flixel.math.FlxRect;
@@ -53,14 +58,22 @@ class PluginManager {
     public static function addVarsToInterp<T:Interp>(interp:T):T {
 		interp.variables.set("Conductor", Conductor);
 		interp.variables.set("FlxSprite", DynamicSprite);
+		interp.variables.set("FlxBackdrop", flixel.addons.display.FlxBackdrop);
+		interp.variables.set("FlxEffectSprite", flixel.addons.effects.chainable.FlxEffectSprite);
+		interp.variables.set("FlxWaveEffect", flixel.addons.effects.chainable.FlxWaveEffect);
+		interp.variables.set("FlxGlitchEffect", flixel.addons.effects.chainable.FlxGlitchEffect);
+		interp.variables.set("FlxRainbowEffect", flixel.addons.effects.chainable.FlxRainbowEffect);
 		interp.variables.set("FlxSound", DynamicSound);
 		interp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
 		interp.variables.set("FlxGroup", flixel.group.FlxGroup);
 		interp.variables.set("FlxAngle", flixel.math.FlxAngle);
 		interp.variables.set("FlxMath", flixel.math.FlxMath);
 		interp.variables.set("TitleState", TitleState);
+		interp.variables.set("LoadingState", LoadingState);
+		interp.variables.set("CoolUtil", CoolUtil);
 		interp.variables.set("makeRangeArray", CoolUtil.numberArray);
 		interp.variables.set("FNFAssets", FNFAssets);
+		interp.variables.set("ShaderHandler", ShaderHandler);
 		// : )
 		interp.variables.set("FlxG", HscriptGlobals);
 		interp.variables.set("FlxTimer", flixel.util.FlxTimer);

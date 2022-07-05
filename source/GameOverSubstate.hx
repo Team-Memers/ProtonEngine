@@ -30,6 +30,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	public function new(x:Float, y:Float)
 	{
 		var daStage = PlayState.curStage;
+
 if (PlayState.formoverride == 'none' || PlayState.formoverride == 'bf')
    {
 		p1 = PlayState.SONG.player1;

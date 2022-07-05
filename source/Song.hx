@@ -27,6 +27,7 @@ typedef SwagSong =
 	var isMoody:Null<Bool>;
 	var cutsceneType:String;
 	var countdownType:String;
+	var splitvocals:Null<Bool>;
 	var uiType:String;
 	var isSpooky:Null<Bool>;
 	var isHey:Null<Bool>;
@@ -52,6 +53,7 @@ class Song
 	public var gf:String = 'gf';
 	public var isMoody:Null<Bool> = false;
 	public var isSpooky:Null<Bool> = false;
+	public var splitvocals:Null<Bool> = false;
 	public var cutsceneType:String = "none";
 	public var uiType:String = 'normal';
 	public var countdownType:String = 'normal';

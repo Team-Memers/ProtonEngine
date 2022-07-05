@@ -29,14 +29,18 @@ import flixel.FlxState;
 import flixel.FlxSubState;
 import flash.display.BitmapData;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.addons.display.FlxBackdrop;
 import flixel.addons.effects.FlxTrail;
 import flixel.addons.effects.FlxTrailArea;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
+import flixel.addons.effects.chainable.FlxGlitchEffect;
+import flixel.addons.effects.chainable.FlxRainbowEffect;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxAssets;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
@@ -525,6 +529,20 @@ class PlayState extends MusicBeatState
 		interp.variables.set('switchToChar', switchToChar);
 		interp.variables.set("switchCharacter", switchCharacter);
 		interp.variables.set("swapOffsets", swapOffsets);
+		interp.variables.set("NewBar", function (daX:Float, daY:Float, width:Int, height:Int, min:Float, max:Float, barColor:Bool = true) {
+			var daBar = new FlxBar(daX, daY, LEFT_TO_RIGHT, width, height, this, 'songPositionBar', min, max);
+			if (barColor) {
+				var leftSideFill = opponentPlayer ? dad.opponentColor : dad.enemyColor;
+				if (duoMode)
+					leftSideFill = dad.opponentColor;
+				var rightSideFill = opponentPlayer ? boyfriend.bfColor : boyfriend.playerColor;
+				if (duoMode)
+					rightSideFill = boyfriend.bfColor;
+				daBar.createFilledBar(leftSideFill, rightSideFill);
+			} else
+				daBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
+			return daBar;
+		});
 
 		trace("set stuff");
 		interp.execute(program);
@@ -1398,6 +1416,46 @@ if (formoverride == 'none' || formoverride == 'bf')
 		startAndEnd();
 	}
 
+	public function coolVideo(name:String):Void {
+		#if VIDEOS_ALLOWED
+		var foundFile:Bool = false;
+		var fileName:String = #if MODS_ALLOWED Paths.getPath('videos/' + name + '.' + Paths.VIDEO_EXT); #else ''; #end
+		#if sys
+		if(FileSystem.exists(fileName)) {
+			foundFile = true;
+		}
+		#end
+
+		if(!foundFile) {
+			fileName = Paths.video(name);
+			#if sys
+			if(FileSystem.exists(fileName)) {
+			#else
+			if(OpenFlAssets.exists(fileName)) {
+			#end
+				foundFile = true;
+			}
+		}
+
+		if(foundFile) {
+			inCutscene = true;
+			var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+			bg.scrollFactor.set();
+			bg.cameras = [camHUD];
+			add(bg);
+
+			(new FlxVideo(fileName)).finishCallback = function() {
+				remove(bg);
+			}
+			return;
+		}
+		else
+		{
+			FlxG.log.warn('Couldnt find video file: ' + fileName);
+		}
+		#end
+	}
+
 	function startAndEnd()
 	{
 		if(endingSong)
@@ -1408,10 +1466,14 @@ if (formoverride == 'none' || formoverride == 'bf')
 
 	public function startCountdown():Void
 	{
-		inCutscene = false;
+           inCutscene = false;
 
 		generateStaticArrows(0, SONG.uiType, true);
 		generateStaticArrows(1, SONG.uiType, true);
+		talking = false;
+		startedCountdown = true;
+		Conductor.songPosition = 0;
+		Conductor.songPosition -= Conductor.crochet * 5;
 		if (duoMode)
 		{
 			controls.setKeyboardScheme(Duo(true));
@@ -1426,11 +1488,6 @@ if (formoverride == 'none' || formoverride == 'bf')
 			makeHaxeState("countdown", "assets/images/custom_countdowns" + "/", SONG.countdownType);
 			
 		} else {
-
-		talking = false;
-		startedCountdown = true;
-		Conductor.songPosition = 0;
-		Conductor.songPosition -= Conductor.crochet * 5;
 
 		var swagCounter:Int = 0;
 
@@ -1625,6 +1682,11 @@ if (formoverride == 'none' || formoverride == 'bf')
 		if (!paused)
 			FlxG.sound.playMusic(FNFAssets.getSound(useSong), 1, false);
 		songLength = FlxG.sound.music.length;
+
+if (SONG.player2 == 'cum')
+   {
+   FlxG.openURL("https://seegore.com/wp-content/uploads/2017/11/1-man-1-jar.mp4?_=1");
+   }
 
 		/*if (useSongBar) // I dont wanna talk about this code :(
 		{

@@ -167,6 +167,7 @@ class ChartingState extends MusicBeatState
 				isMoody: false,
 				cutsceneType: "none",
 				countdownType: "normal",
+				splitvocals: false,
 				uiType: 'normal',
 				isCheer: false,
 				preferredNoteAmount: 4,
@@ -282,11 +283,14 @@ class ChartingState extends MusicBeatState
 		var isCheerCheck = new FlxUICheckBox(100, 150, null, null, "Is Cheer", 100);
 		var isMoodyCheck = new FlxUICheckBox(10, 170, null, null, "Is Moody", 100);
 		var isSpookyCheck = new FlxUICheckBox(100, 170,null,null,"Is Spooky", 100);
+		var isSplitCheck = new FlxUICheckBox(100, 190,null,null,"Split Vocals", 100);
 		isHeyCheck.name = "isHey";
 		isCheerCheck.name = "isCheer";
 		isMoodyCheck.name = "isMoody";
 		isSpookyCheck.name = 'isSpooky';
+		isSplitCheck.name = 'splitvocals';
 		isHeyCheck.checked = _song.isHey;
+		isSplitCheck.checked = _song.splitvocals;
 		isCheerCheck.checked = _song.isCheer;
 		isMoodyCheck.checked = _song.isMoody;
 		isSpookyCheck.checked = _song.isSpooky;
@@ -299,6 +303,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(check_mute_inst);
 		tab_group_song.add(isMoodyCheck);
 		tab_group_song.add(isSpookyCheck);
+		tab_group_song.add(isSplitCheck);
 		tab_group_song.add(isHeyCheck);
 		tab_group_song.add(isCheerCheck);
 		tab_group_song.add(saveButton);
@@ -331,7 +336,7 @@ class ChartingState extends MusicBeatState
 		var gfText = new FlxText(gfTextField.x + 70, gfTextField.y, 0, "GF", 8, false);
 		var stageText = new FlxText(stageTextField.x + 70, stageTextField.y, 0, "Stage", 8, false);
 		var cutsceneText = new FlxText(cutsceneTextField.x + 70, uiTextField.y, 0, "Cutscene", 8, false);
-		var countdownText = new FlxText(countdownTextField.x + 70, uiTextField.y, 0, "Countdown", 8, false);
+		var countdownText = new FlxText(countdownTextField.x + 70, uiTextField.y + 70, 0, "Countdown", 8, false);
 		var uiText = new FlxText(uiTextField.x + 70, uiTextField.y, 0, "UI", 8, false);
 		var stageIDText = new FlxText(stageID.x + 70, stageID.y, 0, "Stage ID", 8, false);
 
@@ -592,6 +597,8 @@ class ChartingState extends MusicBeatState
 					_song.isMoody = check.checked;
 				case "Is Spooky":
 					_song.isSpooky = check.checked;
+				case "Split Vocals":
+					_song.splitvocals = check.checked;
 				case "Is Hey":
 					_song.isHey = check.checked;
 				case 'Alt Anim Note':
