@@ -522,7 +522,7 @@ class ChartingState extends MusicBeatState
 				// drain
 				noteTypeText.text = "Drain Note";
 			default:
-					noteTypeText.text = 'Custom Note ${noteType - 4}';
+					noteTypeText.text = "Custom Note ${noteType - 4}";
 				//this looks so bad lol
 		}
 	}

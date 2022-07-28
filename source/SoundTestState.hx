@@ -401,6 +401,24 @@ class SoundTestState extends MusicBeatState
 					LoadingState.loadAndSwitchState(new PlayState());
 				});
 			}
+		else if (first == 69 && second == 72) // sopping wet
+			{
+				woahmanstopspammin = false;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr:FlxTimer)
+				{
+					cameoImg.visible = true;
+					cameoImg.loadGraphic("assets/images/i am wet.jpg");
+					cameoImg.setGraphicSize(FlxG.width, FlxG.height);
+					flashyWashy(false);
+					FlxG.sound.music.stop();
+	
+				});
+				new FlxTimer().start(2.1, function(tmr:FlxTimer)
+				{
+					incameo = true;
+				});
+			}
 		else
 		{
 			if (soundCooldown)

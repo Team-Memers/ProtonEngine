@@ -37,6 +37,8 @@ import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.addons.effects.chainable.FlxGlitchEffect;
 import flixel.addons.effects.chainable.FlxRainbowEffect;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.input.mouse.FlxMouse;
+import flixel.input.mouse.FlxMouseEventManager;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -402,6 +404,8 @@ class PlayState extends MusicBeatState
 		interp.variables.set("camZooming", false);
 		interp.variables.set("scriptableCamera", 'false');
 		interp.variables.set("scriptCamPos", scriptCamPos);
+		interp.variables.set("resyncVocals", resyncVocals);
+		interp.variables.set("vocals", vocals);
 		// callbacks
 		interp.variables.set("start", function (song) {});
 		interp.variables.set("beatHit", function (beat) {});
