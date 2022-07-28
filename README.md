@@ -42,6 +42,10 @@ CoolUtil and LoadingState are now available for use in modcharts
 
 FlxBackdrop is now available for use, but you need to recompile with the assets you want to use put into the main source assets (the assets folder in main source)
 
+Custom menus (Taken from Vixtin Engine)
+
+Health icon next to character in OldCharState (Also taken from Vixtin Engine)
+
 Probably more stuff that i forgot about
 
 Do not set a character named "cum" as player 2.
@@ -50,7 +54,6 @@ Seriously don't
 
 
 SOON TO COME:
-Fully custom game over sequence
 
 Healthbar in custom_ui
 
