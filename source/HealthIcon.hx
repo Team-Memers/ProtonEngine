@@ -83,7 +83,7 @@ class HealthIcon extends FlxSprite
 		else
 		{
 			loadGraphic('assets/images/iconGrid.png', true, 150, 150);
-			animation.add('icon', [10, 11, 11, 10], false, player);
+			animation.add('icon', iconFrames, false, player);
 		}
 		animation.play('icon');
 		animation.pause();
