@@ -1487,6 +1487,7 @@ if (formoverride == 'none' || formoverride == 'bf')
 			makeHaxeState("modchart", "assets/data/" + SONG.song.toLowerCase() + "/", "modchart");
 			
 		}
+	        makeHaxeState("global", "assets/data/", "global");
 		if (FNFAssets.exists("assets/images/custom_countdowns/" + SONG.countdownType, Hscript))
 		{
 			makeHaxeState("countdown", "assets/images/custom_countdowns" + "/", SONG.countdownType);
