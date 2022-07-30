@@ -14,6 +14,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
+import flixel.addons.display.FlxBackdrop;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
@@ -128,6 +129,7 @@ class TitleState extends MusicBeatState
 		interp.variables.set("insert", insert);
 		interp.variables.set("pi", Math.PI);
 		interp.variables.set("curMusicName", Main.curMusicName);
+                interp.variables.set("FlxBackdrop", FlxBackdrop);
 		
 		trace("set stuff");
 		interp.execute(program);
