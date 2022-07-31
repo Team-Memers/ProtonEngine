@@ -1,0 +1,501 @@
+// sonic cd menu recreation :awesome:
+
+
+
+var version = [[]];
+var name_1 = [[]];
+var name_2 = [[]];
+var name_3 = [[]];
+
+var curSelected = 0;
+var customMenuConfirm = [[]];
+var customMenuScroll = [[]];
+var parsedcustomMenuConfirmJson = [[]];
+var menuItems;
+var bg;
+var bg2;
+var bg3;
+var bg4;
+var sonic;
+var line2;
+var line;
+var arrow;
+var arrow2;
+var hedgehog;
+var isUS = false;
+var oldplacex = FlxG.width * 1.6;
+var oldplacey = FlxG.height * 1.6;
+var soundus;
+var soundjp;
+var menutext;
+var longline;
+var firstStart = true;
+var finishedFunnyMove = false;
+
+var optionShit = [];
+
+var menuSoundJson;
+var scrollSound;
+var magenta;
+var camFollow;
+var camFollowPos;
+
+function create()
+{
+    optionShit = ['story mode', 'freeplay', 'soundtrack', 'soundtest', 'options'];
+
+    menuSoundJson = CoolUtil.parseJson(FNFAssets.getText("assets/sounds/custom_menu_sounds/custom_menu_sounds.json"));
+    scrollSound = menuSoundJson.customMenuScroll;
+    MainMenuState.transIn = FlxTransitionableState.defaultTransIn;
+    MainMenuState.transOut = FlxTransitionableState.defaultTransOut;
+
+    if (!OptionsHandler.options.allowStoryMode) 
+        optionShit.remove("story mode");
+    if (!OptionsHandler.options.allowFreeplay) 
+        optionShit.remove("freeplay");
+    if (!OptionsHandler.options.allowDonate) 
+        optionShit.remove("donate");
+    if (!OptionsHandler.options.useSaveDataMenu && !OptionsHandler.options.allowEditOptions) 
+        optionShit.remove("options");
+
+    FlxG.sound.playMusic(FNFAssets.getSound('assets/music/soniccd/menumusicus' + TitleState.soundExt));
+
+    togglePersistUpdate(true);
+    togglePersistDraw(true);
+
+    bg = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/menuBG.png'));
+    bg.scrollFactor.x = 0;
+    bg.scrollFactor.y = 0;
+    bg.setGraphicSize(Std.int(bg.width * 1.2));
+    bg.updateHitbox();
+    bg.screenCenter();
+    bg.alpha = 1;
+    bg.antialiasing = true;
+    add(bg);
+
+    bg2 = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/menuBG2.png'));
+    bg2.scrollFactor.x = 0;
+    bg2.scrollFactor.y = 0;
+    bg2.setGraphicSize(Std.int(bg2.width * 1.2));
+    bg2.updateHitbox();
+    bg2.screenCenter();
+    bg2.antialiasing = true;
+    bg2.alpha = 0;
+    add(bg2);
+
+    bg3 = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/menuBG3.png'));
+    bg3.scrollFactor.x = 0;
+    bg3.scrollFactor.y = 0;
+    bg3.setGraphicSize(Std.int(bg3.width * 1.2));
+    bg3.updateHitbox();
+    bg3.screenCenter();
+    bg3.antialiasing = true;
+    bg3.alpha = 0;
+    add(bg3);
+
+    bg4 = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/menuBG4.png'));
+    bg4.scrollFactor.x = 0;
+    bg4.scrollFactor.y = 0;
+    bg4.setGraphicSize(Std.int(bg4.width * 1.2));
+    bg4.updateHitbox();
+    bg4.screenCenter();
+    bg4.antialiasing = true;
+    bg4.alpha = 0;
+    add(bg4);
+
+    sonic = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/sonic.png'));
+    sonic.scrollFactor.x = 0;
+    sonic.scrollFactor.y = 0;
+    sonic.setGraphicSize(Std.int(sonic.width * 1.2));
+    sonic.updateHitbox();
+    sonic.screenCenter();
+    sonic.x -= 50;
+    sonic.y -= 20;
+    sonic.antialiasing = true;
+    add(sonic);
+
+    cd = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/hedgehog.png'));
+    cd.scrollFactor.x = 0;
+    cd.scrollFactor.y = 0;
+    cd.setGraphicSize(Std.int(cd.width * 1.2));
+    cd.updateHitbox();
+    cd.screenCenter();
+    cd.x += 480;
+    cd.y -= 190;
+    cd.antialiasing = true;
+    add(cd);
+
+    line = new FlxSprite(-80, -50).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/line.png'));
+    line.scrollFactor.x = 0;
+    line.scrollFactor.y = 0;
+    line.setGraphicSize(Std.int(line.width * 1.2));
+    line.updateHitbox();
+    line.screenCenter();
+    line.x += 100;
+    line.y = -50;
+    line.antialiasing = true;
+    add(line);
+    line2 = new FlxSprite(-80, 50).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/line.png'));
+    line2.scrollFactor.x = 0;
+    line2.scrollFactor.y = 0;
+    line2.setGraphicSize(Std.int(line.width * 1.2));
+    line2.updateHitbox();
+    line2.screenCenter();
+    line2.x += 100;
+    line2.y = -50;
+    line2.flipY = false;
+    line.antialiasing = true;
+    add(line2);
+
+    arrow = new FlxSprite(-80, 40).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/up.png'));
+    arrow.scrollFactor.x = 0;
+    arrow.scrollFactor.y = 0;
+    arrow.setGraphicSize(Std.int(arrow.width * 1.2));
+    arrow.updateHitbox();
+    arrow.screenCenter();
+    arrow.x += 440;
+    arrow.y = 250;
+    arrow.antialiasing = true;
+    add(arrow);
+
+    arrow2 = new FlxSprite(-80, 40).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/down.png'));
+    arrow2.scrollFactor.x = 0;
+    arrow2.scrollFactor.y = 0;
+    arrow2.setGraphicSize(Std.int(arrow2.width * 1.2));
+    arrow2.updateHitbox();
+    arrow2.screenCenter();
+    arrow2.x -= 470;
+    arrow2.y = 250;
+    arrow2.antialiasing = true;
+    add(arrow2);
+
+    longline = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/longline.png'));
+    longline.scrollFactor.x = 0;
+    longline.scrollFactor.y = 0;
+    longline.setGraphicSize(Std.int(longline.width * 1.4));
+    longline.updateHitbox();
+    longline.screenCenter();
+    longline.x -= 340;
+    longline.y += 305;
+    longline.scale.x = 2.2;
+    longline.antialiasing = true;
+    add(longline);
+
+    menutext = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/mainmenu.png'));
+    menutext.scrollFactor.x = 0;
+    menutext.scrollFactor.y = 0;
+    menutext.setGraphicSize(Std.int(menutext.width * 1.4));
+    menutext.updateHitbox();
+    menutext.screenCenter();
+    menutext.x -= 340;
+    menutext.y += 270;
+    menutext.antialiasing = true;
+    add(menutext);
+
+    textus = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/soundtrackus.png'));
+    textus.scrollFactor.x = 0;
+    textus.scrollFactor.y = 0;
+    textus.updateHitbox();
+    textus.screenCenter();
+    textus.x -= 340;
+    textus.y += 270;
+    textus.antialiasing = true;
+    textus.alpha = 0;
+    textus.setGraphicSize(Std.int(textus.width * 0.7));
+    add(textus);
+
+    textjp = new FlxSprite(-80).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/soundtrackjp.png'));
+    textjp.scrollFactor.x = 0;
+    textjp.scrollFactor.y = 0;
+    textjp.updateHitbox();
+    textjp.screenCenter();
+    textjp.x -= 340;
+    textjp.y += 270;
+    textjp.setGraphicSize(Std.int(textjp.width * 0.7));
+    textjp.antialiasing = true;
+    textjp.alpha = 0;
+    add(textjp);
+    
+
+    camFollow = new FlxObject(0, 0, 1, 1);
+    camFollowPos = new FlxObject(0, 0, 1, 1);
+    add(camFollow);
+    add(camFollowPos);
+
+    magenta = new FlxSprite(-80).loadGraphic('assets/images/menuDesat.png');
+    magenta.scrollFactor.x = 0;
+    magenta.scrollFactor.y = 0.18;
+    magenta.setGraphicSize(Std.int(magenta.width * 1.2));
+    magenta.updateHitbox();
+    magenta.screenCenter();
+    magenta.visible = false;
+    magenta.antialiasing = true;
+    magenta.color = 0xFFfd719b;
+    add(magenta);
+    // magenta.scrollFactor.set();
+
+    menuItems = new FlxGroup();
+    add(menuItems);
+
+    var tex = FlxAtlasFrames.fromSparrow(FNFAssets.getBitmapData('assets/scripts/custom_menus/soniccd/menuassets.png'), 'assets/scripts/custom_menus/soniccd/menuassets.xml');
+
+    for (i in 0...optionShit.length)
+    {
+        var menuItem = new FlxSprite(FlxG.width * 1.6, FlxG.height * 1.6);
+        menuItem.frames = tex;
+        menuItem.animation.addByPrefix('idle', optionShit[i] + "0", 24);
+        menuItem.animation.addByPrefix('selected', optionShit[i] + " selected0", 24);
+        menuItem.animation.play('idle');
+        menuItem.ID = i;
+        menuItem.setGraphicSize(Std.int(menuItem.width * 0.9));
+        menuItems.add(menuItem);
+        var scr = (optionShit.length - 5) * (0.135 * 4);
+        if(optionShit.length < 5) scr = 0;
+        menuItem.scrollFactor.set(0, 0);
+        menuItem.antialiasing = true;
+        menuItem.updateHitbox();
+			if (firstStart)
+                           {
+				FlxTween.tween(menuItem, {y: 70 + (i * 100)}, 1 + (i * 0.25), {ease: FlxEase.expoInOut});
+				FlxTween.tween(menuItem, {x: 70 + (i * 200)}, 1 + (i * 0.25), {ease: FlxEase.expoInOut});
+        		   }
+			   else {
+				menuItem.y = 70 + (i * 160);
+                           }
+    }
+
+    FlxG.camera.follow(camFollowPos, null, 1);
+
+    var infoJson = CoolUtil.parseJson(FNFAssets.getJson("assets/data/gameInfo"));
+    if (infoJson.version != "") {
+        infoJson.version = " - " + infoJson.version; 
+    }
+    // ok, if you can't fucking code then don't edit the fucking code
+    if (OptionsHandler.options.useSaveDataMenu)
+        add(usingSave);
+    switch (flixelSave.name) {
+        case "save0":
+            usingSave.text = "bf";
+        case "save1":
+            usingSave.text = "classic";
+        case "save2":
+            usingSave.text = "bf-pixel";
+        case "save3":
+            usingSave.text = "spooky";
+        case "save4":
+            usingSave.text = "dad";
+        case "save5":
+            usingSave.text = "pico";
+        case "save6":
+            usingSave.text = "mom";
+        case "save7":
+            usingSave.text = "gf";
+        case "save8":
+            usingSave.text = "lemon";
+        case "save9":
+            usingSave.text = "senpai";
+    }
+    changeItem(0);
+}
+
+var selectedSomethin = false;
+function update(elapsed)
+{
+if (line.y == -50)
+   {
+   FlxTween.tween(line, {y: -900}, 5);
+   }
+if (line.y == -900)
+   {
+   line.y = -100;
+   FlxTween.tween(line, {y: -900}, 5);
+   }
+
+if (arrow.y == 250)
+   {
+   FlxTween.tween(arrow, {y: 190}, 3, {ease: FlxEase.expoInOut});
+   }
+if (arrow.y == 190)
+   {
+   FlxTween.tween(arrow, {y: 250}, 3, {ease: FlxEase.expoInOut});
+   }
+
+if (arrow2.y == 250)
+   {
+   FlxTween.tween(arrow2, {y: 290}, 3, {ease: FlxEase.expoInOut});
+   }
+if (arrow2.y == 290)
+   {
+   FlxTween.tween(arrow2, {y: 250}, 3, {ease: FlxEase.expoInOut});
+   }
+   
+if (bg.alpha == 1)
+   {
+   FlxTween.tween(bg, {alpha: 0.7}, 0.5);
+   }  
+if (bg.alpha == 0.7)
+   {
+   FlxTween.tween(bg2, {alpha: 0.8}, 0.5);
+   }
+if (bg2.alpha == 0.8)
+   {
+   FlxTween.tween(bg3, {alpha: 0.9}, 0.5);
+   }
+if (bg3.alpha == 0.9)
+   {
+   FlxTween.tween(bg4, {alpha: 0.6}, 0.5);
+   }
+if (bg4.alpha == 0.6)
+   {
+   FlxTween.tween(bg, {alpha: 1}, 0.5);
+   FlxTween.tween(bg2, {alpha: 0}, 0.5);
+   FlxTween.tween(bg3, {alpha: 0}, 0.5);
+   FlxTween.tween(bg4, {alpha: 0}, 0.5);
+   }
+
+    if (FlxG.sound.music.volume < 0.8)
+    {
+        FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
+    }
+
+    var lerpVal = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
+    camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
+
+    if (!selectedSomethin)
+    {
+        if (controls.UP_MENU)
+        {
+            FlxG.sound.play(FNFAssets.getSound('assets/sounds/soniccd/MenuButton' + TitleState.soundExt));
+            changeItem(-1);
+        }
+
+        if (controls.DOWN_MENU)
+        {
+            FlxG.sound.play(FNFAssets.getSound('assets/sounds/soniccd/MenuButton' + TitleState.soundExt));
+            changeItem(1);
+        }
+
+        if (controls.BACK)
+        {
+            LoadingState.loadAndSwitchState(new TitleState());
+        }
+
+
+        if (controls.ACCEPT)
+        {
+            if (optionShit[curSelected] == 'soundtrack')
+            {
+            switchost();
+            } else {
+            FlxG.sound.play(FNFAssets.getSound('assets/sounds/soniccd/Select' + TitleState.soundExt));
+                selectedSomethin = true;
+                menuItems.forEach(function(spr)
+                {
+                    if (curSelected != spr.ID)
+                    {
+                        FlxTween.tween(spr, {alpha: 0}, 0.4, {
+                            ease: FlxEase.quadOut,
+                            onComplete: function(twn)
+                            {
+                                spr.kill();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick)
+                        {
+                            var daChoice = optionShit[curSelected];
+
+    menuItems.forEach(function(spr)
+    {
+				FlxTween.tween(spr, {y: oldplacey}, 1 + (i * 0.25), {ease: FlxEase.expoInOut});
+				FlxTween.tween(spr, {x: oldplacex}, 1 + (i * 0.25), {ease: FlxEase.expoInOut});
+    });
+
+                            switch (daChoice)
+                            {
+                                case 'story mode':
+                                    LoadingState.loadAndSwitchState(new StoryMenuState());
+                                    trace("Story Menu Selected");
+                                case 'freeplay':
+                                    CategoryState.choosingFor = "freeplay";
+                                    var epicCategoryJs = CoolUtil.parseJson(FNFAssets.getJson('assets/data/freeplaySongJson'));
+                                    FreeplayState.soundTest = false;
+                                    if (epicCategoryJs.length > 1)
+                                    {
+                                        LoadingState.loadAndSwitchState(new CategoryState());
+                                    }  else {
+                                        FreeplayState.currentSongList = epicCategoryJs[0].songs;
+                                        LoadingState.loadAndSwitchState(new FreeplayState());
+                                    }
+                                case 'credits':
+                                    LoadingState.loadAndSwitchState(new CreditsState());	
+                                case 'options':
+                                    LoadingState.loadAndSwitchState(new SaveDataState());
+                                case 'soundtest':
+                                    LoadingState.loadAndSwitchState(new SoundTestState());
+                                case 'warpzone':
+                                    LoadingState.loadAndSwitchState(new WarpState());
+                            }
+                        });
+                    }
+                });
+            }
+        }
+   }
+
+
+}
+
+function switchost()
+{
+isUS = !isUS;
+if (isUS)
+   {
+    FlxG.sound.playMusic(FNFAssets.getSound('assets/music/soniccd/menumusicjp' + TitleState.soundExt));
+    menutext.alpha = 0;
+    textjp.alpha = 1;
+                                        new FlxTimer().start(1, function(tmr)
+					{
+                                        textjp.alpha = 0;
+ 				        menutext.alpha = 1;
+					});
+   } else {
+    FlxG.sound.playMusic(FNFAssets.getSound('assets/music/soniccd/menumusicus' + TitleState.soundExt));
+    menutext.alpha = 0;
+    textus.alpha = 1;
+                                        new FlxTimer().start(1, function(tmr)
+					{
+                                        textus.alpha = 0;
+ 				        menutext.alpha = 1;
+					});
+   }
+}
+   
+
+function changeItem(huh)
+{
+    curSelected += huh;
+
+    if (curSelected >= menuItems.length)
+        curSelected = 0;
+    if (curSelected < 0)
+        curSelected = menuItems.length - 1;
+
+    menuItems.forEach(function(spr)
+    {
+        spr.animation.play('idle');
+
+        if (spr.ID == curSelected)
+        {
+            spr.animation.play('selected');
+            var add = 0;
+            if(menuItems.length > 4) {
+                add = menuItems.length * 8;
+            }
+            camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y - add);
+        }
+    spr.updateHitbox();
+    });
+}

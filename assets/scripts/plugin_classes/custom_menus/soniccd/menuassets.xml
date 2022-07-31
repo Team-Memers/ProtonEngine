@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="menuassets.png">
+<SubTexture name="soundtrack selected0000" x="796" y="116" width="436" height="111" frameX="-8" frameY="-6" frameWidth="444" frameHeight="117" />
+<SubTexture name="soundtrack0000" x="0" y="342" width="536" height="157" frameX="-36" frameY="-2" frameWidth="590" frameHeight="159" />
+<SubTexture name="freeplay selected0000" x="0" y="654" width="480" height="118" frameX="-4" frameY="0" frameWidth="484" frameHeight="122" />
+<SubTexture name="freeplay0000" x="0" y="173" width="620" height="169" frameX="-7" frameY="0" frameWidth="635" frameHeight="174" />
+<SubTexture name="options selected0000" x="796" y="227" width="484" height="109" frameX="-3" frameY="0" frameWidth="487" frameHeight="111" />
+<SubTexture name="options0000" x="0" y="499" width="604" height="155" frameX="-4" frameY="-1" frameWidth="610" frameHeight="163" />
+<SubTexture name="story mode selected0000" x="796" y="0" width="615" height="116" frameX="0" frameY="-6" frameWidth="615" frameHeight="122" />
+<SubTexture name="story mode0000" x="0" y="0" width="796" height="173" frameX="0" frameY="-3" frameWidth="796" frameHeight="181" />
+<SubTexture name="soundtest selected0000" x="1086" y="336" width="288" height="42" frameX="0" frameY="-2" frameWidth="290" frameHeight="45" />
+<SubTexture name="soundtest0000" x="796" y="336" width="290" height="45" frameX="0" frameY="0" frameWidth="290" frameHeight="45" />
+</TextureAtlas>
