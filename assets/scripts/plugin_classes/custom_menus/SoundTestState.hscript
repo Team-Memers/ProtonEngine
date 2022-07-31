@@ -122,10 +122,10 @@
 		if (a == true)
 		{
                         FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/confirmMenu' + TitleState.soundExt));
-			FlxG.camera.fade(0xFFFFFF, 0.4, false);
+                FlxTween.tween(white, {alpha: 1}, 0.4); 
 		}
 		else
-      FlxTween.tween(white, {alpha: 1}, 0.4); 
+                FlxTween.tween(white, {alpha: 1}, 0.4); 
                       
 
 	}
