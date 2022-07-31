@@ -82,7 +82,7 @@ class SoundTestState extends MusicBeatState
 		interp.variables.set("ChartingState", ChartingState);
 		interp.variables.set("Alphabet", Alphabet);
 		interp.variables.set("curBeat", 0);
-		interp.variables.set("currentMainMenuState", this);
+		interp.variables.set("currentSoundTestState", this);
 		interp.variables.set("add", add);
 		interp.variables.set("remove", remove);
 		interp.variables.set("insert", insert);
@@ -99,9 +99,15 @@ class SoundTestState extends MusicBeatState
 		interp.variables.set("FlxTween", FlxTween);	
 		interp.variables.set("FlxText", FlxText);
 		interp.variables.set("FlxMath", FlxMath);
+		interp.variables.set("FlxVideo", FlxVideo);
 		interp.variables.set("FlxG", FlxG);	
 		interp.variables.set("PlayStateChangeables", PlayStateChangeables);	
 		interp.variables.set("PlayState", PlayState);	
+		interp.variables.set("ModifierState", ModifierState);	
+		interp.variables.set("VideoHandler", VideoHandler);	
+		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
+		interp.variables.set("MP4Handler", MP4Handler);	
+
 
 		trace("set stuff");
 		interp.execute(program);

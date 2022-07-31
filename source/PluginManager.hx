@@ -103,6 +103,7 @@ class PluginManager {
 		interp.variables.set("Song", Song);
 		interp.variables.set("FlxMouseEventManager", FlxMouseEventManager);
 		interp.variables.set("Sys", Sys);
+		interp.variables.set("FlxVideo", FlxVideo);
         interp.variables.set("callExternClass", PluginManager.interp.createScriptClassInstance); //Call modules?? :D
 		#if debug
 		interp.variables.set("debug", true);
