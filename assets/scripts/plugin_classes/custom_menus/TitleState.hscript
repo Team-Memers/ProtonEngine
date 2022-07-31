@@ -9,6 +9,9 @@ var wackyEndBeat = 0;
 var wackyImage;
 var coolDudes = [];
 var X = 88;
+var firstTime = true;
+var konami = 0;
+// 10 for konami keep that in mind!!!!
 	
 var name_1 = [[]];
 var name_2 = [[]];
@@ -43,10 +46,13 @@ function create()
 }
 
 var logoBl;
+var backdrop;
 var gfDance;
 var danceLeft = false;
 var titleText;
 var titleBg;
+var mario;
+var coolthing;
 function startIntro()
 {
     if (!TitleState.initialized)
@@ -54,10 +60,10 @@ function startIntro()
         makeTransition();
 
         FlxG.sound.playMusic(FNFAssets.getSound('assets/music/custom_menu_music/'
-            + CoolUtil.parseJson(FNFAssets.getText("assets/music/custom_menu_music/custom_menu_music.json")).Menu+'/title' + TitleState.soundExt), 0);
+            + CoolUtil.parseJson(FNFAssets.getText("assets/music/custom_menu_music/custom_menu_music.json")).Menu+'/freakyMenu' + TitleState.soundExt), 0);
 
         //FlxG.sound.play('assets/music/custom_menu_music/'
-        //+ CoolUtil.parseJson(FNFAssets.getText("assets/music/custom_menu_music/custom_menu_music.json")).Menu+'/title' + TitleState.soundExt, 0);
+        //+ CoolUtil.parseJson(FNFAssets.getText("assets/music/custom_menu_music/custom_menu_music.json")).Menu+'/freakyMenu' + TitleState.soundExt, 0);
         
         FlxG.sound.music.fadeIn(4, 0, 0.7);
     }
@@ -75,34 +81,37 @@ function startIntro()
         add(titleBg);
     }
 
-    logoBl = new FlxSprite(logoTitle.curX, logoTitle.curY);
-    logoBl.frames = FlxAtlasFrames.fromSparrow('assets/images/logoBumpin.png', 'assets/images/logoBumpin.xml');
-    logoBl.antialiasing = !logoTitle.isPixel;
-    logoBl.animation.addByPrefix('bump', logoTitle.curName, logoTitle.curFPS);
-    logoBl.animation.play('bump');
-    logoBl.updateHitbox();
-    if (logoTitle.shouldScale){
-        logoBl.setGraphicSize(Std.int(logoBl.width * logoTitle.curScale));
-    }
+    coolthing = new FlxSprite(0,0).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/pootis/cool.png'));
+    coolthing.scrollFactor.x = 0;
+    coolthing.scrollFactor.y = 0;
+    coolthing.alpha = 0;
+    coolthing.screenCenter();
+    coolthing.antialiasing = true;
+    add(coolthing);
 
-    gfDance = new FlxSprite(gfTitle.curX, gfTitle.curY);
-    gfDance.frames = FlxAtlasFrames.fromSparrow('assets/images/gfDanceTitle.png', 'assets/images/gfDanceTitle.xml');
-    if (gfTitle.animationType == "gfIdle"){
-        gfDance.animation.addByIndices('danceLeft', gfTitle.curName, [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", gfTitle.curFPS, false);
-        gfDance.animation.addByIndices('danceRight', gfTitle.curName, [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", gfTitle.curFPS, false);
-    }
-    if (gfTitle.animationType == "bfIdle"){
-        gfDance.animation.addByPrefix('dance', gfTitle.curName, gfTitle.curFPS, false);
-    }
-    if (gfTitle.animationType == "loopIdle"){
-        gfDance.animation.addByPrefix('loopyFunny', gfTitle.curName, gfTitle.curFPS, true);
-    }
-    gfDance.antialiasing = !gfTitle.isPixel;
-    if (gfTitle.shouldScale == true){
-        gfDance.setGraphicSize(Std.int(gfDance.width * gfTitle.curScale));
-    }
-    add(gfDance);
+    backdrop = new FlxBackdrop("assets/scripts/custom_menus/pootis/bg.png", 0.1, 0.1, true, true, 0, 0);
+    backdrop.antialiasing = false;
+    backdrop.velocity.set(-200, -200);
+    backdrop.useScaleHack = false;
+    backdrop.alpha = 0;
+    add(backdrop);
+
+    logoBl = new FlxSprite(600, logoTitle.curY + 730).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/pootis/title.png'));
+    logoBl.scrollFactor.x = 0;
+    logoBl.scrollFactor.y = 0;
+    logoBl.alpha = 0;
+    logoBl.scale.set(1.2, 1.2);
+    logoBl.antialiasing = true;
     add(logoBl);
+
+    mario = new FlxSprite(0,0).loadGraphic(FNFAssets.getBitmapData('assets/scripts/custom_menus/pootis/mario.png'));
+    mario.scrollFactor.x = 0;
+    mario.scrollFactor.y = 0;
+    mario.alpha = 0;
+    mario.scale.set(0.3, 0.3);
+    mario.screenCenter();
+    mario.antialiasing = true;
+    add(mario);
 
     titleText = new FlxSprite(100, FlxG.height * 0.8);
     titleText.frames = FlxAtlasFrames.fromSparrow('assets/images/titleEnter.png', 'assets/images/titleEnter.xml');
@@ -167,6 +176,84 @@ var transitioning = false;
 
 function update(elapsed)
 {
+coolthing.alpha -= 0.04;
+if (FlxG.keys.justPressed.UP)
+   {
+if (konami == 0)
+   {
+   konami = 1;
+   } else if (konami == 1) {
+   konami = 2;
+   } else {
+   konami = 0;
+   }
+   }
+if (FlxG.keys.justPressed.DOWN)
+   {
+if (konami == 2)
+   {
+   konami = 3;
+   } else if (konami == 3) {
+   konami = 4;
+   } else {
+   konami = 0;
+   }
+   }
+if (FlxG.keys.justPressed.LEFT)
+   {
+if (konami == 4)
+   {
+   konami = 5;
+   } else if (konami == 6) {
+   konami = 7;
+   } else {
+   konami = 0;
+   }
+   }
+if (FlxG.keys.justPressed.RIGHT)
+   {
+if (konami == 5)
+   {
+   konami = 6;
+   } else if (konami == 7) {
+   konami = 8;
+   } else {
+   konami = 0;
+   }
+   }
+if (FlxG.keys.justPressed.B)
+   {
+   if (konami == 8)
+      {
+      konami = 9;
+      } else {
+      konami = 0;
+      }
+   }
+
+if (FlxG.keys.justPressed.A)
+   {
+   if (konami == 9)
+      {
+      konami = 10;
+      } else {
+      konami = 0;
+      }
+   }
+
+if (FlxG.keys.justPressed.ENTER && konami == 10)
+   {
+   FlxG.sound.music.fadeOut(4, 0, 0.7);
+   FlxTween.tween(logoBl, {alpha: 0}, 4, {ease: FlxEase.linear});
+   FlxTween.tween(backdrop, {alpha: 0}, 4, {ease: FlxEase.linear});
+   FlxTween.tween(titleText, {alpha: 0}, 4, {ease: FlxEase.linear});
+        new FlxTimer().start(6, function(tmr)
+        {
+        FlxTween.tween(mario, {alpha: 1}, 4, {ease: FlxEase.linear, onComplete: haugh});
+        });
+   }
+   
+   
     if (FlxG.sound.music != null)
         Conductor.songPosition = FlxG.sound.music.time;
 
@@ -177,7 +264,7 @@ function update(elapsed)
 
     var pressedEnter = FlxG.keys.justPressed.ENTER;
 
-    if (pressedEnter && !transitioning && skippedIntro)
+    if (pressedEnter && !transitioning && skippedIntro && konami < 9)
     {
 
         titleText.animation.play('press');
@@ -185,6 +272,17 @@ function update(elapsed)
         titleBg.animation.play('selected');
 
         FlxG.camera.flash(0xFFffffff, 1);
+if (firstTime == true)
+   {
+        backdrop.alpha = 1;
+        FlxTween.tween(logoBl, {y: logoBl.y - 430}, 2.5, {ease: FlxEase.expoInOut});
+        FlxTween.tween(logoBl, {alpha: 1}, 1.5, {ease: FlxEase.expoInOut});
+        firstTime = false;
+   } else {
+        FlxTween.tween(logoBl, {y: logoBl.y - 630}, 2.5, {ease: FlxEase.expoInOut});
+        FlxTween.tween(logoBl, {alpha: 0}, 1.5, {ease: FlxEase.expoInOut});
+        FlxTween.tween(backdrop, {alpha: 0}, 1.5, {ease: FlxEase.linear});
+   }
         FlxG.sound.play('assets/sounds/custom_menu_sounds/'
             + CoolUtil.parseJson(FNFAssets.getText("assets/sounds/custom_menu_sounds/custom_menu_sounds.json")).customMenuConfirm+'/confirmMenu' + TitleState.soundExt, 0.7);
 
@@ -237,23 +335,10 @@ function deleteCoolText()
 
 function beatHit(beat)
 {
-    logoBl.animation.play('bump');
-    danceLeft = !danceLeft;
-
-    if (gfTitle.animationType == "gfIdle"){
-        if (danceLeft){
-            gfDance.animation.play('danceRight');
-        }
-        else{
-            gfDance.animation.play('danceLeft');
-        }
-    }
-    if (gfTitle.animationType == "bfIdle"){
-        gfDance.animation.play('dance');
-    }
-    if (gfTitle.animationType == "loopIdle"){
-        gfDance.animation.play('loopyFunny');
-    }
+if (backdrop.alpha == 1)
+   {
+   coolthing.alpha = 1;
+   }
 
     if (curBeat < 9) {
         switch (curBeat)
@@ -265,7 +350,7 @@ function beatHit(beat)
             case 4:
                 deleteCoolText();
             case 5:
-                createCoolText(['Not in association', 'with']);
+                createCoolText(['In complete association', 'with']);
             case 7:
                 addMoreText('these guys');
                 ngSpr.visible = true;
@@ -319,9 +404,32 @@ function skipIntro()
     if (!skippedIntro)
     {
         remove(ngSpr);
-
+if (firstTime == true)
+   {
+        backdrop.alpha = 1;
+        FlxTween.tween(logoBl, {y: logoBl.y - 430}, 2.5, {ease: FlxEase.expoInOut});
+        FlxTween.tween(logoBl, {alpha: 1}, 1.5, {ease: FlxEase.expoInOut});
+        firstTime = false;
+   } else {
+        FlxTween.tween(logoBl, {y: logoBl.y - 630}, 2.5, {ease: FlxEase.expoInOut});
+        FlxTween.tween(logoBl, {alpha: 0}, 1.5, {ease: FlxEase.expoInOut});
+        FlxTween.tween(backdrop, {alpha: 0}, 0.5, {ease: FlxEase.linear});
+   }
         FlxG.camera.flash(0xFFffffff, 1);
         remove(credGroup);
         skippedIntro = true;
     }
+}
+
+
+function haugh()
+{
+FlxG.sound.play(FNFAssets.getSound('assets/scripts/custom_menus/pootis/hauugh' + TitleState.soundExt));
+FlxG.camera.shake(0.05, 5);
+FlxTween.tween(mario.scale, {x: 5}, 7);
+FlxTween.tween(mario.scale, {y: 5}, 7);
+        new FlxTimer().start(1, function(tmr)
+        {
+            window.close();	
+        });
 }

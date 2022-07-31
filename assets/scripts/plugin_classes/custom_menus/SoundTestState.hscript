@@ -1,0 +1,439 @@
+	var woahmanstopspammin = true;
+
+	var whiteshit;
+
+	var daValue = 0;
+	var pcmValue = 0;
+
+        var cameoImg;
+
+        var bg;
+
+	var soundCooldown = true;
+
+	var funnymonke = true;
+
+	var incameo = false;
+
+	var pcmNO;
+	var daNO;
+
+	var pcmNO_NUMBER;
+	var daNO_NUMBER;
+	
+
+       function create()
+        {
+
+			new FlxTimer().start(0.1, function(tmr)
+				{
+                                FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/breakfast' + TitleState.soundExt));
+                                FlxG.sound.music.stop();
+				});
+		
+
+			FlxG.sound.music.stop();
+
+			bg = new FlxSprite(-100).loadGraphic("assets/images/backgroundST.png");
+			bg.scrollFactor.x = 0;
+			bg.scrollFactor.y = 0;
+			bg.setGraphicSize(Std.int(bg.width * 1));
+			bg.updateHitbox();
+			bg.screenCenter();
+			bg.antialiasing = true;
+			add(bg);
+
+			var soundtesttext = new FlxText(0, 0, 0, 'assets/fonts/vcr.ttf', 25);
+                        soundtesttext.text = "SOUND TEST";
+			soundtesttext.screenCenter();
+			soundtesttext.y -= 180;
+			soundtesttext.x -= 33;
+			soundtesttext.color = 0xFF0000FF;
+			add(soundtesttext);
+			
+	                pcmNO = new FlxText(FlxG.width / 6, FlxG.height / 2, 0, 'PCM  NO .', 23);
+	                daNO = new FlxText(FlxG.width * .6, FlxG.height / 2, 0, 'DA  NO .', 23);
+
+			pcmNO_NUMBER = new FlxText(FlxG.width / 6, FlxG.height / 2, 0, '0', 23);
+        		daNO_NUMBER = new FlxText(FlxG.width / 6, FlxG.height / 2, 0, '0', 23);
+
+
+			
+			pcmNO.y -= 70;
+			pcmNO.x += 100;
+
+			daNO.y -= 70;
+			
+			add(pcmNO);
+
+			add(daNO);
+
+			
+			pcmNO_NUMBER.y -= 70;
+			pcmNO_NUMBER.x += 270;
+			add(pcmNO_NUMBER);
+
+			
+			daNO_NUMBER.y -= 70;
+			daNO_NUMBER.x += daNO.x - 70;
+			add(daNO_NUMBER);
+  
+
+
+                       cameoImg = new FlxSprite();
+                       cameoImg.visible = false;
+                       add(cameoImg);
+
+			
+        }
+
+
+	function changeNumber(selection) 
+	{
+		if (funnymonke)
+		{
+			pcmValue += selection;
+			if (pcmValue < 0) pcmValue = 99;
+			if (pcmValue > 99) pcmValue = 0;
+                         FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/scrollMenu' + TitleState.soundExt));
+		}
+		else
+		{
+			daValue += selection;
+			if (daValue < 0) daValue = 99;
+			if (daValue > 99) daValue = 0;
+                         FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/scrollMenu' + TitleState.soundExt));
+		}
+	}
+
+	function flashyWashy(a)
+	{
+		if (a == true)
+		{
+                         FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/confirmMenu' + TitleState.soundExt));
+			FlxG.camera.fade(0xFFFFFF, 0.4, false);
+		}
+		else
+			FlxG.camera.fade(0xFFFFFF, 0.4, false);
+			FlxG.camera.fade(0x0000FF, 0.4, true);
+
+	}
+
+	function doTheThing(first, second) 
+	{
+		if (first == 12 && second == 25)
+		{
+			woahmanstopspammin = false;
+			PlayStateChangeables.nocheese = false;
+			PlayState.SONG = Song.loadFromJson('endless-hard', 'endless');
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = 2;
+			PlayState.storyWeek = 1;
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			flashyWashy(true);
+			new FlxTimer().start(2, function(tmr)
+			{
+				LoadingState.loadAndSwitchState(new PlayState());
+			});
+		}
+		else if (first == 7 && second == 7)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('cycles-hard', 'cycles');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 31 && second == 13)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				StoryMenuState.storySongPlaylist = ['faker', 'black-sun'];
+				PlayState.SONG = Song.loadFromJson('faker-hard', 'faker');
+				PlayState.isStoryMode = true;
+                                PlayState.storyPlaylist = StoryMenuState.storySongPlaylist;
+                                ModifierState.isStoryMode = true;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 66 && second == 6)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('sunshine-hard', 'sunshine');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 8 && second == 21)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('chaos-hard', 'chaos');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 0 && second == 0)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('too-fest-hard', 'too-fest');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 8 && second == 10)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('hill-of-the-void-hard', 'hill-of-the-void');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		       else if (first == 1 && second == 1)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('fate-hard', 'fate');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 69 && second == 69)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('thigh-highs-hard', 'thigh-highs');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 86 && second == 19)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('blood-red-snow-hard', 'blood-red-snow');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 24 && second == 13)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('slaybells-hard', 'slaybells');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 99 && second == 9)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('fatality-hard', 'fatality');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 60 && second == 6)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('prey-hard', 'prey');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 1 && second == 2)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('fight-or-flight-hard', 'fight-or-flight');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 33 && second == 3)
+			{
+				woahmanstopspammin = false;
+				PlayStateChangeables.nocheese = false;
+				PlayState.SONG = Song.loadFromJson('round-a-bout-hard', 'round-a-bout');
+				PlayState.isStoryMode = false;
+				PlayState.storyDifficulty = 2;
+				PlayState.storyWeek = 1;
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					LoadingState.loadAndSwitchState(new PlayState());
+				});
+			}
+		else if (first == 69 && second == 72) // sopping wet
+			{
+				woahmanstopspammin = false;
+				flashyWashy(true);
+				new FlxTimer().start(2, function(tmr)
+				{
+					cameoImg.visible = true;
+					cameoImg.loadGraphic("assets/images/i am wet.jpg");
+					cameoImg.setGraphicSize(FlxG.width, FlxG.height);
+					flashyWashy(false);
+					FlxG.sound.music.stop();
+	
+				});
+				new FlxTimer().start(2.1, function(tmr)
+				{
+					incameo = true;
+				});
+			}
+		else
+		{
+			if (soundCooldown)
+			{
+				soundCooldown = false;
+                                FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/deniedMOMENT' + TitleState.soundExt));
+				new FlxTimer().start(0.8, function(tmr)
+				{
+					soundCooldown = true;
+				});
+			}
+                }
+	}
+		
+	function update(elapsed)
+		{
+			if (FlxG.keys.justPressed.RIGHT || FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A || FlxG.keys.justPressed.D) if (woahmanstopspammin) funnymonke = !funnymonke;
+
+			if (FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.S) if (woahmanstopspammin) changeNumber(1);
+
+			if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.W) if (woahmanstopspammin) changeNumber(-1);
+
+			if (FlxG.keys.justPressed.ENTER) doTheThing(pcmValue, daValue);
+
+			if (FlxG.keys.justPressed.ENTER && !woahmanstopspammin && incameo) LoadingState.loadAndSwitchState(new SoundTestState());
+
+			if (FlxG.keys.justPressed.ESCAPE && !incameo) LoadingState.loadAndSwitchState(new MainMenuState());
+
+			if (funnymonke)
+			{
+				pcmNO.color = 0xFFFF0000;
+                                daNO.color = 0xFF000000;
+			}
+			else
+			{
+                        	pcmNO.color = 0xFF000000;
+                                daNO.color = 0xFFFF0000;
+			}
+			
+			if (pcmValue < 10)	pcmNO_NUMBER.text = '0' + Std.string(pcmValue);
+			else pcmNO_NUMBER.text = Std.string(pcmValue);
+
+			if (daValue < 10)	daNO_NUMBER.text = '0' + Std.string(daValue);
+			else daNO_NUMBER.text = Std.string(daValue);
+
+					
+
+					
+
+
+
+
+		}
+	
+
