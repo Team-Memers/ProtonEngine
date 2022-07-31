@@ -20,6 +20,8 @@
 
 	var pcmNO_NUMBER;
 	var daNO_NUMBER;
+
+        var white;
 	
 
        function create()
@@ -84,6 +86,15 @@
                        cameoImg.visible = false;
                        add(cameoImg);
 
+			white = new FlxSprite(-100).loadGraphic("assets/scripts/custom_menus/soundtest/white.png");
+			white.scrollFactor.x = 0;
+			white.scrollFactor.y = 0;
+			white.updateHitbox();
+			white.screenCenter();
+			white.antialiasing = true;
+                        white.alpha = 0;
+			add(white);
+
 			
         }
 
@@ -110,12 +121,12 @@
 	{
 		if (a == true)
 		{
-                         FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/confirmMenu' + TitleState.soundExt));
+                        FlxG.sound.play(FNFAssets.getSound('assets/sounds/SoundTest/confirmMenu' + TitleState.soundExt));
 			FlxG.camera.fade(0xFFFFFF, 0.4, false);
 		}
 		else
-			FlxG.camera.fade(0xFFFFFF, 0.4, false);
-			FlxG.camera.fade(0x0000FF, 0.4, true);
+      FlxTween.tween(white, {alpha: 1}, 0.4); 
+                      
 
 	}
 
@@ -373,8 +384,8 @@
 					cameoImg.visible = true;
 					cameoImg.loadGraphic("assets/images/i am wet.jpg");
 					cameoImg.setGraphicSize(FlxG.width, FlxG.height);
-					flashyWashy(false);
 					FlxG.sound.music.stop();
+                                        FlxTween.tween(white, {alpha: 0}, 0.4); 
 	
 				});
 				new FlxTimer().start(2.1, function(tmr)
