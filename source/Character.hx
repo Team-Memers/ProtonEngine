@@ -78,6 +78,7 @@ class Character extends FlxSprite
 	public var animationNotes:Array<Dynamic> = [];
 	public var like:String = "bf";
 	public var beNormal:Bool = true;
+        public var forceColor = false;
 	/**
 	 * Color used by default for enemy, when not in duo mode or oppnt play.
 	 */
@@ -249,7 +250,7 @@ class Character extends FlxSprite
 			// third, we want character to turn purple, which is handled here.
 			color = 0xCFAFFF;
 		}
-		else if (color != FlxColor.WHITE)
+		else if (color != FlxColor.WHITE && forceColor)
 		{
 			color = FlxColor.WHITE;
 		}
@@ -353,7 +354,7 @@ class Character extends FlxSprite
 				callInterp("dance", [this]);
 			else
 				playAnim('idle');
-			if (color != FlxColor.WHITE)
+			if (color != FlxColor.WHITE && forceColor)
 			{
 				color = FlxColor.WHITE;
 			}
