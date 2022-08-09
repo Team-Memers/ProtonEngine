@@ -27,6 +27,7 @@ import flixel.FlxSprite;
 import flixel.FlxBasic;
 import flixel.FlxState;
 import flixel.FlxSubState;
+import flixel.effects.FlxFlicker;
 import flash.display.BitmapData;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.FlxBackdrop;
@@ -42,6 +43,7 @@ import flixel.input.mouse.FlxMouseEventManager;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.system.FlxAssets;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
@@ -116,6 +118,7 @@ class PlayState extends MusicBeatState
 	public static var usingform:Bool = false;
 	public static var curmult:Array<Float> = [1, 1, 1, 1];
 	public static var isWarp:Bool = false;
+        public var isMonochrome = false;
 	private var vocals:FlxSound;
 	// use old bf
 	private var oldMode:Bool = false;
@@ -530,11 +533,13 @@ class PlayState extends MusicBeatState
 
 		//no sus here
 		interp.variables.set("addCharacter", addCharacter);
+		interp.variables.set("openSubState", openSubState);
+		interp.variables.set("closeSubState", closeSubState);
 		interp.variables.set('switchToChar', switchToChar);
 		interp.variables.set("switchCharacter", switchCharacter);
 		interp.variables.set("swapOffsets", swapOffsets);
-		interp.variables.set("NewBar", function (daX:Float, daY:Float, width:Int, height:Int, min:Float, max:Float, barColor:Bool = true) {
-			var daBar = new FlxBar(daX, daY, LEFT_TO_RIGHT, width, height, this, 'songPositionBar', min, max);
+		interp.variables.set("NewBar", function (daX:Float, daY:Float, direction:FlxBarFillDirection, width:Int, height:Int, min:Float, max:Float, barColor:Bool = true) {
+			var daBar = new FlxBar(daX, daY, direction, width, height, this, 'songPositionBar', min, max);
 			if (barColor) {
 				var leftSideFill = opponentPlayer ? dad.opponentColor : dad.enemyColor;
 				if (duoMode)
@@ -2891,7 +2896,7 @@ if (SONG.player2 == 'cum')
 		// better streaming of shit
 
 		// RESET = Quick Game Over Screen
-		if (controls.RESET && !duoMode) {
+		if (controls.RESET && !duoMode && isMonochrome == false) {
 			if (opponentPlayer)
 				health = 2;
 			else
