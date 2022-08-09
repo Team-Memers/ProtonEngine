@@ -20,6 +20,8 @@ Once again, this is a fork of The Roblox Disappointment build, with a few change
 
 HOLD DOWN SHIFT ON THE VICTORY SCREEN IF YOU HAVE BEATEN A SONG ACCESSED FROM SOUND TEST
 
+YOU WILL NEED TO INSTALL EVERYTHING RELATED TO EXTENSION-WEBM!!!
+
 
 CHANGES FROM ORIGINAL M+/ROBLOX BUILD:
 Fully custom playable character vocals (format is songnamecharactername_Voices)
@@ -34,7 +36,7 @@ Mario's Madness Warp Zone (Same as Sound Test)
 
 Dave and Bambi Character Select Screen (old one is still in modifier menu)
 
-Video support!! `currentPlayState.startVideo(video-name)`
+Video support!! `currentPlayState.startVideo(video-name)` MP4 ONLY
 
 FlxGlitchEffect, FlxWaveEffect, FlxRainbowEffect support
 
