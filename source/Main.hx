@@ -11,6 +11,7 @@ class Main extends Sprite
 {
 	public static var ammo:Array<Int> = [4, 6, 7, 9];
 	public static var curMusicName:String = "";
+public static var baseTrace = haxe.Log.trace;
 	
 	#if sys
 	public static var cwd:String;

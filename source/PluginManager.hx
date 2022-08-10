@@ -80,6 +80,7 @@ class PluginManager {
 		interp.variables.set("TitleState", TitleState);
 		interp.variables.set("makeRangeArray", CoolUtil.numberArray);
 		interp.variables.set("FNFAssets", FNFAssets);
+		interp.variables.set("WindowsAPI", WindowsAPI);
         interp.variables.set("CoolUtil", CoolUtil);
         interp.variables.set("Main", Main);
         interp.variables.set("AtlasFrameMaker", AtlasFrameMaker);
