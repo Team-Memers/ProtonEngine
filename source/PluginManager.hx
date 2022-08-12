@@ -31,6 +31,9 @@ import hscript.InterpEx;
 import hscript.Interp;
 import flixel.FlxG;
 import flixel.input.mouse.FlxMouseEventManager;
+import Sys;
+import sys.FileSystem;
+import sys.io.File;
 
 class PluginManager {
     public static var interp = new InterpEx();
@@ -69,6 +72,8 @@ class PluginManager {
     public static function addVarsToInterp<T:Interp>(interp:T):T {
 		interp.variables.set("Conductor", Conductor);
 		interp.variables.set("FlxSprite", DynamicSprite);
+		interp.variables.set("FileSystem", sys.FileSystem);
+		interp.variables.set("File", sys.io.File);
 		interp.variables.set("FlxSound", DynamicSound);
 		interp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
 		interp.variables.set("FlxGroup", flixel.group.FlxGroup);

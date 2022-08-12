@@ -17,7 +17,6 @@ import flixel.FlxGame;
 import flixel.FlxObject;
 #if desktop
 import Sys;
-import sys.FileSystem;
 #end
 #if cpp
 import Discord.DiscordClient;
