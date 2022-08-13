@@ -158,7 +158,7 @@ class SoundTestState extends MusicBeatState
 		super.beatHit();
 		setAllHaxeVar('curBeat', curBeat);
 
-		if (hscriptStates.get('mainmenu').variables.exists('beatHit'))
+		if (hscriptStates.get('soundtest').variables.exists('beatHit'))
 			callAllHScript('beatHit', [curBeat]);
 	}
 }

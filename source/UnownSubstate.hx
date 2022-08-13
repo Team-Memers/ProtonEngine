@@ -1,37 +1,43 @@
 package;
 
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import Controls.Control;
 import flixel.FlxG;
-import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxSubState;
-import flixel.math.FlxPoint;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.input.keyboard.FlxKey;
+import flixel.system.FlxSound;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.graphics.atlas.FlxAtlas;
-import lime.system.System;
-import lime.utils.Assets;
-#if sys
-import sys.io.File;
-import sys.FileSystem;
-import haxe.io.Path;
-import openfl.utils.ByteArray;
-import lime.media.AudioBuffer;
-import flash.media.Sound;
-#end
+import flixel.effects.FlxFlicker;
+import flixel.FlxCamera;
 
+using StringTools;
 import hscript.Interp;
 import hscript.Parser;
 import hscript.ParserEx;
 import hscript.InterpEx;
-import flixel.FlxSprite;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
-
-import haxe.Json;
+import flixel.util.FlxAxes;
+#if sys
+import sys.io.File;
+import haxe.io.Path;
+import openfl.utils.ByteArray;
+import lime.media.AudioBuffer;
+import flash.media.Sound;
+import sys.FileSystem;
+import Song.SwagSong;
+#end
 import tjson.TJSON;
-using StringTools;
-class GameOverSubstate extends MusicBeatSubstate
+
+
+	
+class UnownSubState extends MusicBeatState
 {
+
 	var hscriptStates:Map<String, Interp> = [];
 	var exInterp:InterpEx = new InterpEx();
 	var haxeSprites:Map<String, FlxSprite> = [];
@@ -80,48 +86,35 @@ class GameOverSubstate extends MusicBeatSubstate
 		var interp = PluginManager.createSimpleInterp();
 		// set vars
 		interp.variables.set("Sys", Sys);
+		interp.variables.set("FlxTextBorderStyle", FlxTextBorderStyle);
 		interp.variables.set("controls", controls);
+		interp.variables.set("FlxObject", FlxObject);
+		interp.variables.set("FlxTransitionableState", FlxTransitionableState);
 		interp.variables.set("MainMenuState", MainMenuState);
 		interp.variables.set("CategoryState", CategoryState);
 		interp.variables.set("ChartingState", ChartingState);
 		interp.variables.set("Alphabet", Alphabet);
 		interp.variables.set("curBeat", 0);
-		interp.variables.set("currentState", this);
+		interp.variables.set("currentUnownSubState", this);
 		interp.variables.set("add", add);
 		interp.variables.set("remove", remove);
 		interp.variables.set("insert", insert);
 		interp.variables.set("pi", Math.PI);
 		interp.variables.set("curMusicName", Main.curMusicName);
-		interp.variables.set("Highscore", Highscore);
-		interp.variables.set("HealthIcon", HealthIcon);
-		interp.variables.set("LoadingState", LoadingState);
-		interp.variables.set("DialogueBox", DialogueBox);
+		interp.variables.set("FlxFlicker", FlxFlicker);
 		interp.variables.set("StoryMenuState", StoryMenuState);
 		interp.variables.set("FreeplayState", FreeplayState);
 		interp.variables.set("CreditsState", CreditsState);
 		interp.variables.set("SaveDataState", SaveDataState);
-		interp.variables.set("DifficultyIcons", DifficultyIcons);
-		interp.variables.set("Controls", Controls);
-		interp.variables.set("DifficultyManager", DifficultyManager);
+		interp.variables.set("X", FlxAxes.X);
+		interp.variables.set("Application", Application);
+		interp.variables.set("togglePersistUpdate", togglePersistUpdate);
+		interp.variables.set("togglePersistDraw", togglePersistDraw);
+		interp.variables.set("coolURL", coolURL);
 		interp.variables.set("flixelSave", FlxG.save);
-		interp.variables.set("Record", Record);
-		interp.variables.set("Math", Math);
-		interp.variables.set("Song", Song);
-		interp.variables.set("ModifierState", ModifierState);
-		interp.variables.set("Reflect", Reflect);
-		interp.variables.set("curStep", curStep);
-		interp.variables.set("curBeat", curBeat);
-		interp.variables.set("colorFromString", FlxColor.fromString);
-		interp.variables.set("PlayState", PlayState);
-		interp.variables.set("NewCharacterState", NewCharacterState);
-		interp.variables.set("NewStageState", NewStageState);
-		interp.variables.set("NewSongState", NewSongState);
-		interp.variables.set("NewWeekState", NewWeekState);
-		interp.variables.set("SelectSortState", SelectSortState);
-		interp.variables.set("CategoryState", CategoryState);
-		interp.variables.set("ControlsState", ControlsState);
-		interp.variables.set("FlxObject", FlxObject);
-		
+		interp.variables.set("FlxTween", FlxTween);	
+		interp.variables.set("FlxEase", FlxEase);	
+
 		trace("set stuff");
 		interp.execute(program);
 		hscriptStates.set(usehaxe,interp);
@@ -129,31 +122,55 @@ class GameOverSubstate extends MusicBeatSubstate
 		trace('executed');
 	}
 
-	public function new(x:Float, y:Float, ?isPlayer:Bool = true)
+	function togglePersistUpdate(toggle:Bool)
 	{
-		super();
-		makeHaxeState("gameover", "assets/scripts/custom_menus/", "GameOverSubstate");
-		callAllHScript("start", [x, y, isPlayer]);
+		persistentUpdate = toggle;
+	}
+
+	function togglePersistDraw(toggle:Bool)
+	{
+		persistentDraw = toggle;
+	}
+
+	function setVersion(text:String):String
+	{
+		version = text;
+		return text;
+	}
+
+	function coolURL(url:String):String
+	{
+		FlxG.openURL(url);
+		return url;
+	}
+
+	override function create()
+	{
+		FNFAssets.clearStoredMemory();
+		
+		#if windows
+		// Updating Discord Rich Presence
+		var customPrecence = TitleState.discordStuff.mainmenu;
+		Discord.DiscordClient.changePresence(customPrecence, null);
+		#end
+
+		makeHaxeState("unown", "assets/scripts/custom_menus/", "UnownSubstate");
+
+		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-		super.update(elapsed);
 		callAllHScript("update", [elapsed]);
+		super.update(elapsed);
 	}
 
 	override function beatHit()
 	{
 		super.beatHit();
-		FlxG.log.add('beat');
 		setAllHaxeVar('curBeat', curBeat);
-		callAllHScript('beatHit', [curBeat]);
-	}
 
-	override function stepHit()
-	{
-		super.stepHit();
-		setAllHaxeVar('curStep', curStep);
-		callAllHScript("stepHit", [curStep]);
+		if (hscriptStates.get('unown').variables.exists('beatHit'))
+			callAllHScript('beatHit', [curBeat]);
 	}
 }
