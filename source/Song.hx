@@ -28,6 +28,7 @@ typedef SwagSong =
 	var cutsceneType:String;
 	var countdownType:String;
 	var splitvocals:Null<Bool>;
+        var uiLayoutType:String;
 	var uiType:String;
 	var isSpooky:Null<Bool>;
 	var isHey:Null<Bool>;
@@ -56,6 +57,7 @@ class Song
 	public var splitvocals:Null<Bool> = false;
 	public var cutsceneType:String = "none";
 	public var uiType:String = 'normal';
+	public var uiLayoutType:String = 'normal';
 	public var countdownType:String = 'normal';
 	public var isHey:Null<Bool> = false;
 	public function new(song, notes, bpm)
@@ -216,6 +218,13 @@ class Song
 			parsedJson.uiType = switch (parsedJson.song.toLowerCase()) {
 				case 'roses' | 'senpai' | 'thorns':
 					'pixel';
+				default:
+					'normal';
+			}
+		}
+		if (parsedJson.uiLayoutType == null) {
+
+			parsedJson.uiType = switch (parsedJson.song.toLowerCase()) {
 				default:
 					'normal';
 			}

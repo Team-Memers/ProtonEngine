@@ -281,6 +281,7 @@ class PlayState extends MusicBeatState
 	var loveMultiplier:Float = 0;
 	var poisonMultiplier:Float = 0;
 	var goodCombo:Bool = false;
+        public var iconsVertical:Bool = false;
 	public var player1GoodHitSignal:Signal<Note>;
 	public var player2GoodHitSignal:Signal<Note>;
 	private var judgementList:Array<String> = [];
@@ -1180,7 +1181,12 @@ if (formoverride == 'none' || formoverride == 'bf')
 		trace('stage done');
 
 		var uiJson = CoolUtil.parseJson(FNFAssets.getText("assets/images/custom_ui/ui_layouts/ui.json"));
+if (SONG.uiLayoutType == 'none' || SONG.uiLayoutType == 'normal' || SONG.uiLayoutType == 'null' || SONG.uiLayoutType == null)
+   {
 		makeHaxeStateUI("ui", "assets/images/custom_ui/ui_layouts/" + Reflect.field(uiJson, 'layout') + "/", "../" + Reflect.field(uiJson, 'layout') + ".hscript");
+   } else {
+		makeHaxeStateUI("ui", "assets/images/custom_ui/ui_layouts/", SONG.uiLayoutType + ".hscript");
+   }
 
 		trace('ui done');
 
@@ -1463,10 +1469,50 @@ if (formoverride == 'none' || formoverride == 'bf')
 		}
 		#end
 	}
+var endVideo:Bool = true;
+	public function endingVideo(name:String):Void {
+		#if VIDEOS_ALLOWED
+		var foundFile:Bool = false;
+		var fileName:String = #if MODS_ALLOWED Paths.getPath('videos/' + name + '.' + Paths.VIDEO_EXT); #else ''; #end
+		#if sys
+		if(FileSystem.exists(fileName)) {
+			foundFile = true;
+		}
+		#end
 
+		if(!foundFile) {
+			fileName = Paths.video(name);
+			#if sys
+			if(FileSystem.exists(fileName)) {
+			#else
+			if(OpenFlAssets.exists(fileName)) {
+			#end
+				foundFile = true;
+			}
+		}
+
+		if(foundFile) {
+			inCutscene = true;
+			var bg = new FlxSprite(-FlxG.width, -FlxG.height).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+			bg.scrollFactor.set();
+			bg.cameras = [camHUD];
+			add(bg);
+
+			(new FlxVideo(fileName)).finishCallback = function() {
+				remove(bg);
+                                endVideo = false;
+			}
+			return;
+		}
+		else
+		{
+			FlxG.log.warn('Couldnt find video file: ' + fileName);
+		}
+		#end
+	}
 	function startAndEnd()
 	{
-		if(endingSong)
+		if (endingSong)
 			endSong();
 		else
 			startCountdown();
@@ -1475,9 +1521,19 @@ if (formoverride == 'none' || formoverride == 'bf')
 	public function startCountdown():Void
 	{
            inCutscene = false;
-
+if (dad.characterUi == null || dad.characterUi == 'none' || boyfriend.characterUi == 'normal')
+   {
 		generateStaticArrows(0, SONG.uiType, true);
+   } else {
+		generateStaticArrows(0, dad.characterUi, true);
+   }
+
+if (boyfriend.characterUi == null || boyfriend.characterUi == 'none' || boyfriend.characterUi == 'normal')
+   {
 		generateStaticArrows(1, SONG.uiType, true);
+   } else {
+		generateStaticArrows(1, boyfriend.characterUi, true);
+   }
 		talking = false;
 		startedCountdown = true;
 		Conductor.songPosition = 0;
@@ -1923,7 +1979,7 @@ if (SONG.player2 == 'cum')
 						else if (susLength > susNote)
 						{
 							var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote,
-								true, customImage, customXml, arrowEndsImage);
+								true, customXml, arrowEndsImage);
 							if (duoMode)
 							{
 								sustainNote.duoMode = true;
@@ -2649,9 +2705,14 @@ if (SONG.player2 == 'cum')
 			healthBar.createFilledBar(leftSideFill, rightSideFill);
 			barShowingPoison = false;
 		}
-
+if (iconsVertical == false)
+   {
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+   } else {
+				iconP1.y = healthBar.y + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset - 250);
+				iconP2.y = healthBar.y + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset + 250);
+   }
 		player1Icon = SONG.player1;
 		switch(SONG.player1) {
 			case "bf-car":
@@ -3409,6 +3470,7 @@ if (SONG.player2 == 'cum')
 			Highscore.saveScore(SONG.song, songScore, storyDifficulty, accuracy / 100, Ratings.CalculateFCRating(), OptionsHandler.options.judge);
 		#end
 		controls.setKeyboardScheme(Solo(false));
+		var video:MP4Handler = new MP4Handler();
 		if (isStoryMode) {
 			campaignScore += songScore;
 			campaignScoreDef += songScoreDef;
@@ -3495,12 +3557,36 @@ if (SONG.player2 == 'cum')
 					+ " | Misses: "
 					+ misses, iconRPC, playingAsRpc);
 				#end
+if (SONG.cutsceneType == 'video')
+   {
+						video.playMP4("assets/videos/" + SONG.song + "-end.mp4");
+						video.finishCallback = function()
+						{
 				LoadingState.loadAndSwitchState(new VictoryLoopState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y,
 					gf.getScreenPosition().x, gf.getScreenPosition().y, accuracy, songScore, dad.getScreenPosition().x, dad.getScreenPosition().y));
-			} else
+						}
+   } else {
+				LoadingState.loadAndSwitchState(new VictoryLoopState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y,
+					gf.getScreenPosition().x, gf.getScreenPosition().y, accuracy, songScore, dad.getScreenPosition().x, dad.getScreenPosition().y));
+   }
+   }
+
+   if (useVictoryScreen == false)
+      {
+      if (SONG.cutsceneType == 'video')
+         {
+						video.playMP4("assets/videos/" + SONG.song + "-end");
+						video.finishCallback = function()
+						{
+				                LoadingState.loadAndSwitchState(new FreeplayState());
+						}
+         } else {
 				LoadingState.loadAndSwitchState(new FreeplayState());
+         }
+      }
 		}
 	}
+
 
 	var endingSong:Bool = false;
 	var timeShown:Int = 0;

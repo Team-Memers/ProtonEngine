@@ -100,11 +100,13 @@ class ChartingState extends MusicBeatState
 	var cutsceneTextField:FlxInputText;
 	var countdownTextField:FlxInputText;
 	var uiTextField:FlxInputText;
+	var uiLayoutTextField:FlxInputText;
 	var stageTextField:FlxInputText;
 	var stageID:FlxUINumericStepper;
 	var isAltNoteCheck:FlxUICheckBox;
 	
 	var coolText = new FlxText(0, 0, 0, "69", 16);
+	var coolText2 = new FlxText(0, 40, 0, "420", 16);
 	
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
@@ -124,6 +126,7 @@ class ChartingState extends MusicBeatState
 	override function create() {
 		// wierd fix but might work?
 		remove(coolText);
+		remove(coolText2);
 		curSection = lastSection;
 
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
@@ -169,6 +172,7 @@ class ChartingState extends MusicBeatState
 				countdownType: "normal",
 				splitvocals: false,
 				uiType: 'normal',
+				uiLayoutType: 'normal',
 				isCheer: false,
 				preferredNoteAmount: 4,
 				forceJudgements: false,
@@ -329,6 +333,7 @@ class ChartingState extends MusicBeatState
 		cutsceneTextField = new FlxUIInputText(120, 140, 70, _song.cutsceneType, 8);
 		countdownTextField = new FlxUIInputText(120, 180, 70, _song.countdownType, 8);
 		uiTextField = new FlxUIInputText(10, 140, 70, _song.uiType, 8);
+		uiLayoutTextField = new FlxUIInputText(10, 160, 70, _song.uiLayoutType, 8);
 
 		var playerText = new FlxText(player1TextField.x + 70, player1TextField.y, 0, "Player", 8, false);
 		var formText = new FlxText(player1TextField.x + 70, player1TextField.y + 200, 0, "Player Skin", 8, false);
@@ -338,6 +343,7 @@ class ChartingState extends MusicBeatState
 		var cutsceneText = new FlxText(cutsceneTextField.x + 70, uiTextField.y, 0, "Cutscene", 8, false);
 		var countdownText = new FlxText(countdownTextField.x + 70, uiTextField.y + 70, 0, "Countdown", 8, false);
 		var uiText = new FlxText(uiTextField.x + 70, uiTextField.y, 0, "UI", 8, false);
+		var uiLayoutText = new FlxText(uiLayoutTextField.x + 70, uiLayoutTextField.y, 0, "UI Layout", 8, false);
 		var stageIDText = new FlxText(stageID.x + 70, stageID.y, 0, "Stage ID", 8, false);
 
 		var tab_group_char = new FlxUI(null, UI_box);
@@ -351,7 +357,9 @@ class ChartingState extends MusicBeatState
 		tab_group_char.add(cutsceneText);
 		tab_group_char.add(countdownText);
 		tab_group_char.add(uiText);
+		tab_group_char.add(uiLayoutText);
 		tab_group_char.add(uiTextField);
+		tab_group_char.add(uiLayoutTextField);
 		tab_group_char.add(cutsceneTextField);
 		tab_group_char.add(countdownTextField);
 		tab_group_char.add(stageTextField);
@@ -667,11 +675,18 @@ class ChartingState extends MusicBeatState
 	override function update(elapsed:Float) {
 		curStep = recalculateSteps();
 		remove(coolText);
+		remove(coolText2);
 		coolText.text = 'curStep: ' + Std.string(curStep);
 		coolText.x = 1000;
 		coolText.y = 100;
 		coolText.scrollFactor.set();
 		add(coolText);
+
+		coolText2.text = 'curBeat: ' + Std.string(curBeat);
+		coolText2.x = 1000;
+		coolText2.y = 150;
+		coolText2.scrollFactor.set();
+		add(coolText2);
 
 		Conductor.songPosition = FlxG.sound.music.time;
 		_song.song = typingShit.text;
@@ -682,6 +697,7 @@ class ChartingState extends MusicBeatState
 		_song.stageID = Std.parseInt(Std.string(stageID.value)); // what
 		_song.cutsceneType = cutsceneTextField.text;
 		_song.uiType = uiTextField.text;
+		_song.uiLayoutType = uiLayoutTextField.text;
 		_song.countdownType = countdownTextField.text;
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
 
@@ -745,7 +761,7 @@ class ChartingState extends MusicBeatState
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
 
-		if (!typingShit.hasFocus && !player1TextField.hasFocus && !player2TextField.hasFocus && !gfTextField.hasFocus && !stageTextField.hasFocus && !cutsceneTextField.hasFocus && !uiTextField.hasFocus && !countdownTextField.hasFocus) {
+		if (!typingShit.hasFocus && !player1TextField.hasFocus && !player2TextField.hasFocus && !gfTextField.hasFocus && !stageTextField.hasFocus && !cutsceneTextField.hasFocus && !uiTextField.hasFocus && !countdownTextField.hasFocus && !uiLayoutTextField.hasFocus) {
 			if (FlxG.keys.justPressed.E) {
 				changeNoteSustain(Conductor.stepCrochet);
 			}
