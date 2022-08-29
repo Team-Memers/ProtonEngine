@@ -3,6 +3,7 @@ package;
 import flixel.system.frontEnds.CameraFrontEnd;
 import flixel.system.frontEnds.BitmapFrontEnd;
 import flixel.system.FlxAssets.FlxSoundAsset;
+import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
@@ -71,9 +72,14 @@ class PluginManager {
     }
     public static function addVarsToInterp<T:Interp>(interp:T):T {
 		interp.variables.set("Conductor", Conductor);
+		interp.variables.set("StageSizeScaleMode", flixel.system.scaleModes.StageSizeScaleMode);
 		interp.variables.set("FlxSprite", DynamicSprite);
-		interp.variables.set("FileSystem", sys.FileSystem);
-		interp.variables.set("File", sys.io.File);
+		interp.variables.set("Paths", Paths);
+		interp.variables.set("MP4Handler", MP4Handler);
+		interp.variables.set("VideoHandler", VideoHandler);	
+		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
+		interp.variables.set("sys.FileSystem", sys.FileSystem);
+		interp.variables.set("sys.io.File", sys.io.File);
 		interp.variables.set("FlxSound", DynamicSound);
 		interp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
 		interp.variables.set("FlxGroup", flixel.group.FlxGroup);
@@ -92,6 +98,7 @@ class PluginManager {
 
 		// : )
 		interp.variables.set("FlxTimer", flixel.util.FlxTimer);
+		interp.variables.set("FlxCamera", flixel.util.FlxTimer);
 		interp.variables.set("FlxTween", flixel.tweens.FlxTween);
 		interp.variables.set("Std", Std);
 		interp.variables.set("StringTools", StringTools);
@@ -111,8 +118,7 @@ class PluginManager {
 		interp.variables.set("FlxGlitchEffect", flixel.addons.effects.chainable.FlxGlitchEffect);
 		interp.variables.set("FlxRainbowEffect", flixel.addons.effects.chainable.FlxRainbowEffect);
 		interp.variables.set("PlayState", PlayState);
-		interp.variables.set("FlxG", HscriptGlobals);
-		interp.variables.set("FlxMouse", FlxMouse);
+		interp.variables.set("FlxG", FlxG);
 		interp.variables.set("Song", Song);
 		interp.variables.set("FlxMouseEventManager", FlxMouseEventManager);
 		interp.variables.set("Sys", Sys);
@@ -150,7 +156,7 @@ class HscriptGlobals {
     public static var keys(get, never):FlxKeyboard;
     // no log
     public static var maxElapsed(get, set):Float;
-    public static var mouse = FlxG.mouse;
+    public var mouse = FlxG.mouse;
     // no plugins
     public static var random= FlxG.random;
     public static var renderBlit(get, never):Bool;

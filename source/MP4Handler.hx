@@ -14,6 +14,7 @@ class MP4Handler
 {
 	public var finishCallback:Void->Void;
 	public var stateCallback:FlxState;
+        public var fadeFinish:Bool = false;
 
 	public var bitmap:VlcBitmap;
 
@@ -25,7 +26,7 @@ class MP4Handler
 	}
 
 	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,
-			?midSong:Bool = false):Void
+			?midSong:Bool = false, ?fadeFinished:Bool = false):Void
 	{
 		if (!midSong)
 		{
@@ -53,6 +54,11 @@ class MP4Handler
 		bitmap.onVideoReady = onVLCVideoReady;
 		bitmap.onComplete = onVLCComplete;
 		bitmap.onError = onVLCError;
+
+if (fadeFinished)
+   {
+   fadeFinish = true;
+   }
 
 		FlxG.stage.addEventListener(Event.ENTER_FRAME, update);
 
@@ -104,8 +110,10 @@ class MP4Handler
 		bitmap.stop();
 
 		// Clean player, just in case! Actually no.
-
+if (fadeFinish)
+   {
 		FlxG.camera.fade(FlxColor.BLACK, 0, false);
+   }
 
 		trace("Big, Big Chungus, Big Chungus!");
 

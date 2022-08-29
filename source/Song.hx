@@ -224,7 +224,7 @@ class Song
 		}
 		if (parsedJson.uiLayoutType == null) {
 
-			parsedJson.uiType = switch (parsedJson.song.toLowerCase()) {
+			parsedJson.uiLayoutType = switch (parsedJson.song.toLowerCase()) {
 				default:
 					'normal';
 			}

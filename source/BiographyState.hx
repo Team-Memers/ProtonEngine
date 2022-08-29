@@ -36,7 +36,7 @@ using StringTools;
 
 
 	
-class WarpState extends MusicBeatState
+class BiographyState extends MusicBeatState
 {
 
 	var hscriptStates:Map<String, Interp> = [];
@@ -89,23 +89,31 @@ class WarpState extends MusicBeatState
 		interp.variables.set("Sys", Sys);
 		interp.variables.set("FlxTextBorderStyle", FlxTextBorderStyle);
 		interp.variables.set("controls", controls);
+		interp.variables.set("FlxObject", FlxObject);
 		interp.variables.set("FlxTransitionableState", FlxTransitionableState);
 		interp.variables.set("MainMenuState", MainMenuState);
 		interp.variables.set("CategoryState", CategoryState);
 		interp.variables.set("ChartingState", ChartingState);
 		interp.variables.set("Alphabet", Alphabet);
 		interp.variables.set("curBeat", 0);
+		interp.variables.set("BiographyState", BiographyState);
 		interp.variables.set("add", add);
 		interp.variables.set("remove", remove);
 		interp.variables.set("insert", insert);
 		interp.variables.set("pi", Math.PI);
 		interp.variables.set("curMusicName", Main.curMusicName);
+		interp.variables.set("FlxFlicker", FlxFlicker);
 		interp.variables.set("StoryMenuState", StoryMenuState);
 		interp.variables.set("FreeplayState", FreeplayState);
 		interp.variables.set("CreditsState", CreditsState);
 		interp.variables.set("SaveDataState", SaveDataState);
+		interp.variables.set("Application", Application);
+		interp.variables.set("togglePersistUpdate", togglePersistUpdate);
+		interp.variables.set("togglePersistDraw", togglePersistDraw);
 		interp.variables.set("coolURL", coolURL);
+		interp.variables.set("flixelSave", FlxG.save);
 		interp.variables.set("FlxTween", FlxTween);	
+		interp.variables.set("FlxEase", FlxEase);
 		interp.variables.set("FlxText", FlxText);
 		interp.variables.set("FlxMath", FlxMath);
 		interp.variables.set("FlxVideo", FlxVideo);
@@ -115,7 +123,7 @@ class WarpState extends MusicBeatState
 		interp.variables.set("ModifierState", ModifierState);	
 		interp.variables.set("VideoHandler", VideoHandler);	
 		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
-		interp.variables.set("MP4Handler", MP4Handler);	
+		interp.variables.set("MP4Handler", MP4Handler);		
 
 		trace("set stuff");
 		interp.execute(program);
@@ -151,8 +159,7 @@ class WarpState extends MusicBeatState
 		Discord.DiscordClient.changePresence(customPrecence, null);
 		#end
 
-		makeHaxeState("warp", "assets/scripts/custom_menus/", "WarpState");
-                trace("balls");
+		makeHaxeState("biography", "assets/scripts/custom_menus/", "BiographyState");
 
 		super.create();
 	}
@@ -168,7 +175,7 @@ class WarpState extends MusicBeatState
 		super.beatHit();
 		setAllHaxeVar('curBeat', curBeat);
 
-		if (hscriptStates.get('warp').variables.exists('beatHit'))
+		if (hscriptStates.get('biography').variables.exists('beatHit'))
 			callAllHScript('beatHit', [curBeat]);
 	}
 }

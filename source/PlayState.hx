@@ -28,6 +28,9 @@ import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.effects.FlxFlicker;
 import flash.display.BitmapData;
+import flixel.system.scaleModes.RatioScaleMode;
+import flixel.system.scaleModes.StageSizeScaleMode;
+import flixel.system.scaleModes.BaseScaleMode;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.effects.FlxTrail;
@@ -396,6 +399,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("health", health);
 		interp.variables.set("healthChange", healthChange);
 		interp.variables.set("iconP1", iconP1);
+		interp.variables.set("Paths", Paths);
 		interp.variables.set("iconP2", iconP2);
 		interp.variables.set("currentPlayState", this);
 		interp.variables.set("PlayState", PlayState);
@@ -588,6 +592,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("health", health);
 		interp.variables.set("scoreTxt", scoreTxt);
 		interp.variables.set("difficTxt", difficTxt);
+		interp.variables.set("FlxCamera", FlxCamera);
 		interp.variables.set('useSongBar', useSongBar);
 		interp.variables.set("songPosBG", songPosBG);
 		interp.variables.set("songPosBar", songPosBar);

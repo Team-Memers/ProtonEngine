@@ -21,6 +21,8 @@ class PauseSubState extends MusicBeatSubstate
 	var exInterp:InterpEx = new InterpEx();
 	var haxeSprites:Map<String, FlxSprite> = [];
 
+public var FUCKINGDONTDOITVLCMEDIAPLAYERISWEARTOGOD:Bool = true;
+
 	function callHscript(func_name:String, args:Array<Dynamic>, usehaxe:String) {
 		// if function doesn't exist
 		if (!hscriptStates.get(usehaxe).variables.exists(func_name)) {

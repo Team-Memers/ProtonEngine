@@ -143,7 +143,7 @@ class SoundTestState extends MusicBeatState
 		#end
 
 		makeHaxeState("soundtest", "assets/scripts/custom_menus/", "SoundTestState");
-
+trace('i am going to blow a dogs brains out');
 		super.create();
 	}
 

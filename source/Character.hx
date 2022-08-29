@@ -78,7 +78,8 @@ class Character extends FlxSprite
 	public var animationNotes:Array<Dynamic> = [];
 	public var like:String = "bf";
 	public var beNormal:Bool = true;
-        public var forceColor = false;
+        public var forceColor:Bool = false;
+        public var characterUi:String = "none";
 	/**
 	 * Color used by default for enemy, when not in duo mode or oppnt play.
 	 */

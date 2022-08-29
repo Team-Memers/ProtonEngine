@@ -140,6 +140,17 @@ class CreditsState extends MusicBeatState
 		interp.variables.set("getCreditData", getCreditData);
 		interp.variables.set("setCreditData", setCreditData);
 		interp.variables.set("checkPrefix", checkPrefix);
+		interp.variables.set("FlxTween", FlxTween);	
+		interp.variables.set("FlxText", FlxText);
+		interp.variables.set("FlxMath", FlxMath);
+		interp.variables.set("FlxVideo", FlxVideo);
+		interp.variables.set("FlxG", FlxG);	
+		interp.variables.set("PlayStateChangeables", PlayStateChangeables);	
+		interp.variables.set("PlayState", PlayState);	
+		interp.variables.set("ModifierState", ModifierState);	
+		interp.variables.set("VideoHandler", VideoHandler);	
+		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
+		interp.variables.set("MP4Handler", MP4Handler);	
 		
 		trace("set stuff");
 		interp.execute(program);

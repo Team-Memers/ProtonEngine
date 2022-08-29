@@ -139,7 +139,7 @@ class MainMenuState extends MusicBeatState
 		interp.variables.set("flixelSave", FlxG.save);
 		interp.variables.set("FlxTween", FlxTween);	
 		interp.variables.set("FlxEase", FlxEase);	
-
+		interp.variables.set("BiographyState", BiographyState);
 		trace("set stuff");
 		interp.execute(program);
 		hscriptStates.set(usehaxe,interp);
