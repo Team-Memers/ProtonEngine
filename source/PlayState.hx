@@ -28,9 +28,6 @@ import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.effects.FlxFlicker;
 import flash.display.BitmapData;
-import flixel.system.scaleModes.RatioScaleMode;
-import flixel.system.scaleModes.StageSizeScaleMode;
-import flixel.system.scaleModes.BaseScaleMode;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.effects.FlxTrail;
@@ -68,6 +65,7 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 import lime.system.System;
+import openfl.filters.BitmapFilter;
 import openfl.media.Sound;
 import flixel.group.FlxGroup;
 import hscript.Interp;
@@ -75,14 +73,12 @@ import hscript.Parser;
 import hscript.ParserEx;
 import hscript.InterpEx;
 import hscript.ClassDeclEx;
-#if sys
+import Shaders;
 import sys.io.File;
 import sys.FileSystem;
 import haxe.io.Path;
 import openfl.utils.ByteArray;
 import lime.media.AudioBuffer;
-
-#end
 import tjson.TJSON;
 import Judgement.TUI;
 using StringTools;
@@ -121,6 +117,7 @@ class PlayState extends MusicBeatState
 	public static var curmult:Array<Float> = [1, 1, 1, 1];
 	public static var isWarp:Bool = false;
         public var isMonochrome = false;
+	public static var instance:PlayState;
 	private var vocals:FlxSound;
 	// use old bf
 	private var oldMode:Bool = false;
@@ -150,6 +147,9 @@ class PlayState extends MusicBeatState
 	public var songPosBar:FlxBar;
 	public var songPosBG:FlxSprite;
 	public var songPositionBar:Float = 0;
+	public var shaderUpdates:Array<Float->Void> = [];
+	public var camGameShaders:Array<ShaderEffect> = [];
+	public var camHUDShaders:Array<ShaderEffect> = [];
 	var songLength:Float = 0.0;
 	var songScoreDef:Int = 0;
 	var nps:Int = 0;
@@ -398,6 +398,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("tweenCamIn", tweenCamIn);
 		interp.variables.set("health", health);
 		interp.variables.set("healthChange", healthChange);
+		interp.variables.set("FlxCamera", FlxCamera);
 		interp.variables.set("iconP1", iconP1);
 		interp.variables.set("Paths", Paths);
 		interp.variables.set("iconP2", iconP2);
@@ -413,6 +414,8 @@ class PlayState extends MusicBeatState
 		interp.variables.set("scriptCamPos", scriptCamPos);
 		interp.variables.set("resyncVocals", resyncVocals);
 		interp.variables.set("vocals", vocals);
+		interp.variables.set("addCustomShaderToSprite", addCustomShaderToSprite);
+		interp.variables.set("addCustomShaderToCam", addCustomShaderToCam);
 		// callbacks
 		interp.variables.set("start", function (song) {});
 		interp.variables.set("beatHit", function (beat) {});
@@ -473,6 +476,20 @@ class PlayState extends MusicBeatState
 					add(gf);
 			}
 		});
+
+		interp.variables.set("addPulseEffect", addPulseEffect);
+		interp.variables.set("addDistortionEffect", addDistortionEffect);
+		interp.variables.set("addVCREffect", addVCREffect);
+		interp.variables.set("addInvertEffect", addInvertEffect);
+		interp.variables.set("addGrayScaleEffect", addGrayScaleEffect);
+		interp.variables.set("addScanLineEffect", addScanLineEffect);
+		interp.variables.set("addChromaticAberrationEffect", addChromaticAberrationEffect);
+		interp.variables.set("ShaderHandler", ShaderHandler);
+		interp.variables.set("OverlayShader", OverlayShader);
+		interp.variables.set("ColorSwap", ColorSwap);
+		interp.variables.set("ShaderFilter", ShaderFilter);
+		interp.variables.set("addShaderToCam", addShaderToCam);
+
 		/*interp.variables.set("swapChar", function (charState:String, charTo:String) {
 			switch(charState) {
 				case 'boyfriend':
@@ -563,6 +580,215 @@ class PlayState extends MusicBeatState
 		callHscript("start", [SONG.song], usehaxe);
 		trace('executed');
 	}
+	function blendModeFromString(blend:String):BlendMode {
+		switch(blend.toLowerCase().trim()) {
+			case 'add': return ADD;
+			case 'alpha': return ALPHA;
+			case 'darken': return DARKEN;
+			case 'difference': return DIFFERENCE;
+			case 'erase': return ERASE;
+			case 'hardlight': return HARDLIGHT;
+			case 'invert': return INVERT;
+			case 'layer': return LAYER;
+			case 'lighten': return LIGHTEN;
+			case 'multiply': return MULTIPLY;
+			case 'overlay': return OVERLAY;
+			case 'screen': return SCREEN;
+			case 'shader': return SHADER;
+			case 'subtract': return SUBTRACT;
+		}
+		return NORMAL;
+	}
+
+	public static function addCustomShaderToSprite(spriteSh:FlxSprite, shaderName:String):FlxSprite
+	{
+		spriteSh.shader = new ShaderCustom(shaderName);
+		//startCustomShader(shaderName);
+
+		return spriteSh;
+	}
+
+	public static function startCustomShader(shaderName:String):Null<ShaderHandler>
+	{
+		var fragText:String = '';
+		var vertText:String = '';
+
+		if (FNFAssets.exists('assets/shaders/' + shaderName + '.frag'))
+			fragText = FNFAssets.getText('assets/shaders/' + shaderName + '.frag');
+
+		if (FNFAssets.exists('assets/shaders/' + shaderName + '.vert'))
+			vertText = FNFAssets.getText('assets/shaders/' + shaderName + '.vert');
+
+		if (fragText == '' && vertText == '')
+			return null; //If not nothing text, ignore this
+
+		return new ShaderHandler(fragText, vertText); //Return the Shader ID sucessly.
+	}
+
+	public function addShaderToCam(cam:String,effect:ShaderEffect)
+	{ //STOLE FROM ANDROMEDA AND PSYCH ENGINE 0.5.1 WITH SHADERS
+
+		switch(cam.toLowerCase()) 
+		{
+			case 'camhud' | 'hud':
+					camHUDShaders.push(effect);
+					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
+					for(i in camHUDShaders){
+					  newCamEffects.push(new ShaderFilter(i.shader));
+					}
+					camHUD.setFilters(newCamEffects);
+			default:
+					camGameShaders.push(effect);
+					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
+					for(i in camGameShaders){
+					  newCamEffects.push(new ShaderFilter(i.shader));
+					}
+					camGame.setFilters(newCamEffects);
+		}
+	}
+
+	public function addCustomShaderToCam(cam:String,shname:String)
+	{ //STOLE FROM ANDROMEDA AND PSYCH ENGINE 0.5.1 WITH SHADERS
+
+		var cshader:ShaderCustom = new ShaderCustom(shname);
+
+		switch(cam.toLowerCase()) 
+		{
+			case 'camhud' | 'hud':
+					var newCamEffects:Array<BitmapFilter>=[new ShaderFilter(cshader)]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
+					camHUD.setFilters(newCamEffects);
+			default:
+					var newCamEffects:Array<BitmapFilter>=[new ShaderFilter(cshader)]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
+					camGame.setFilters(newCamEffects);
+		}
+	}
+
+	public function addSpriteShader(sprite:FlxSprite,effect:ShaderEffect)
+	{
+		sprite.shader = effect.shader;
+	}
+
+	public function removeShaderFromCamera(cam:String,effect:ShaderEffect)
+	{
+		switch(cam.toLowerCase()) 
+		{
+			case 'camhud' | 'hud': 
+				camHUDShaders.remove(effect);
+				var newCamEffects:Array<BitmapFilter>=[];
+				for(i in camHUDShaders)
+				{
+					newCamEffects.push(new ShaderFilter(i.shader));
+				}
+				camHUD.setFilters(newCamEffects);
+			default: 
+				camGameShaders.remove(effect);
+				var newCamEffects:Array<BitmapFilter>=[];
+				for(i in camGameShaders){
+				  newCamEffects.push(new ShaderFilter(i.shader));
+				}
+				camGame.setFilters(newCamEffects);
+		}
+	}
+
+	public function clearShaderFromCamera(cam:String)
+	{
+		switch(cam.toLowerCase()) {
+			case 'camhud' | 'hud': 
+				camHUDShaders = [];
+				var newCamEffects:Array<BitmapFilter>=[];
+				camHUD.setFilters(newCamEffects);
+			default: 
+				camGameShaders = [];
+				var newCamEffects:Array<BitmapFilter>=[];
+				camGame.setFilters(newCamEffects);
+		}
+	}
+
+	//SHADERS STUFF
+
+	public function addPulseEffect(dest:String, sprite:Null<FlxSprite> = null, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1)
+	{
+		switch (dest.toLowerCase())
+		{
+			case 'camhud', 'hud', 'camgame', 'game':
+				addShaderToCam(dest, new PulseEffect(waveSpeed,waveFrq,waveAmp));
+			default:
+				if (sprite != null)
+					sprite.shader = (new PulseEffect(waveSpeed,waveFrq,waveAmp)).shader;
+		}
+	}
+
+	public function addDistortionEffect(dest:String, sprite:Null<FlxSprite> = null, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1)
+	{
+		switch (dest.toLowerCase())
+		{
+			case 'camhud', 'hud', 'camgame', 'game':
+				addShaderToCam(dest, new DistortBGEffect(waveSpeed,waveFrq,waveAmp));
+			default:
+				if (sprite != null)
+					sprite.shader = (new DistortBGEffect(waveSpeed,waveFrq,waveAmp)).shader;
+		}
+	}
+
+	public function addVCREffect(dest:String, sprite:Null<FlxSprite> = null, glitchFactor:Float = 1, distortion:Bool = true, perspectiveOn:Bool = true, vignetteMoving:Bool = true)
+	{
+		switch (dest.toLowerCase())
+		{
+			case 'camhud', 'hud', 'camgame', 'game':
+				addShaderToCam(dest, new VCRDistortionEffect(glitchFactor,distortion,perspectiveOn,vignetteMoving));
+			default:
+				if (sprite != null)
+					sprite.shader = (new VCRDistortionEffect(glitchFactor,distortion,perspectiveOn,vignetteMoving)).shader;
+		}
+	}
+
+	public function addInvertEffect(dest:String, sprite:Null<FlxSprite> = null, lockAlpha:Bool = false)
+	{
+		switch (dest.toLowerCase())
+		{
+			case 'camhud', 'hud', 'camgame', 'game':
+				addShaderToCam(dest, new InvertColorsEffect(lockAlpha));
+			default:
+				if (sprite != null)
+					sprite.shader = (new InvertColorsEffect(lockAlpha)).shader;
+		}
+	}
+
+	public function addGrayScaleEffect(dest:String, sprite:Null<FlxSprite> = null)
+	{
+		switch (dest.toLowerCase())
+		{
+			case 'camhud', 'hud', 'camgame', 'game':
+				addShaderToCam(dest, new GreyscaleEffect());
+			default:
+				if (sprite != null)
+					sprite.shader = (new GreyscaleEffect()).shader;
+		}
+	}
+
+	public function addScanLineEffect(dest:String, sprite:Null<FlxSprite> = null, lockAlpha:Bool = false)
+	{
+		switch (dest.toLowerCase())
+		{
+			case 'camhud', 'hud', 'camgame', 'game':
+				addShaderToCam(dest, new ScanlineEffect(lockAlpha));
+			default:
+				if (sprite != null)
+					sprite.shader = (new ScanlineEffect(lockAlpha)).shader;
+		}
+	}
+
+	public function addChromaticAberrationEffect(dest:String, sprite:Null<FlxSprite> = null, offset:Float = 0.03)
+	{
+		switch (dest.toLowerCase())
+		{
+			case 'camhud', 'hud', 'camgame', 'game':
+				addShaderToCam(dest, new ChromaticAberrationEffect(offset));
+			default:
+				if (sprite != null)
+					sprite.shader = (new ChromaticAberrationEffect(offset)).shader;
+		}
+	}
 	function makeHaxeStateUI(usehaxe:String, path:String, filename:String) {
 		trace("opening a haxe state (because we are cool :))");
 		var parser = new ParserEx();
@@ -623,6 +849,19 @@ class PlayState extends MusicBeatState
 		interp.variables.set("nps", nps);
 		interp.variables.set("accuracy", accuracy);
 		interp.variables.set("combo", combo);
+
+		interp.variables.set("addShaderToCam", addShaderToCam);
+		interp.variables.set("addPulseEffect", addPulseEffect);
+		interp.variables.set("addDistortionEffect", addDistortionEffect);
+		interp.variables.set("addVCREffect", addVCREffect);
+		interp.variables.set("addInvertEffect", addInvertEffect);
+		interp.variables.set("addGrayScaleEffect", addGrayScaleEffect);
+		interp.variables.set("addScanLineEffect", addScanLineEffect);
+		interp.variables.set("addChromaticAberrationEffect", addChromaticAberrationEffect);
+		interp.variables.set("ShaderHandler", ShaderHandler);
+		interp.variables.set("OverlayShader", OverlayShader);
+		interp.variables.set("ColorSwap", ColorSwap);
+		interp.variables.set("ShaderFilter", ShaderFilter);
 
 		interp.variables.set("start", function (song) {});
 		interp.variables.set("update", function (elapsed) {});
@@ -686,6 +925,7 @@ class PlayState extends MusicBeatState
 		Note.getFrames = true;
 		Note.getSpecialFrames = true;
 		Note.specialNoteJson = null;
+		instance = this;
 		if (FNFAssets.exists('assets/data/${SONG.song.toLowerCase()}/noteInfo.json')) {
 			Note.specialNoteJson = CoolUtil.parseJson(FNFAssets.getText('assets/data/${SONG.song.toLowerCase()}/noteInfo.json'));
 		}
@@ -2560,6 +2800,10 @@ if (SONG.player2 == 'cum')
 		setAllHaxeVar('gfSpeed', gfSpeed);
 		setAllHaxeVar('health', health);
 		callAllHScript('update', [elapsed]);
+
+		for (i in shaderUpdates){
+			i(elapsed);
+		}
 		
 		if (hscriptStates.exists("modchart")) {
 			if (getHaxeVar("showOnlyStrums", "modchart"))

@@ -25,6 +25,7 @@ import flixel.input.gamepad.FlxGamepadManager;
 import flixel.addons.display.FlxBackdrop;
 import flixel.FlxCamera;
 import flixel.util.FlxColor;
+import flixel.FlxObject;
 import flixel.tweens.FlxEase;
 import flixel.addons.effects.FlxTrail;
 import plugins.tools.MetroSprite;
@@ -72,19 +73,19 @@ class PluginManager {
     }
     public static function addVarsToInterp<T:Interp>(interp:T):T {
 		interp.variables.set("Conductor", Conductor);
-		interp.variables.set("StageSizeScaleMode", flixel.system.scaleModes.StageSizeScaleMode);
 		interp.variables.set("FlxSprite", DynamicSprite);
 		interp.variables.set("Paths", Paths);
 		interp.variables.set("MP4Handler", MP4Handler);
 		interp.variables.set("VideoHandler", VideoHandler);	
 		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
-		interp.variables.set("sys.FileSystem", sys.FileSystem);
-		interp.variables.set("sys.io.File", sys.io.File);
+		interp.variables.set("FileSystem", sys.FileSystem);
+		interp.variables.set("File", sys.io.File);
 		interp.variables.set("FlxSound", DynamicSound);
 		interp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
 		interp.variables.set("FlxGroup", flixel.group.FlxGroup);
 		interp.variables.set("FlxTypedGroup", flixel.group.FlxGroup.FlxTypedGroup);
 		interp.variables.set("FlxTypedSpriteGroup", flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup);
+		interp.variables.set("FlxObject", flixel.FlxObject);
 		interp.variables.set("FlxAngle", flixel.math.FlxAngle);
 		interp.variables.set("FlxMath", flixel.math.FlxMath);
 		interp.variables.set("FlxFlicker", flixel.effects.FlxFlicker);
@@ -98,7 +99,7 @@ class PluginManager {
 
 		// : )
 		interp.variables.set("FlxTimer", flixel.util.FlxTimer);
-		interp.variables.set("FlxCamera", flixel.util.FlxTimer);
+		interp.variables.set("FlxCamera", flixel.FlxCamera);
 		interp.variables.set("FlxTween", flixel.tweens.FlxTween);
 		interp.variables.set("Std", Std);
 		interp.variables.set("StringTools", StringTools);
