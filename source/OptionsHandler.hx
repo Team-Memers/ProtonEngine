@@ -53,6 +53,7 @@ typedef TOptions = {
     var ignoreVile:Bool;
     var scrollSpeed:Float;
     var camNotes:Bool;
+    var colorHealthbar:Bool;
 }
 /**
  * All options that can display on the savedatamenu. Used with mask
@@ -120,6 +121,7 @@ class OptionsHandler {
             //lastOptions.funnyOptions = true;
             lastOptions.allowStoryMode = true;
             lastOptions.allowFreeplay = true;
+            lastOptions.colorHealthbar = true;
             lastOptions.allowDonate = false;
             lastOptions.hitSounds = false;
             lastOptions.titleToggle = true;

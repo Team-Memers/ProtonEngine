@@ -145,8 +145,12 @@ class Character extends FlxSprite
 				method(args[0], args[1]);
 		}
 	}
+		var charHealthJson:Dynamic = null;
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
+               charHealthJson = CoolUtil.parseJson(FNFAssets.getJson('assets/images/custom_chars/custom_chars'));
+   
+   
 		animOffsets = new Map<String, Array<Dynamic>>();
 		camOffsets = new Map<String, Array<Dynamic>>();
 		super(x, y);
@@ -177,6 +181,17 @@ class Character extends FlxSprite
 		interp = Character.getAnimInterp(curCharacter);
 		callInterp("init", [this]);
 		dance();
+
+if (OptionsHandler.options.colorHealthbar && !isPlayer)
+   {
+   enemyColor = Reflect.field(charJson, curCharacter).colors;
+   opponentColor = Reflect.field(charJson, curCharacter).colors;
+   }
+if (OptionsHandler.options.colorHealthbar && isPlayer)
+   {
+   playerColor = Reflect.field(charJson, curCharacter).colors;
+   bfColor = Reflect.field(charJson, curCharacter).colors;
+   }
 
 		if (isPlayer)
 		{
@@ -440,6 +455,7 @@ class Character extends FlxSprite
 			interp.variables.set("charJson", {});
 		interp.variables.set("hscriptPath", 'assets/images/custom_chars/' + char + '/');
 		interp.variables.set("charName", char);
+		interp.variables.set("Paths", Paths);
 		interp.variables.set("Level_NotAHoe", Level_NotAHoe);
 		interp.variables.set("Level_Boogie", Level_Boogie);
 		interp.variables.set("Level_Sadness", Level_Sadness);

@@ -478,6 +478,7 @@ class PlayState extends MusicBeatState
 		});
 
 		interp.variables.set("addPulseEffect", addPulseEffect);
+		interp.variables.set("blendModeFromString", blendModeFromString);
 		interp.variables.set("addDistortionEffect", addDistortionEffect);
 		interp.variables.set("addVCREffect", addVCREffect);
 		interp.variables.set("addInvertEffect", addInvertEffect);
@@ -489,6 +490,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("ColorSwap", ColorSwap);
 		interp.variables.set("ShaderFilter", ShaderFilter);
 		interp.variables.set("addShaderToCam", addShaderToCam);
+		interp.variables.set("clearShaderFromCamera", clearShaderFromCamera);
 
 		/*interp.variables.set("swapChar", function (charState:String, charTo:String) {
 			switch(charState) {
@@ -1353,6 +1355,7 @@ if (formoverride == 'none' || formoverride == 'bf')
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
+                var charHealthJson = CoolUtil.parseJson(FNFAssets.getJson('assets/images/custom_chars/custom_chars'));
 		var leftSideFill = opponentPlayer ? dad.opponentColor : dad.enemyColor;
 		if (duoMode)
 			leftSideFill = dad.opponentColor;

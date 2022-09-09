@@ -121,6 +121,16 @@ class Paths
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
+    
+    inline static public function getPackerAtlasJson(key:String, ?library:String)
+    {
+        return FlxAtlasFrames.fromTexturePackerJson(image(key, library), file(key, library));
+    }
+
+    inline static public function getCharacterJson(key:String)
+    {
+        return FlxAtlasFrames.fromTexturePackerJson(FNFAssets.getBitmapData('assets/images/custom_chars/' + key + '/char.png'), FNFAssets.getText('assets/images/custom_chars/' + key + '/char.json'));
+    }
 
 	inline static public function getUsersDesktop() // Get the path of the users desktop cus smartass i am.
 	{

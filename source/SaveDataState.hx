@@ -200,6 +200,8 @@ class SaveDataState extends MusicBeatState
 			/*{name: "Ignore Bad Timing", value: false, intName:"ignoreShittyTiming", desc: "Even with new input on, if you hit a note really poorly, it counts as a miss. This disables that."},*/
 			{name: "Show Song Position", value: false, intName: "showSongPos", desc: "Whether to show the song bar."},
 			{name: "Style", value: false, intName: "style", desc: "Whether to use fancy style or default to base game."},
+			{name: "Colored Healthbar", value: true, intName: "colorHealthbar", desc: "Whether or not the game reads healthbar colors off of custom char json"},
+{name: "Show Note Splashes", value: false, intName: "showNoteSplashes", desc: "Whether to show the note splahes for getting a sick."},
 			{
 				name: "Ignore Unlocks",
 				value: false,
@@ -232,7 +234,7 @@ class SaveDataState extends MusicBeatState
 			#if sys
 			{name: "Toggle Title Background", value: true, intName:'titleToggle', desc:"Turn on/off the title screen background.", ignore: true,},
 			{name: "Modding Plus Rating Recs", value: false, intName:'ratingColorRecs', desc:"Turn on/off the rating color rectangles on game.",},
-			{name: "Show Splashes", value: true, intName:'showSplashes', desc:"Turn on/off the Note Splashes.",},
+			{name: "Show Splashes", value: true, intName:'showNoteSplashes', desc:"Turn on/off the Note Splashes.",},
 			{name:"New Character...", value: false, intName:'newchar', desc: "Make a new character!", ignore: true,},
 			{name:"New Stage...", value:false, intName:'newstage', desc: "Make a new stage!", ignore: true, },
 			{name: "New Song...", value: false, intName:'newsong', desc: "Make a new song!", ignore: true, },
