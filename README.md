@@ -24,29 +24,34 @@ YOU WILL NEED TO INSTALL EVERYTHING RELATED TO EXTENSION-WEBM!!!
 
 
 CHANGES FROM ORIGINAL M+/ROBLOX BUILD:
+
 Fully custom playable character vocals (format is songnamecharactername_Voices)
 
 Reverted back to music folder
 
 Fully custom countdowns for stuff like Indie Cross
 
-Sonic.exe Sound Test (Not fully custom yet but will be soon i hope)
+Sonic.exe Sound Test (Completely custom)
 
-Mario's Madness Warp Zone (Same as Sound Test)
+Mario's Madness Warp Zone (Same as Sound Test) (DEPRECATED)
 
 Dave and Bambi Character Select Screen (old one is still in modifier menu)
 
 Video support!! `currentPlayState.startVideo(video-name)` MP4 ONLY
 
+MP4Handler has support too, so you can play videos on FlxSprites
+
 FlxGlitchEffect, FlxWaveEffect, FlxRainbowEffect support
 
-CoolUtil and LoadingState are now available for use in modcharts
+Shader support from VixtinEngine, you can use .frag files or the built-in shaders
 
-FlxBackdrop is now available for use, but you need to recompile with the assets you want to use put into the main source assets (the assets folder in main source)
+Custom menu support also from VixtinEngine, you can customize CreditsState, FreeplayState, GameOverSubstate, MainMenuState, PauseSubstate, SaveDataState, SoundTestState, StoryMenuState, and TitleState
 
-Custom menus (Taken from Vixtin Engine)
+CoolUtil, LoadingState, FlxTypedGroup, FlxTypedSpriteGroup, FileSystem, File, WindowsAPI (Yoshi Engine), FlxFlicker, Main, FlxBar, FlxMouse, FlxMouseEventManger, and Sys are now available for use in modcharts
 
-Health icon next to character in OldCharState (Also taken from Vixtin Engine)
+FlxBackdrop is also now available for use, make sure to use FNFAssets to load your image!
+
+Health icon next to character in OldCharState (from VixtinEngine)
 
 Probably more stuff that i forgot about
 
@@ -58,6 +63,8 @@ Seriously don't
 SOON TO COME:
 
 Healthbar in custom_ui
+Proper support for setting healthbar colors from the custom_chars jsonc
+Character ui skins
 
 
 - Get the cutting edge build: https://dev.azure.com/benharless820/FNF%20Modding%20Plus/_build
