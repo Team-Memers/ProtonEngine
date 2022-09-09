@@ -33,7 +33,7 @@ Fully custom countdowns for stuff like Indie Cross
 
 Sonic.exe Sound Test (Completely custom)
 
-Mario's Madness Warp Zone (Same as Sound Test) (DEPRECATED)
+Mario's Madness Warp Zone (DEPRECATED)
 
 Dave and Bambi Character Select Screen (old one is still in modifier menu)
 
