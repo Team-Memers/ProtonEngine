@@ -15,6 +15,7 @@ import flixel.system.frontEnds.InputFrontEnd;
 import flixel.math.FlxRect;
 import animateatlas.AtlasFrameMaker;
 import flixel.text.FlxText;
+import flixel.util.FlxStringUtil;
 import flixel.FlxState;
 import openfl.display.Stage;
 import flixel.effects.FlxFlicker;
@@ -93,7 +94,9 @@ class PluginManager {
 		interp.variables.set("makeRangeArray", CoolUtil.numberArray);
 		interp.variables.set("FNFAssets", FNFAssets);
 		interp.variables.set("WindowsAPI", WindowsAPI);
+		interp.variables.set("FlxStringUtil", flixel.util.FlxStringUtil);
         interp.variables.set("CoolUtil", CoolUtil);
+        interp.variables.set("WindowsData", WindowsData);
         interp.variables.set("Main", Main);
         interp.variables.set("AtlasFrameMaker", AtlasFrameMaker);
 
@@ -105,6 +108,7 @@ class PluginManager {
 		interp.variables.set("StringTools", StringTools);
 		interp.variables.set("MetroSprite", MetroSprite);
 		interp.variables.set("FlxTrail", FlxTrail);
+		interp.variables.set("Math", Math);
 		interp.variables.set("FlxEase", FlxEase);
 		interp.variables.set("Reflect", Reflect);
 		interp.variables.set("Character", Character);

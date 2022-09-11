@@ -113,6 +113,9 @@ class PlayState extends MusicBeatState
 	public static var ss:Bool = true;
 	public static var formoverride:String = "none";
 	public static var formoverride2:String = "none";
+        public var bfZoom:Float;
+        public var dadZoom:Float;
+        public var charZooms:Bool = false;
 	public static var usingform:Bool = false;
 	public static var curmult:Array<Float> = [1, 1, 1, 1];
 	public static var isWarp:Bool = false;
@@ -365,6 +368,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("switchCharacter", switchCharacter);
 		interp.variables.set("difficulty", storyDifficulty);
 		interp.variables.set("bpm", Conductor.bpm);
+	        interp.variables.set("Math", Math);
 		interp.variables.set("songData", SONG);
 		interp.variables.set("curSong", SONG.song);
 		interp.variables.set("scrollSpeed", daScrollSpeed);
@@ -392,6 +396,9 @@ class PlayState extends MusicBeatState
 		});
 		interp.variables.set("boyfriend", boyfriend);
 		interp.variables.set("gf", gf);
+		interp.variables.set("bfZoom", bfZoom);
+		interp.variables.set("dadZoom", dadZoom);
+		interp.variables.set("charZooms", charZooms);
 		interp.variables.set("dad", dad);
 		interp.variables.set("vocals", vocals);
 		interp.variables.set("gfSpeed", gfSpeed);
@@ -4314,7 +4321,7 @@ if (SONG.cutsceneType == 'video')
 				if (mashViolations > 4)
 				{
 					trace('mash violations ' + mashViolations);
-					scoreTxt.color = FlxColor.RED;
+					// scoreTxt.color = 0xFF0000;
 					noteMiss(0, playerOne);
 				}
 				else
@@ -4416,7 +4423,7 @@ if (SONG.cutsceneType == 'video')
 				if (mashViolations > 4)
 				{
 					trace('mash violations ' + mashViolations);
-					scoreTxt.color = FlxColor.RED;
+					scoreTxt.color = 0xFF0000;
 					noteMiss(0, playerOne);
 				}
 				else
@@ -4497,7 +4504,7 @@ if (SONG.cutsceneType == 'video')
 			setAllHaxeVar('songScore', songScore);
 			trueScore -= 5;
 			if (playMissSound)
-				FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
+                        FlxG.sound.play(FNFAssets.getSound('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt)); 	
 			// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
 			// FlxG.log.add('played imss note');
 
@@ -4667,6 +4674,17 @@ if (SONG.cutsceneType == 'video')
 		callAllHScript("stepHit", [curStep]);
 
 		songLength = FlxG.sound.music.length;
+if (charZooms)
+   {
+			if (!SONG.notes[Std.int(curStep / 16)].mustHitSection)
+			{
+					defaultCamZoom = dadZoom;
+			}
+			else
+			{
+					defaultCamZoom = bfZoom;
+			}
+   }
 
 		/*if (useSongBar && songPosBar.max == 69695969) {
 			remove(songPosBG);

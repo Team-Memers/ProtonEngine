@@ -131,6 +131,10 @@ class Paths
     {
         return FlxAtlasFrames.fromTexturePackerJson(FNFAssets.getBitmapData('assets/images/custom_chars/' + key + '/char.png'), FNFAssets.getText('assets/images/custom_chars/' + key + '/char.json'));
     }
+    inline static public function getAssetJson(directory:String, key:String)
+    {
+        return FlxAtlasFrames.fromTexturePackerJson(FNFAssets.getBitmapData(directory + "/" + key + ".png"), FNFAssets.getText(directory + "/" + key + ".json"));
+    }
 
 	inline static public function getUsersDesktop() // Get the path of the users desktop cus smartass i am.
 	{
