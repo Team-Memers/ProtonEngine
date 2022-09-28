@@ -3,10 +3,8 @@ package;
 import flixel.system.frontEnds.CameraFrontEnd;
 import flixel.system.frontEnds.BitmapFrontEnd;
 import flixel.system.FlxAssets.FlxSoundAsset;
-import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.system.FlxSoundGroup;
 import flixel.system.frontEnds.SoundFrontEnd;
 import openfl.display.DisplayObject;
@@ -15,32 +13,32 @@ import flixel.system.frontEnds.InputFrontEnd;
 import flixel.math.FlxRect;
 import animateatlas.AtlasFrameMaker;
 import flixel.text.FlxText;
-import flixel.util.FlxStringUtil;
 import flixel.FlxState;
+import openfl.filters.ShaderFilter;
 import openfl.display.Stage;
-import flixel.effects.FlxFlicker;
-import flixel.input.mouse.FlxMouse;
 import flixel.FlxGame;
 import flixel.ui.FlxBar;
 import flixel.input.gamepad.FlxGamepadManager;
 import flixel.addons.display.FlxBackdrop;
 import flixel.FlxCamera;
 import flixel.util.FlxColor;
-import flixel.FlxObject;
 import flixel.tweens.FlxEase;
 import flixel.addons.effects.FlxTrail;
 import plugins.tools.MetroSprite;
 import hscript.InterpEx;
 import hscript.Interp;
 import flixel.FlxG;
+import openfl.geom.Matrix;
 import flixel.input.mouse.FlxMouseEventManager;
-import Sys;
-import sys.FileSystem;
-import sys.io.File;
+
+import hscript.Parser;
+import hscript.ParserEx;
+import hscript.ClassDeclEx;
 
 class PluginManager {
     public static var interp = new InterpEx();
     public static var hscriptClasses:Array<String> = [];
+    public static var hscriptInstances:Array<Dynamic> = [];
     //private static var nextId:Int = 1;
 	@:access(hscript.InterpEx)
     public static function init() 
@@ -72,6 +70,11 @@ class PluginManager {
         reterp = addVarsToInterp(reterp);
         return reterp;
     }
+
+    public static function instanceExClass(classname:String, args:Array<Dynamic> = null) {
+		return interp.createScriptClassInstance(classname, args);
+	}
+
     public static function addVarsToInterp<T:Interp>(interp:T):T {
 		interp.variables.set("Conductor", Conductor);
 		interp.variables.set("FlxSprite", DynamicSprite);
@@ -81,6 +84,7 @@ class PluginManager {
 		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
 		interp.variables.set("FileSystem", sys.FileSystem);
 		interp.variables.set("File", sys.io.File);
+		interp.variables.set("FlxWindowModifier", window.windowMod.FlxWindowModifier);
 		interp.variables.set("FlxSound", DynamicSound);
 		interp.variables.set("FlxAtlasFrames", DynamicSprite.DynamicAtlasFrames);
 		interp.variables.set("FlxGroup", flixel.group.FlxGroup);
@@ -88,6 +92,8 @@ class PluginManager {
 		interp.variables.set("FlxTypedSpriteGroup", flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup);
 		interp.variables.set("FlxObject", flixel.FlxObject);
 		interp.variables.set("FlxAngle", flixel.math.FlxAngle);
+		interp.variables.set("CustomState", CustomState);
+		interp.variables.set("FlxBasic", flixel.FlxBasic);
 		interp.variables.set("FlxMath", flixel.math.FlxMath);
 		interp.variables.set("FlxFlicker", flixel.effects.FlxFlicker);
 		interp.variables.set("TitleState", TitleState);
@@ -95,6 +101,7 @@ class PluginManager {
 		interp.variables.set("FNFAssets", FNFAssets);
 		interp.variables.set("WindowsAPI", WindowsAPI);
 		interp.variables.set("FlxStringUtil", flixel.util.FlxStringUtil);
+		interp.variables.set("FlxTransWindow", FlxTransWindow);
         interp.variables.set("CoolUtil", CoolUtil);
         interp.variables.set("WindowsData", WindowsData);
         interp.variables.set("Main", Main);
@@ -115,6 +122,9 @@ class PluginManager {
 		interp.variables.set("OptionsHandler", OptionsHandler);
         interp.variables.set("FlxText", FlxText);
         interp.variables.set("FlxBar", FlxBar);
+        interp.variables.set("FlxTextFormat", FlxTextFormat);
+        interp.variables.set("FlxTextFormatMarkerPair", FlxTextFormatMarkerPair);
+        interp.variables.set("FlxBar", FlxBar);
         interp.variables.set("FlxBackdrop", FlxBackdrop);
         interp.variables.set("LoadingState", LoadingState);
         interp.variables.set("FlxRect", FlxRect);
@@ -123,6 +133,7 @@ class PluginManager {
 		interp.variables.set("FlxGlitchEffect", flixel.addons.effects.chainable.FlxGlitchEffect);
 		interp.variables.set("FlxRainbowEffect", flixel.addons.effects.chainable.FlxRainbowEffect);
 		interp.variables.set("PlayState", PlayState);
+		interp.variables.set("Matrix", Matrix);
 		interp.variables.set("FlxG", FlxG);
 		interp.variables.set("Song", Song);
 		interp.variables.set("FlxMouseEventManager", FlxMouseEventManager);
@@ -161,7 +172,7 @@ class HscriptGlobals {
     public static var keys(get, never):FlxKeyboard;
     // no log
     public static var maxElapsed(get, set):Float;
-    public var mouse = FlxG.mouse;
+    public static var mouse = FlxG.mouse;
     // no plugins
     public static var random= FlxG.random;
     public static var renderBlit(get, never):Bool;

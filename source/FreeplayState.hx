@@ -192,17 +192,21 @@ class SongMetadata
 {
 	public var songName:String = "";
 	public var week:Int = 0;
-	public var songCharacter:String = "";
+	public var songCharacter:String = "";	
+        public var display:String = "";
 
-	public function new(song:String, week:Int, songCharacter:String)
+	public function new(song:String, week:Int, songCharacter:String, ?display:String)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
+		if (display == null) display = song;
+		this.display = display;
 	}
 }
 typedef JsonMetadata = {
 	var name:String;
+	var ?display:String;
 	var week:Int;
 	var character:String;
 	var ?flags:Array<String>;

@@ -6,8 +6,6 @@ import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.graphics.atlas.FlxAtlas;
 import lime.system.System;
 import lime.utils.Assets;
 #if sys

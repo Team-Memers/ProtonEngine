@@ -54,10 +54,11 @@ typedef TCharacterRefJson = {
 class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
-	public var camOffsets:Map<String, Array<Dynamic>>;
+	public var animOffsets2:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 
 	public var isPlayer:Bool = false;
+	public var useOtherOffsets:Bool = false;
 	public var curCharacter:String = 'bf';
 	public var altAnim:String = "";
 	public var altNum:Int = 0;
@@ -65,8 +66,6 @@ class Character extends FlxSprite
 	public var enemyOffsetY:Int = 0;
 	public var playerOffsetX:Int = 0;
 	public var playerOffsetY:Int = 0;
-	public var gfOffsetX:Int = 0;
-	public var gfOffsetY:Int = 0;
 	public var camOffsetX:Int = 0;
 	public var camOffsetY:Int = 0;
 	public var followCamX:Int = 150;
@@ -78,8 +77,19 @@ class Character extends FlxSprite
 	public var animationNotes:Array<Dynamic> = [];
 	public var like:String = "bf";
 	public var beNormal:Bool = true;
-        public var forceColor:Bool = false;
-        public var characterUi:String = "none";
+	public var forceColor:Bool = false;
+	public var syncFrames:Bool = false;
+
+	public var heyTimer:Float = 0;
+	public var specialAnim:Bool = false;
+	public var idleSuffix:String = '';
+
+	//Extra parameters for more fun!
+	public var paramA:Int = 0;
+	public var paramB:Int = 0;
+	public var paramC:Int = 0;
+	public var canSing:Bool = true;
+	public var noSkipGOver:Bool = false;
 	/**
 	 * Color used by default for enemy, when not in duo mode or oppnt play.
 	 */
@@ -104,6 +114,10 @@ class Character extends FlxSprite
 	 * Color used by player in duo mode or oppnt play.
 	 */
 	public var bfColor:FlxColor = 0xFF149DFF;
+	/**
+	 * Color used for the Cross Fades ;3.
+	 */
+	public var crossFadeColor:FlxColor = 0xFF00FFFF;
 	// sits on speakers, replaces gf
 	public var likeGf:Bool = false;
 	// uses animation notes
@@ -145,14 +159,30 @@ class Character extends FlxSprite
 				method(args[0], args[1]);
 		}
 	}
-		var charHealthJson:Dynamic = null;
+	function mixtex(frames1:FlxAtlasFrames, frames2:FlxAtlasFrames) {
+		for (frame in frames2.frames){
+			frames1.pushFrame(frame);
+		}
+		return frames1;
+	}
+	/* coming soon flipping offsets
+	public function flipChar(animRef:String = "idle"):Void
+	{
+		playAnim(animRef);
+		var widthCenter = frameWidth;
+		flipX = !flipX;
+		for (anim => offsets in animOffsets)
+		{
+			var daAnim = animOffsets.get(anim);
+			var daOffX = daAnim[0];
+			daAnim[0] = widthCenter - daOffX * -1;
+			animOffsets.set(anim, daAnim);
+		}
+	}
+	*/
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
-               charHealthJson = CoolUtil.parseJson(FNFAssets.getJson('assets/images/custom_chars/custom_chars'));
-   
-   
 		animOffsets = new Map<String, Array<Dynamic>>();
-		camOffsets = new Map<String, Array<Dynamic>>();
 		super(x, y);
 
 		curCharacter = character;
@@ -169,11 +199,6 @@ class Character extends FlxSprite
 			isDie = true;
 			curCharacter = curCharacter.substr(0, curCharacter.length - 5);
 		}
-		// failsafe so you dont crash when loading a nonexistant character :)
-		if (!FileSystem.exists('assets/images/custom_chars/' + character) && !isDie) {
-			curCharacter = 'dad';
-			trace(character + ' doesnt exist!');
-		}
 		trace(curCharacter);
 		var charJson:Dynamic = null;
 		var isError:Bool = false;
@@ -181,17 +206,6 @@ class Character extends FlxSprite
 		interp = Character.getAnimInterp(curCharacter);
 		callInterp("init", [this]);
 		dance();
-
-if (OptionsHandler.options.colorHealthbar && !isPlayer)
-   {
-   enemyColor = Reflect.field(charJson, curCharacter).colors;
-   opponentColor = Reflect.field(charJson, curCharacter).colors;
-   }
-if (OptionsHandler.options.colorHealthbar && isPlayer)
-   {
-   playerColor = Reflect.field(charJson, curCharacter).colors;
-   bfColor = Reflect.field(charJson, curCharacter).colors;
-   }
 
 		if (isPlayer)
 		{
@@ -217,16 +231,83 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 	public function sing(direction:Int, ?miss:Bool=false, ?alt:Int=0) {
 		var directName:String = "";
 		var missName:String = "";
-		switch (direction) {
-			case 0:
-				directName = "singLEFT";
-			case 1:
-				directName = "singDOWN";
-			case 2:
-				directName = "singUP";
-			case 3:
-				directName = "singRIGHT";
+
+		if (Main.ammo[PlayState.mania] == 4)
+		{
+			switch (direction) {
+				case 0:
+					directName = "singLEFT";
+				case 1:
+					directName = "singDOWN";
+				case 2:
+					directName = "singUP";
+				case 3:
+					directName = "singRIGHT";
+			}
 		}
+
+		if (Main.ammo[PlayState.mania] == 6)
+		{
+			switch (direction) {
+				case 0:
+					directName = "singLEFT";
+				case 1:
+					directName = "singUP";
+				case 2:
+					directName = "singRIGHT";
+				case 3:
+					directName = "singLEFT";
+				case 4:
+					directName = "singDOWN";
+				case 5:
+					directName = "singRIGHT";
+			}
+		}
+
+		if (Main.ammo[PlayState.mania] == 7)
+		{
+			switch (direction) {
+				case 0:
+					directName = "singLEFT";
+				case 1:
+					directName = "singUP";
+				case 2:
+					directName = "singRIGHT";
+				case 3:
+					directName = "singUP";
+				case 4:
+					directName = "singLEFT";
+				case 5:
+					directName = "singDOWN";
+				case 6:
+					directName = "singRIGHT";
+			}
+		}
+
+		if (Main.ammo[PlayState.mania] == 9)
+		{
+			switch (direction) {
+				case 0:
+					directName = "singLEFT";
+				case 1:
+					directName = "singDOWN";
+				case 2:
+					directName = "singUP";
+				case 3:
+					directName = "singRIGHT";
+				case 4:
+					directName = "singUP";
+				case 5:
+					directName = "singLEFT";
+				case 6:
+					directName = "singDOWN";
+				case 7:
+					directName = "singUP";
+				case 8:
+					directName = "singRIGHT";
+			}
+		}
+
 		var missSupported:Bool = false;
 		var missAltSupported:Bool = false;
 		if (miss) {
@@ -260,7 +341,7 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 			}
 		}
 		// if we have to miss, but miss isn't supported...
-		if (miss && !(missSupported)) {
+		if (miss && !(missSupported) && forceColor) {
 			// first, we don't want to be using alt, which is already handled.
 			// second, we don't want no animation to be played, which again is handled.
 			// third, we want character to turn purple, which is handled here.
@@ -277,7 +358,9 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 				directName += "-" + alt + "alt";
 			}
 		}
-		playAnim(directName, true);
+
+		if (canSing)
+			playAnim(directName, true);
 	}
 	override function update(elapsed:Float)
 	{
@@ -285,6 +368,28 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 		//curCharacter = curCharacter.trim();
 		//var charJson:Dynamic = Json.parse(Assets.getText('assets/images/custom_chars/custom_chars.json'));
 		//var animJson = File.getContent("assets/images/custom_chars/"+Reflect.field(charJson,curCharacter).like+".json");
+
+		if(!debugMode && animation.curAnim != null)
+		{
+			if(heyTimer > 0)
+			{
+				heyTimer -= elapsed;
+				if(heyTimer <= 0)
+				{
+					if(specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
+					{
+						specialAnim = false;
+						dance();
+					}
+					heyTimer = 0;
+				}
+			} else if(specialAnim && animation.curAnim.finished)
+			{
+				specialAnim = false;
+				dance();
+			}
+		}
+		
 		if (beingControlled)
 		{
 			if (!debugMode)
@@ -298,8 +403,7 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 
 				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode && beNormal)
 				{
-					playAnim('idle', true, false, 10);
-					trace("idle after miss");
+					dance();
 				}
 
 				if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
@@ -344,11 +448,6 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 			{
 				playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 			}
-		} else {
-			if (0 < animationNotes.length && Conductor.songPosition > animationNotes[0][0]) {
-				sing(animationNotes[0][1]);
-				animationNotes.shift();
-			}
 		}
 		if (animation.curAnim != null && animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 			playAnim('danceRight');
@@ -364,12 +463,12 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 	 */
 	public function dance()
 	{
-		if (!debugMode && beNormal)
+		if (!debugMode && beNormal && !specialAnim)
 		{
 			if (interp != null)
 				callInterp("dance", [this]);
 			else
-				playAnim('idle');
+				playAnim('idle' + idleSuffix);
 			if (color != FlxColor.WHITE && forceColor)
 			{
 				color = FlxColor.WHITE;
@@ -379,7 +478,11 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		animation.play(AnimName, Force, Reversed, Frame);
+		if (!syncFrames)
+			animation.play(AnimName, Force, Reversed, Frame);
+		else
+			animation.play(AnimName, Force, Reversed, animation.curAnim.curFrame); //Plays from the Last Animation Frame
+
 		var animName = "";
 		if (animation.curAnim == null) {
 			// P A N I K
@@ -392,13 +495,28 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 			// kalm
 			animName = animation.curAnim.name;
 		}
-		if (animOffsets.exists(animName))
+
+		if (!useOtherOffsets)
 		{
-			var daOffset = animOffsets.get(animName);
-			offset.set(daOffset[0], daOffset[1]);
+			if (animOffsets.exists(animName))
+			{
+				var daOffset = animOffsets.get(animName);
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
 		}
 		else
-			offset.set(0, 0);
+		{
+			if (animOffsets2.exists(animName))
+			{
+				var daOffset = animOffsets2.get(animName);
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
+		}
+
 		// should spooky be on this?
 		if (likeGf)
 		{
@@ -419,26 +537,27 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 	}
 	public function loadMappedAnims() {
 		// todo, make better
-		// wish granted
-		var mappedAnims = Song.loadFromJson(curCharacter, PlayState.SONG.song).notes;
-		for (anim in mappedAnims) {
+		var picoAnims = Song.loadFromJson(curCharacter, "stress").notes;
+		for (anim in picoAnims) {
+			// this code looks fucking awful because I am reading the compiled
+			// html build
 			for (note in anim.sectionNotes) {
 				animationNotes.push(note);
 			}
 		} 
 		animationNotes.sort(sortAnims);
-		trace('mapped anims');
 	}
 	function sortAnims(a, b) {
 		var aThing = a[0];
 		var bThing = b[0];
 		return aThing < bThing ? -1 : 1;
 	}
-	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
-		animOffsets[name] = [x, y];
-	}
-	public function addCamOffset(name:String, camX:Float = 0, camY:Float = 0) {
-		camOffsets[name] = [camX, camY];
+	public function addOffset(name:String, x:Float = 0, y:Float = 0, ?isMain:Bool = true)
+	{
+		if (isMain == true)
+			animOffsets[name] = [x, y];
+		else
+			animOffsets2[name] = [x, y];
 	}
 	public static function getAnimInterp(char:String):Interp {
 		var interp = PluginManager.createSimpleInterp();
@@ -455,7 +574,6 @@ if (OptionsHandler.options.colorHealthbar && isPlayer)
 			interp.variables.set("charJson", {});
 		interp.variables.set("hscriptPath", 'assets/images/custom_chars/' + char + '/');
 		interp.variables.set("charName", char);
-		interp.variables.set("Paths", Paths);
 		interp.variables.set("Level_NotAHoe", Level_NotAHoe);
 		interp.variables.set("Level_Boogie", Level_Boogie);
 		interp.variables.set("Level_Sadness", Level_Sadness);

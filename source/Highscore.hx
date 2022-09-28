@@ -6,8 +6,8 @@ import flixel.FlxG;
 @:forward
 enum abstract FCLevel(Int) from Int to Int {
 	var None;
-	var Clear;
 	var Sdcb;
+	var Shit;
 	var Bad;
 	var Good;
 	var Sick;
@@ -103,9 +103,15 @@ class Highscore
 			if (!songFCLevels.exists(bestOfAll) || songFCLevels.get(bestOfAll) <= rating)
 				setFCLevel(bestOfAll, rating);
 		}
+		
+		
+			
 	}
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0, ?accuracy:Float = 0, saving:String = "best"):Void
 	{
+
+
+
 		var daWeek:String = formatSong('week' + week, diff, saving);
 
 		if (songScores.exists(daWeek))
@@ -120,6 +126,7 @@ class Highscore
 			setScore(daWeek, score);
 			setAccuracy(daWeek, accuracy);
 		}
+			
 	}
 
 	/**

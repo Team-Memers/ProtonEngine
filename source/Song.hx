@@ -15,6 +15,7 @@ using StringTools;
 typedef SwagSong =
 {
 	var song:String;
+	var events:Array<Dynamic>;
 	var notes:Array<SwagSection>;
 	var bpm:Float;
 	var needsVoices:Bool;
@@ -27,9 +28,9 @@ typedef SwagSong =
 	var isMoody:Null<Bool>;
 	var cutsceneType:String;
 	var countdownType:String;
-	var splitvocals:Null<Bool>;
-        var uiLayoutType:String;
+	var isVixtinCustomVocals:Null<Bool>;
 	var uiType:String;
+        var uiLayoutType:String;
 	var isSpooky:Null<Bool>;
 	var isHey:Null<Bool>;
 	var isCheer:Null<Bool>;
@@ -44,6 +45,7 @@ class Song
 {
 	public var song:String;
 	public var notes:Array<SwagSection>;
+	public var events:Array<Dynamic>;
 	public var bpm:Int;
 	public var needsVoices:Bool = true;
 	public var speed:Float = 1;
@@ -54,7 +56,7 @@ class Song
 	public var gf:String = 'gf';
 	public var isMoody:Null<Bool> = false;
 	public var isSpooky:Null<Bool> = false;
-	public var splitvocals:Null<Bool> = false;
+	public var isVixtinCustomVocals:Null<Bool> = false;
 	public var cutsceneType:String = "none";
 	public var uiType:String = 'normal';
 	public var uiLayoutType:String = 'normal';
@@ -77,6 +79,11 @@ class Song
 
 			rawJson = FNFAssets.getText("assets/data/"+folder.toLowerCase()+"/"+folder.toLowerCase()+".json").trim();
 		} else {
+			rawJson = FNFAssets.getText("assets/data/" + folder.toLowerCase() + "/" + jsonInput.toLowerCase() + '.json').trim();
+		}
+
+		if (jsonInput == 'events')
+		{
 			rawJson = FNFAssets.getText("assets/data/" + folder.toLowerCase() + "/" + jsonInput.toLowerCase() + '.json').trim();
 		}
 		
@@ -119,6 +126,30 @@ class Song
 			parsedJson.isCheer = false;
 			if (parsedJson.song.toLowerCase() == "tutorial") {
 				parsedJson.isCheer = true;
+			}
+		}
+
+		if(parsedJson.events == null)
+		{
+			parsedJson.events = [];
+			for (secNum in 0...parsedJson.notes.length)
+			{
+				var sec:SwagSection = parsedJson.notes[secNum];
+
+				var i:Int = 0;
+				var notes:Array<Dynamic> = sec.sectionNotes;
+				var len:Int = notes.length;
+				while(i < len)
+				{
+					var note:Array<Dynamic> = notes[i];
+					if(note[1] < 0)
+					{
+						parsedJson.events.push([note[0], [[note[2], note[3], note[4]]]]);
+						notes.remove(note);
+						len = notes.length;
+					}
+					else i++;
+				}
 			}
 		}
 		if (parsedJson.preferredNoteAmount == null) {
@@ -218,6 +249,13 @@ class Song
 			parsedJson.uiType = switch (parsedJson.song.toLowerCase()) {
 				case 'roses' | 'senpai' | 'thorns':
 					'pixel';
+				default:
+					'normal';
+			}
+		}
+		if (parsedJson.uiLayoutType == null) {
+
+			parsedJson.uiLayoutType = switch (parsedJson.song.toLowerCase()) {
 				default:
 					'normal';
 			}

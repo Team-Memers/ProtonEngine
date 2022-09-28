@@ -25,8 +25,6 @@ typedef TOptions = {
     var useSaveDataMenu:Bool;
     var preferredSave:Int;
     var showSongPos:Bool;
-    var showTimings:Bool;
-    var showNoteSplashes:Bool;
     var style:Bool;
     var stressTankmen:Bool;
     // var ignoreShittyTiming:Bool;
@@ -51,9 +49,8 @@ typedef TOptions = {
     var titleToggle:Bool;
     var fpsCap:Int;
     var ignoreVile:Bool;
-    var scrollSpeed:Float;
-    var camNotes:Bool;
-    var colorHealthbar:Bool;
+    var ratingColorRecs:Bool;
+    var showSplashes:Bool;
 }
 /**
  * All options that can display on the savedatamenu. Used with mask
@@ -121,15 +118,13 @@ class OptionsHandler {
             //lastOptions.funnyOptions = true;
             lastOptions.allowStoryMode = true;
             lastOptions.allowFreeplay = true;
-            lastOptions.colorHealthbar = true;
             lastOptions.allowDonate = false;
             lastOptions.hitSounds = false;
             lastOptions.titleToggle = true;
             lastOptions.fpsCap = 60;
-            lastOptions.scrollSpeed = 1;
-            lastOptions.camNotes = false;
-            lastOptions.showTimings = true;
-            lastOptions.showNoteSplashes = true;
+            lastOptions.ratingColorRecs = true;
+            lastOptions.showSplashes = true;
+
         }
 		return lastOptions;
         #else
