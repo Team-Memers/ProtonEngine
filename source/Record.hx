@@ -8,6 +8,7 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import openfl.display.BlendMode;
+import flixel.graphics.FlxGraphic;
 import Highscore.FCLevel;
 // :wink: "inspired" by exr
 
@@ -112,7 +113,7 @@ class Record extends FlxTypedSpriteGroup<FlxSprite> {
         var rating = Highscore.getFCLevel(song, diff, "best");
         if (week == -1)
         {
-            if (rating >= Bad)
+            if (rating >= Shit)
                 sussyRecordGraphic = FNFAssets.getBitmapData('assets/images/campaign-ui-week/default-gold.png');
             else
                 sussyRecordGraphic = FNFAssets.getBitmapData('assets/images/campaign-ui-week/default-record.png');
@@ -124,7 +125,7 @@ class Record extends FlxTypedSpriteGroup<FlxSprite> {
         }
         else
         {
-            if (rating >= Bad)
+            if (rating >= Shit)
             {
                 if (FNFAssets.exists('assets/images/campaign-ui-week/week$week-gold.png'))
                 {

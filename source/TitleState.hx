@@ -14,7 +14,6 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.addons.display.FlxBackdrop;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
@@ -129,7 +128,6 @@ class TitleState extends MusicBeatState
 		interp.variables.set("insert", insert);
 		interp.variables.set("pi", Math.PI);
 		interp.variables.set("curMusicName", Main.curMusicName);
-                interp.variables.set("FlxBackdrop", FlxBackdrop);
 		
 		trace("set stuff");
 		interp.execute(program);
@@ -190,7 +188,7 @@ class TitleState extends MusicBeatState
 		// DEBUG BULLSHIT
 		super.create();
 		FlxG.mouse.visible = false;
-		FlxG.save.bind("preferredSave", "bulbyVR");
+		FlxG.save.bind("preferredSave", "ElAnthonyVixtin");
 		var preferredSave:Int = 0;
 		if (Reflect.hasField(FlxG.save.data, "preferredSave")) {
 			preferredSave = FlxG.save.data.preferredSave;
@@ -199,7 +197,7 @@ class TitleState extends MusicBeatState
 		}
 
 		FlxG.save.close();
-		FlxG.save.bind("save"+preferredSave, 'bulbyVR');
+		FlxG.save.bind("save"+preferredSave, 'ElAnthonyVixtin');
 		PlayerSettings.init();
 		Highscore.load();
 
