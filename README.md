@@ -18,6 +18,11 @@ take down mods that don't follow this rule.
 
 Once again, this is a fork of The Roblox Disappointment build, with a few changes by me.
 
+Some of the stuff you'll see here is from Sonic.exe (WeedVision, FatalPopup, CharSongList, and a lot of the transition stuff), Wednesday's Infidelity (WindowsData.hx),
+and Yoshi Engine (WindowsAPI)
+
+There is also DuskieWhy's FlxTransWindow and MultiWindow stuff
+
 HOLD DOWN SHIFT ON THE VICTORY SCREEN IF YOU HAVE BEATEN A SONG ACCESSED FROM SOUND TEST
 
 YOU WILL NEED TO INSTALL EVERYTHING RELATED TO EXTENSION-WEBM!!!
@@ -54,10 +59,6 @@ FlxBackdrop is also now available for use, make sure to use FNFAssets to load yo
 Health icon next to character in OldCharState (from VixtinEngine)
 
 Probably more stuff that i forgot about
-
-Do not set a character named "cum" as player 2.
-Seriously don't
-
 
 
 SOON TO COME:
