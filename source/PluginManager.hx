@@ -139,7 +139,20 @@ class PluginManager {
 		interp.variables.set("FlxMouseEventManager", FlxMouseEventManager);
 		interp.variables.set("Sys", Sys);
 		interp.variables.set("FlxVideo", FlxVideo);
-        interp.variables.set("callExternClass", PluginManager.interp.createScriptClassInstance); //Call modules?? :D
+                interp.variables.set("FatalPopup", FatalPopup);
+                interp.variables.set("GreenScreenShader", GreenScreenShader);
+                interp.variables.set("WeedVision", WeedVision);
+                interp.variables.set("CharSongList", CharSongList);
+                interp.variables.set("BlankTransitionSubstate", BlankTransitionSubstate);
+                interp.variables.set("TransitionSubstate", TransitionSubstate);
+                interp.variables.set("FadeTransitionSubstate", FadeTransitionSubstate);
+                interp.variables.set("OvalTransitionSubstate", OvalTransitionSubstate);
+                interp.variables.set("ShapeTransitionSubstate", ShapeTransitionSubstate);
+                interp.variables.set("SonicTransitionSubstate", SonicTransitionSubstate);
+                interp.variables.set("XTransitionSubstate", XTransitionSubstate);
+                interp.variables.set("SkewSpriteGroup", SkewSpriteGroup);
+                interp.variables.set("BlueMaskShader", BlueMaskShader);
+                interp.variables.set("callExternClass", PluginManager.interp.createScriptClassInstance); //Call modules?? :D
 		#if debug
 		interp.variables.set("debug", true);
 		#else

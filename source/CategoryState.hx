@@ -117,7 +117,7 @@ class CategoryState extends MusicBeatState
 		interp.variables.set("Math", Math);
 		interp.variables.set("Song", Song);
 		interp.variables.set("ModifierState", ModifierState);
-        interp.variables.set("ChooseCharState", ChooseCharState);
+                interp.variables.set("ChooseCharState", ChooseCharState);
 		interp.variables.set("Reflect", Reflect);
 		interp.variables.set("colorFromString", FlxColor.fromString);
 		interp.variables.set("PlayState", PlayState);
@@ -135,7 +135,7 @@ class CategoryState extends MusicBeatState
 		interp.variables.set("SortState", SortState);
 		interp.variables.set("varIsString", varIsString);
 		interp.variables.set("choosingFor", choosingFor);
-		
+		interp.variables.set("LoadingState", LoadingState);
 		trace("set stuff");
 		interp.execute(program);
 		hscriptStates.set(usehaxe,interp);

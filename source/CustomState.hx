@@ -34,12 +34,15 @@ import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.ui.FlxButton;
 import haxe.Json;
 import openfl.events.IOErrorEvent;
 import flixel.util.FlxSort;
 import flixel.effects.FlxFlicker;
 import flixel.util.FlxAxes;
+import flixel.addons.effects.FlxSkewedSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 
 #if desktop
 import Sys;
@@ -137,6 +140,7 @@ class CustomState extends MusicBeatState
 		// set vars
 		interp.variables.set("FlxTextBorderStyle", FlxTextBorderStyle);
 		interp.variables.set("MainMenuState", MainMenuState);
+		interp.variables.set("FlxText", FlxText);
 		interp.variables.set("CategoryState", CategoryState);
 		interp.variables.set("ChartingState", ChartingState);
 		interp.variables.set("Alphabet", Alphabet);
@@ -219,11 +223,15 @@ class CustomState extends MusicBeatState
 		interp.variables.set("Song", Song);
 		interp.variables.set("FlxFlicker", FlxFlicker);
 		interp.variables.set("FlxAxes", FlxAxes);
-		interp.variables.set("FlxGridOverlay", FlxGridOverlay);
+		interp.variables.set("FlxGridOverlay", flixel.addons.display.FlxGridOverlay);
 		interp.variables.set("FlxPoint", FlxPoint);
 		interp.variables.set("FlxTrailArea", FlxTrailArea);
 		interp.variables.set("ShaderFilter", ShaderFilter);
 		interp.variables.set("FlxInputText", FlxInputText);
+		interp.variables.set("FlxTypedSpriteGroup", flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup);
+		interp.variables.set("FlxTypedGroup", flixel.group.FlxGroup.FlxTypedGroup);
+		interp.variables.set("FlxSkewedSprite", flixel.addons.effects.FlxSkewedSprite);
+		interp.variables.set("FlxBackdrop", flixel.addons.display.FlxBackdrop);
 		interp.variables.set("FlxUI9SliceSprite", FlxUI9SliceSprite);
 		interp.variables.set("FlxUI", FlxUI);
 		interp.variables.set("FlxUICheckBox", FlxUICheckBox);
@@ -237,10 +245,27 @@ class CustomState extends MusicBeatState
 		interp.variables.set("FlxSound", FlxSound);
 		interp.variables.set("sysTarget", sysTarget);
 		interp.variables.set("FlxGridOverlay", FlxGridOverlay);
+		interp.variables.set("FlxG", FlxG);
 		interp.variables.set("AttachedSprite", AttachedSprite);
 		interp.variables.set("AttachedText", AttachedText);
 		interp.variables.set("PlayStateChangeables", "PlayStateChangeables");
-		
+		interp.variables.set("FlxTimer", "FlxTimer");
+                interp.variables.set("FatalPopup", FatalPopup);
+                interp.variables.set("GreenScreenShader", GreenScreenShader);
+                interp.variables.set("WeedVision", WeedVision);
+                interp.variables.set("CharSongList", CharSongList);
+                interp.variables.set("BlankTransitionSubstate", BlankTransitionSubstate);
+                interp.variables.set("TransitionSubstate", TransitionSubstate);
+                interp.variables.set("FadeTransitionSubstate", FadeTransitionSubstate);
+                interp.variables.set("OvalTransitionSubstate", OvalTransitionSubstate);
+                interp.variables.set("ShapeTransitionSubstate", ShapeTransitionSubstate);
+                interp.variables.set("SonicTransitionSubstate", SonicTransitionSubstate);
+                interp.variables.set("XTransitionSubstate", XTransitionSubstate);
+                interp.variables.set("SkewSpriteGroup", SkewSpriteGroup);
+                interp.variables.set("BlueMaskShader", BlueMaskShader);
+		interp.variables.set("VideoHandler", VideoHandler);	
+		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
+		interp.variables.set("MP4Handler", MP4Handler);	
 		trace("set stuff");
 		interp.execute(program);
 		hscriptStates.set(usehaxe,interp);

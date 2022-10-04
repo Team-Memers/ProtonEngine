@@ -1,12 +1,32 @@
 package;
 
+import openfl.display3D.textures.Texture;
+import flixel.math.FlxPoint;
+import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
+import openfl.geom.Rectangle;
+import flixel.math.FlxRect;
+import haxe.xml.Access;
+import openfl.system.System;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+import lime.utils.Assets;
+import flixel.FlxSprite;
+import sys.io.File;
+import sys.FileSystem;
+import flixel.graphics.FlxGraphic;
+import openfl.display.BitmapData;
+
+import flash.media.Sound;
+
+using StringTools;
 
 class Paths
 {
+	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
+	public static var currentTrackedTextures:Map<String, Texture> = [];
+	public static var localTrackedAssets:Array<String> = [];
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	inline public static var VIDEO_EXT = "mp4";
 
@@ -102,6 +122,13 @@ class Paths
 		return 'songs:assets/songs/${song.toLowerCase()}/Inst.$SOUND_EXT';
 	}
 
+	inline static public function imageExe(key:String, ?library:String)
+	{
+		// streamlined the assets process more
+		var returnAsset:FlxGraphic = returnGraphic(key, library);
+		return returnAsset;
+	}
+
 	inline static public function image(key:String, ?library:String)
 	{
 		return getPath('images/$key.png', IMAGE, library);
@@ -145,4 +172,37 @@ class Paths
 		}
 		else return null; 
 	}
+
+	public static function returnGraphic(key:String, ?library:String, ?textureCompression:Bool = false) {
+		var path = getPath('images/$key.png', IMAGE, library);
+		if (OpenFlAssets.exists(path, IMAGE)) {
+			if(!currentTrackedAssets.exists(key)) {
+				var bitmap = BitmapData.fromFile(path.substr(path.indexOf(':') + 1));
+				trace(path.substr(path.indexOf(':') + 1));
+				var newGraphic:FlxGraphic;
+				if (textureCompression)
+				{
+					var texture = FlxG.stage.context3D.createTexture(bitmap.width, bitmap.height, BGRA, true, 0);
+					texture.uploadFromBitmapData(bitmap);
+					currentTrackedTextures.set(key, texture);
+					bitmap.dispose();
+					bitmap.disposeImage();
+					bitmap = null;
+					trace('new texture $key, bitmap is $bitmap');
+					newGraphic = FlxGraphic.fromBitmapData(BitmapData.fromTexture(texture), false, key, false);
+				}
+				else
+				{
+					newGraphic = FlxGraphic.fromBitmapData(bitmap, false, key, false);
+					trace('new bitmap $key, not textured');
+				}
+				newGraphic.persist = true;
+				currentTrackedAssets.set(key, newGraphic);
+			}
+			localTrackedAssets.push(key);
+			return currentTrackedAssets.get(key);
+		}
+		trace('bitmap $key is returning null NOOOO');
+		return null; 
+             }
 }

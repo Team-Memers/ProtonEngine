@@ -231,6 +231,8 @@ var dadScrollWin = new Sprite();
 	private var strumming1:Array<Bool> = [false,false,false,false];
 
 	public var gfSpeed:Int = 1;
+        public var iconsVertical:Bool = false;
+        public var isMonochrome = false;
 	public var health:Float = 1;
 	private var combo:Int = 0;
 	public static var daScrollSpeed:Float = 1;
@@ -3450,8 +3452,14 @@ FlxG.camera.follow(camFollow, LOCKON, lerp);
 			barShowingPoison = false;
 		}
 
+if (iconsVertical == false)
+   {
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+   } else {
+				iconP1.y = healthBar.y + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset - 250);
+				iconP2.y = healthBar.y + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset + 250);
+   }
 		player1Icon = SONG.player1;
 		switch(SONG.player1) {
 			case "bf-car":
@@ -3753,14 +3761,14 @@ FlxG.camera.follow(camFollow, LOCKON, lerp);
 		// better streaming of shit
 
 		// RESET = Quick Game Over Screen
-		if (controls.RESET && !inCutscene)
-		{
+		if (controls.RESET && !duoMode && !inCutscene && isMonochrome == false) {
 			if (opponentPlayer)
 				health = 2;
 			else
 				health = 0;
 			trace("RESET = True");
 		}
+
 
 		// CHEAT = brandon's a pussy
 		if (controls.CHEAT)

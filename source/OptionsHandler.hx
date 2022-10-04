@@ -51,6 +51,7 @@ typedef TOptions = {
     var ignoreVile:Bool;
     var ratingColorRecs:Bool;
     var showSplashes:Bool;
+    var songsFolder:Bool;
 }
 /**
  * All options that can display on the savedatamenu. Used with mask
@@ -124,6 +125,7 @@ class OptionsHandler {
             lastOptions.fpsCap = 60;
             lastOptions.ratingColorRecs = true;
             lastOptions.showSplashes = true;
+            lastOptions.songsFolder = false;
 
         }
 		return lastOptions;
