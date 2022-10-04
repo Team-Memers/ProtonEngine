@@ -7,23 +7,12 @@
 [![forthebadge](https://forthebadge.com/images/badges/it-works-why.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/just-plain-nasty.svg)](https://forthebadge.com)
 
-This is the repository for Friday Night Funkin Modding Plus, a mod for FNF to add more features for modders and players alike.
-
-Any mods made with this mod must have express permission from the creator of songs included. 
-(for example, if you include the Whitty Mod, you should have express permission from Nate Anim8, KadeDev, and SockClip.
-I at least would like to see the main author and a majority of secondary offers get express permission)
-If an author gives express disapproval, and the mod is up, you should take your mod down. I own the code to this mod so I can (and will)
-take down mods that don't follow this rule.
-
-
-Once again, this is a fork of The Roblox Disappointment build, with a few changes by me.
+Once again, this is a fork of The Roblox Disappointment M+ build, with a few changes by me and Vixtin.
 
 Some of the stuff you'll see here is from Sonic.exe (WeedVision, FatalPopup, CharSongList, and a lot of the transition stuff), Wednesday's Infidelity (WindowsData.hx),
 and Yoshi Engine (WindowsAPI)
 
 There is also DuskieWhy's FlxTransWindow and MultiWindow stuff
-
-HOLD DOWN SHIFT ON THE VICTORY SCREEN IF YOU HAVE BEATEN A SONG ACCESSED FROM SOUND TEST
 
 YOU WILL NEED TO INSTALL EVERYTHING RELATED TO EXTENSION-WEBM!!!
 
