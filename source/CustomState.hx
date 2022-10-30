@@ -163,6 +163,7 @@ class CustomState extends MusicBeatState
 		interp.variables.set("DifficultyManager", DifficultyManager);
 		interp.variables.set("Controls", Controls);
 		interp.variables.set("Tooltip", Tooltip);
+		interp.variables.set("LoadingState", LoadingState);
 		interp.variables.set("SongInfoPanel", SongInfoPanel);
 		interp.variables.set("DifficultyManager", DifficultyManager);
 		interp.variables.set("flixelSave", FlxG.save);
@@ -229,6 +230,7 @@ class CustomState extends MusicBeatState
 		interp.variables.set("ShaderFilter", ShaderFilter);
 		interp.variables.set("FlxInputText", FlxInputText);
 		interp.variables.set("FlxTypedSpriteGroup", flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup);
+		interp.variables.set("FlxSpriteGroup", flixel.group.FlxSpriteGroup);
 		interp.variables.set("FlxTypedGroup", flixel.group.FlxGroup.FlxTypedGroup);
 		interp.variables.set("FlxSkewedSprite", flixel.addons.effects.FlxSkewedSprite);
 		interp.variables.set("FlxBackdrop", flixel.addons.display.FlxBackdrop);
@@ -254,15 +256,6 @@ class CustomState extends MusicBeatState
                 interp.variables.set("GreenScreenShader", GreenScreenShader);
                 interp.variables.set("WeedVision", WeedVision);
                 interp.variables.set("CharSongList", CharSongList);
-                interp.variables.set("BlankTransitionSubstate", BlankTransitionSubstate);
-                interp.variables.set("TransitionSubstate", TransitionSubstate);
-                interp.variables.set("FadeTransitionSubstate", FadeTransitionSubstate);
-                interp.variables.set("OvalTransitionSubstate", OvalTransitionSubstate);
-                interp.variables.set("ShapeTransitionSubstate", ShapeTransitionSubstate);
-                interp.variables.set("SonicTransitionSubstate", SonicTransitionSubstate);
-                interp.variables.set("XTransitionSubstate", XTransitionSubstate);
-                interp.variables.set("SkewSpriteGroup", SkewSpriteGroup);
-                interp.variables.set("BlueMaskShader", BlueMaskShader);
 		interp.variables.set("VideoHandler", VideoHandler);	
 		interp.variables.set("VideoHandlerMP4", VideoHandlerMP4);	
 		interp.variables.set("MP4Handler", MP4Handler);	

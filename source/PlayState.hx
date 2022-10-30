@@ -59,6 +59,7 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import openfl.display.DisplayObject;
 import flixel.addons.display.FlxBackdrop;
 import lime.system.System;
 import openfl.media.Sound;
@@ -132,6 +133,18 @@ class PlayState extends MusicBeatState
 var windowDad:Window;
 var dadWin = new Sprite();
 var dadScrollWin = new Sprite();
+var windowDad2:Window;
+var dadWin2 = new Sprite();
+var dadScrollWin2 = new Sprite();
+var windowDad3:Window;
+var dadWin3 = new Sprite();
+var dadScrollWin3 = new Sprite();
+var windowDad4:Window;
+var dadWin4 = new Sprite();
+var dadScrollWin4 = new Sprite();
+var windowDad5:Window;
+var dadWin5 = new Sprite();
+var dadScrollWin5 = new Sprite();
 
 	#if (haxe >= "4.0.0")
 	public var boyfriendMap:Map<String, Character> = new Map();
@@ -222,6 +235,7 @@ var dadScrollWin = new Sprite();
 	public var shitBreakColor:FlxColor = 0xFF175DB3;
 	public var wayoffBreakColor:FlxColor = 0xFFAF0000;
 	public var missBreakColor:FlxColor = 0xFFDD0A93;
+	public var fatalMode:Bool = false;
 	
 	public static var instance:PlayState;
 
@@ -348,6 +362,7 @@ var dadScrollWin = new Sprite();
 	var poisonMultiplier:Float = 0;
 	var goodCombo:Bool = false;
 	var isUsingSounds:Bool = false;
+	public var introSoundsSuffix:String = '';
 	public var player1GoodHitSignal:Signal<Note>;
 	public var player2GoodHitSignal:Signal<Note>;
 	private var judgementList:Array<String> = [];
@@ -462,6 +477,13 @@ var dadScrollWin = new Sprite();
 		interp.variables.set("addCustomShaderToSprite", addCustomShaderToSprite);
 		interp.variables.set("addCustomShaderToCam", addCustomShaderToCam);
 		interp.variables.set("popupWindow", popupWindow);
+		interp.variables.set("popupWindow2", popupWindow2);
+		interp.variables.set("popupWindow3", popupWindow3);
+		interp.variables.set("popupWindow4", popupWindow4);
+		interp.variables.set("popupWindow5", popupWindow5);
+		interp.variables.set("tweenWindow", tweenWindow);
+		interp.variables.set("closeWindow", closeWindow);
+		interp.variables.set("fatalMode", fatalMode);
 		interp.variables.set("FlxCamera", FlxCamera);
 		interp.variables.set("boyfriend", boyfriend);
 		interp.variables.set("gf", gf);
@@ -474,6 +496,11 @@ var dadScrollWin = new Sprite();
 		interp.variables.set("iconP1", iconP1);
 		interp.variables.set("iconP2", iconP2);
 		interp.variables.set("currentPlayState", this);
+		interp.variables.set("windowDad", windowDad);
+		interp.variables.set("windowDad2", windowDad2);
+		interp.variables.set("windowDad3", windowDad3);
+		interp.variables.set("windowDad4", windowDad4);
+		interp.variables.set("windowDad5", windowDad5);
 		interp.variables.set("PlayState", PlayState);
 		interp.variables.set("makeText", function (posx:Float, posy:Float, fwidth:Float, ?text:String, size:Int = 8, embFont:Bool = true) {
 			return (new FlxText(posx, posy, fwidth, text, size, embFont)); //make text in hcripts
@@ -576,6 +603,7 @@ var dadScrollWin = new Sprite();
 		interp.variables.set("OverlayShader", OverlayShader);
 		interp.variables.set("ColorSwap", ColorSwap);
 		interp.variables.set("ShaderFilter", ShaderFilter);
+		interp.variables.set("clearShaderFromCamera", clearShaderFromCamera);
 
 		//Fow Ending Cutscenes lol
 		interp.variables.set("endSong", endSong);
@@ -971,6 +999,24 @@ var dadScrollWin = new Sprite();
 	override public function create()
 	{
 		FNFAssets.clearStoredMemory();
+
+		var filesPushedHSCRIPT:Array<String> = [];
+		var foldersToCheckHSCRIPT:Array<String> = ["assets/scripts/hscript/"];
+                var hscriptNumber:Int = 0;
+		for (folder in foldersToCheckHSCRIPT)
+		{
+			if(FileSystem.exists(folder))
+			{
+				for (file in FileSystem.readDirectory(folder))
+				{
+					if(file.endsWith('.hscript') && !filesPushedHSCRIPT.contains(file))
+					{
+						makeHaxeState("funnyHscript", "assets/scripts/hscript/", file);
+						filesPushedHSCRIPT.push(file);
+					}
+				}
+			}
+		}
 		
 		#if desktop
 		// pre lowercasing the song name (create)
@@ -986,10 +1032,14 @@ var dadScrollWin = new Sprite();
 		Note.specialNoteJson = null;
 		instance = this;
 
+/*
+
 		if (FNFAssets.exists('assets/images/custom_notetypes/noteInfo.json')) {
 			Note.specialNoteJson = CoolUtil.parseJson(FNFAssets.getText('assets/images/custom_notetypes/noteInfo.json'));
 		}
-		else if (FNFAssets.exists('assets/data/${SONG.song.toLowerCase()}/noteInfo.json')) {  //Oudated function
+*/
+// HOW THE FUCK DO YOU PROGRAM A CUSTOM NOTE SYSTEM THIS FUCKING BAD VIXTIN
+		if (FNFAssets.exists('assets/data/${SONG.song.toLowerCase()}/noteInfo.json')) {  //Oudated function
 			Note.specialNoteJson = CoolUtil.parseJson(FNFAssets.getText('assets/data/${SONG.song.toLowerCase()}/noteInfo.json'));
 		}
 		Judgement.uiJson = CoolUtil.parseJson(FNFAssets.getText('assets/images/custom_ui/ui_packs/ui.json'));
@@ -1369,11 +1419,6 @@ var dadScrollWin = new Sprite();
 		trace('before generate');
 		generateSong(SONG.song);
 
-		//Notetypes (the reason it is a single file is to further optimize space and ram memory.)
-		if (FNFAssets.exists("assets/images/custom_notetypes/notetypes", Hscript))
-		{
-			makeHaxeState("notetypes", "assets/images/custom_notetypes/", "notetypes");
-		}
 
 		//Events (the same reason of the notetypes)
 		if (FNFAssets.exists("assets/images/custom_events/events", Hscript))
@@ -1519,12 +1564,30 @@ var dadScrollWin = new Sprite();
 		}
 		
 		var uiJson = CoolUtil.parseJson(FNFAssets.getText("assets/images/custom_ui/ui_layouts/ui.json"));
+
+
 if (SONG.uiLayoutType == 'none' || SONG.uiLayoutType == 'normal' || SONG.uiLayoutType == 'null' || SONG.uiLayoutType == null)
    {
+   trace("loaded ui from json");
 		makeHaxeStateUI("ui", "assets/images/custom_ui/ui_layouts/" + Reflect.field(uiJson, 'layout') + "/", "../" + Reflect.field(uiJson, 'layout') + ".hscript");
    } else {
+   trace("loaded ui from chart, ui name is " + SONG.uiLayoutType);
 		makeHaxeStateUI("ui", "assets/images/custom_ui/ui_layouts/", SONG.uiLayoutType + ".hscript");
    }
+
+
+/*
+if (SONG.uiLayoutType != null || SONG.uiLayoutType != "normal")
+   {
+      trace("loaded ui from chart, ui name is " + SONG.uiLayoutType);
+		makeHaxeStateUI("ui", "assets/images/custom_ui/ui_layouts/", SONG.uiLayoutType + ".hscript");
+   } else {
+   trace("loaded ui from json");
+		makeHaxeStateUI("ui", "assets/images/custom_ui/ui_layouts/" + Reflect.field(uiJson, 'layout') + "/", "../" + Reflect.field(uiJson, 'layout') + ".hscript");
+   }
+*/
+
+// seriously fuck this game, i cant get ANYTHING i need to done because of it suddenly breaking shit i need
 		trace('ui done');
 
 		if (alwaysDoCutscenes || isStoryMode )
@@ -1767,6 +1830,19 @@ if (SONG.uiLayoutType == 'none' || SONG.uiLayoutType == 'normal' || SONG.uiLayou
 		healthBar.createFilledBar(leftSideFill, rightSideFill);
 	}
 
+	public function specialReloadHealthBarColors(character:Character, secondCharacter:Character)
+	{
+		var leftSideFill = opponentPlayer ? character.opponentColor : character.enemyColor;
+		if (duoMode)
+			leftSideFill = character.opponentColor;
+
+		var rightSideFill = opponentPlayer ? secondCharacter.bfColor : secondCharacter.playerColor;
+		if (duoMode)
+			rightSideFill = secondCharacter.bfColor;
+
+		healthBar.createFilledBar(leftSideFill, rightSideFill);
+	}
+
 	public function setGlobalSprite(key:String, sprite:FlxSprite):Void
 	{
 		spriteZone.set(key, sprite);
@@ -1917,7 +1993,6 @@ if (SONG.uiLayoutType == 'none' || SONG.uiLayoutType == 'normal' || SONG.uiLayou
 		} else {
 
 		var swagCounter:Int = 0;
-
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{
 			if (!duoMode || opponentPlayer)
@@ -1975,7 +2050,6 @@ if (SONG.uiLayoutType == 'none' || SONG.uiLayoutType == 'normal' || SONG.uiLayou
 				introGoSound = FNFAssets.getSound('assets/sounds/introGo.ogg');
 			}
 	
-
 
 			switch (swagCounter)
 
@@ -2553,7 +2627,7 @@ if (FNFAssets.exists("assets/images/custom_chars/" + newCharacter))
 	function eventNoteEarlyTrigger(event:EventNote):Float {
 		//var returnedValue:Float = callOnLuas('eventEarlyTrigger', [event.event]);
 		//if(returnedValue != 0) {
-		//	return returnedValue;
+			//return returnedValue;
 		//}
 
 		//switch(event.event) {
@@ -3422,14 +3496,16 @@ FlxG.camera.follow(camFollow, LOCKON, lerp);
 
 		var hitSpeed = 0.50;
 		
-		if (CoolUtil.fps == 120)
+		if (CoolUtil.fps > 119)
 			hitSpeed = 0.25;
 		
-		if (CoolUtil.fps == 240)
+		if (CoolUtil.fps > 239)
 			hitSpeed = 0.125;
-
+if (!fatalMode)
+   {
 		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, hitSpeed)));
 		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, hitSpeed)));
+   }
 		practiceDieIcon.setGraphicSize(Std.int(FlxMath.lerp(150, practiceDieIcon.width, hitSpeed)));
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
@@ -5930,6 +6006,8 @@ if (iconsVertical == false)
 
         cFd.antialiasing = true;
         cFd.color = charID.crossFadeColor;
+        cFd.scale.x = charID.scale.x;
+        cFd.scale.y = charID.scale.y;
         cFd.alpha = cfIntensity;
 		cFd.blend = blendModeFromString(cfBlend);
 
@@ -5941,12 +6019,11 @@ if (iconsVertical == false)
         }});
 	}
 
-function popupWindow(customWidth:Int, customHeight:Int, ?customX:Int, ?customName:String, coolThing:String, transparent:Bool, windowBorderless:Bool, stageColor:FlxColor, isImageBG:Bool = false, whatImage:BitmapData) {
-        var display = Application.current.window.display.currentMode;
+function popupWindow(customWidth:Int, customHeight:Int, ?customX:Int, ?customY:Int, ?customName:String, coolThing:String, transparent:Bool, windowBorderless:Bool, stageColor:FlxColor, isImageBG:Bool = false, whatImage:Sprite) {
         // PlayState.defaultCamZoom = 0.5;
 
 		if(customName == '' || customName == null){
-			customName = 'Opponent.json';
+			customName = 'Opponent.hscript';
 		}
 
         windowDad = Lib.application.createWindow({
@@ -5964,8 +6041,11 @@ if (windowBorderless == true)
 		if(customX == null){
 			customX = -10;
 		}
+		if(customY == null){
+			customY = -10;
+		}
         windowDad.x = customX;
-	    	windowDad.y = Std.int(display.height / 2);
+        windowDad.y = customY;
         windowDad.stage.color = stageColor;
         @:privateAccess
         windowDad.stage.addEventListener("keyDown", FlxG.keys.onKeyDown);
@@ -5977,17 +6057,14 @@ if (windowBorderless == true)
    var dadMatrix = new Matrix();
    var boyfriendMatrix = new Matrix();
    var gfMatrix = new Matrix();
-   var spr = new Sprite();
 if (transparent == true)
    {
    windowDad.stage.color = FlxColor.fromRGB(24,24,24);
    FlxTransWindow.getWindowsTransparent();
    }
-if (isImageBG == true && whatImage != null)
+if (isImageBG == true)
    {
-        spr.graphics.beginBitmapFill(whatImage, coolMatrix);
-        spr.graphics.drawRect(0, 0, whatImage.width, whatImage.height);
-        spr.graphics.endFill();
+   windowDad.stage.addChild(whatImage);
    }
 
         //Application.current.window.resize(640, 480);
@@ -6026,10 +6103,465 @@ if (coolThing == "dad")
         dadScrollWin.addChild(dadWin);
         dadScrollWin.scaleX = 0.7;
         dadScrollWin.scaleY = 0.7;
-                        }
+                        } else {
+			}
         // dadGroup.visible = false;
         // uncomment the line above if you want it to hide the dad ingame and make it visible via the windoe
         Application.current.window.focus();
 	    	FlxG.autoPause = false;
     }
+
+
+
+function popupWindow2(customWidth:Int, customHeight:Int, ?customX:Int, ?customY:Int, ?customName:String, coolThing:String, transparent:Bool, windowBorderless:Bool, stageColor:FlxColor, isImageBG:Bool = false, whatImage:Sprite) {
+        // PlayState.defaultCamZoom = 0.5;
+
+		if(customName == '' || customName == null){
+			customName = 'Opponent.hscript';
+		}
+
+        windowDad2 = Lib.application.createWindow({
+            title: customName,
+            width: customWidth,
+            height: customHeight,
+            borderless: false,
+            alwaysOnTop: true
+
+        });
+if (windowBorderless == true)
+   {
+   windowDad2.borderless = true;
+   }
+		if(customX == null){
+			customX = -10;
+		}
+		if(customY == null){
+			customY = -10;
+		}
+        windowDad2.x = customX;
+        windowDad2.y = customY;
+        windowDad2.stage.color = stageColor;
+        @:privateAccess
+        windowDad2.stage.addEventListener("keyDown", FlxG.keys.onKeyDown);
+        @:privateAccess
+        windowDad2.stage.addEventListener("keyUp", FlxG.keys.onKeyUp);
+        // Application.current.window.x = Std.int(display.width / 2) - 640;
+        // Application.current.window.y = Std.int(display.height / 2);
+   var coolMatrix2 = new Matrix();
+   var dadMatrix2 = new Matrix();
+   var boyfriendMatrix2 = new Matrix();
+   var gfMatrix2 = new Matrix();
+if (transparent == true)
+   {
+   windowDad2.stage.color = FlxColor.fromRGB(24,24,24);
+   FlxTransWindow.getWindowsTransparent();
+   }
+if (isImageBG == true)
+   {
+   windowDad2.stage.addChild(whatImage);
+   }
+
+        //Application.current.window.resize(640, 480);
+
+
+if (coolThing == "dad")
+   {
+        dadWin2.graphics.beginBitmapFill(dad.pixels, dadMatrix2);
+        dadWin2.graphics.drawRect(0, 0, dad.pixels.width, dad.pixels.height);
+        dadWin2.graphics.endFill();
+        dadScrollWin2.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad2.stage.addChild(dadScrollWin2);
+        dadScrollWin2.addChild(dadWin2);
+        dadScrollWin2.scaleX = 0.7;
+        dadScrollWin2.scaleY = 0.7;
+   } else if (coolThing == "boyfriend")
+             {
+        dadWin2.graphics.beginBitmapFill(boyfriend.pixels, boyfriendMatrix2);
+        dadWin2.graphics.drawRect(0, 0, boyfriend.pixels.width, boyfriend.pixels.height);
+        dadWin2.graphics.endFill();
+        dadScrollWin2.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad2.stage.addChild(dadScrollWin2);
+        dadScrollWin2.addChild(dadWin2);
+        dadScrollWin2.scaleX = 0.7;
+        dadScrollWin2.scaleY = 0.7;
+              } else if (coolThing == "gf")
+                        {
+        dadWin2.graphics.beginBitmapFill(gf.pixels, gfMatrix2);
+        dadWin2.graphics.drawRect(0, 0, gf.pixels.width, gf.pixels.height);
+        dadWin2.graphics.endFill();
+        dadScrollWin2.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad2.stage.addChild(dadScrollWin2);
+        dadScrollWin2.addChild(dadWin2);
+        dadScrollWin2.scaleX = 0.7;
+        dadScrollWin2.scaleY = 0.7;
+                        } else {
+			}
+        // dadGroup.visible = false;
+        // uncomment the line above if you want it to hide the dad ingame and make it visible via the windoe
+        Application.current.window.focus();
+	    	FlxG.autoPause = false;
+    }
+
+
+
+function popupWindow3(customWidth:Int, customHeight:Int, ?customX:Int, ?customY:Int, ?customName:String, coolThing:String, transparent:Bool, windowBorderless:Bool, stageColor:FlxColor, isImageBG:Bool = false, whatImage:Sprite) {
+        // PlayState.defaultCamZoom = 0.5;
+
+		if(customName == '' || customName == null){
+			customName = 'Opponent.hscript';
+		}
+
+        windowDad3 = Lib.application.createWindow({
+            title: customName,
+            width: customWidth,
+            height: customHeight,
+            borderless: false,
+            alwaysOnTop: true
+
+        });
+if (windowBorderless == true)
+   {
+   windowDad3.borderless = true;
+   }
+		if(customX == null){
+			customX = -10;
+		}
+		if(customY == null){
+			customY = -10;
+		}
+        windowDad3.x = customX;
+        windowDad3.y = customY;
+        windowDad3.stage.color = stageColor;
+        @:privateAccess
+        windowDad3.stage.addEventListener("keyDown", FlxG.keys.onKeyDown);
+        @:privateAccess
+        windowDad3.stage.addEventListener("keyUp", FlxG.keys.onKeyUp);
+        // Application.current.window.x = Std.int(display.width / 2) - 640;
+        // Application.current.window.y = Std.int(display.height / 2);
+   var coolMatrix3 = new Matrix();
+   var dadMatrix3 = new Matrix();
+   var boyfriendMatrix3 = new Matrix();
+   var gfMatrix3 = new Matrix();
+if (transparent == true)
+   {
+   windowDad3.stage.color = FlxColor.fromRGB(24,24,24);
+   FlxTransWindow.getWindowsTransparent();
+   }
+if (isImageBG == true)
+   {
+   windowDad3.stage.addChild(whatImage);
+   }
+
+        //Application.current.window.resize(640, 480);
+
+
+if (coolThing == "dad")
+   {
+        dadWin3.graphics.beginBitmapFill(dad.pixels, dadMatrix3);
+        dadWin3.graphics.drawRect(0, 0, dad.pixels.width, dad.pixels.height);
+        dadWin3.graphics.endFill();
+        dadScrollWin3.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad3.stage.addChild(dadScrollWin3);
+        dadScrollWin3.addChild(dadWin3);
+        dadScrollWin3.scaleX = 0.7;
+        dadScrollWin3.scaleY = 0.7;
+   } else if (coolThing == "boyfriend")
+             {
+        dadWin3.graphics.beginBitmapFill(boyfriend.pixels, boyfriendMatrix3);
+        dadWin3.graphics.drawRect(0, 0, boyfriend.pixels.width, boyfriend.pixels.height);
+        dadWin3.graphics.endFill();
+        dadScrollWin3.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad3.stage.addChild(dadScrollWin3);
+        dadScrollWin3.addChild(dadWin3);
+        dadScrollWin3.scaleX = 0.7;
+        dadScrollWin3.scaleY = 0.7;
+              } else if (coolThing == "gf")
+                        {
+        dadWin3.graphics.beginBitmapFill(gf.pixels, gfMatrix3);
+        dadWin3.graphics.drawRect(0, 0, gf.pixels.width, gf.pixels.height);
+        dadWin3.graphics.endFill();
+        dadScrollWin3.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad3.stage.addChild(dadScrollWin3);
+        dadScrollWin3.addChild(dadWin3);
+        dadScrollWin3.scaleX = 0.7;
+        dadScrollWin3.scaleY = 0.7;
+                        } else {
+			}
+        // dadGroup.visible = false;
+        // uncomment the line above if you want it to hide the dad ingame and make it visible via the windoe
+        Application.current.window.focus();
+	    	FlxG.autoPause = false;
+    }
+
+
+
+function popupWindow4(customWidth:Int, customHeight:Int, ?customX:Int, ?customY:Int, ?customName:String, coolThing:String, transparent:Bool, windowBorderless:Bool, stageColor:FlxColor, isImageBG:Bool = false, whatImage:Sprite) {
+        // PlayState.defaultCamZoom = 0.5;
+
+		if(customName == '' || customName == null){
+			customName = 'Opponent.hscript';
+		}
+
+        windowDad4 = Lib.application.createWindow({
+            title: customName,
+            width: customWidth,
+            height: customHeight,
+            borderless: false,
+            alwaysOnTop: true
+
+        });
+if (windowBorderless == true)
+   {
+   windowDad4.borderless = true;
+   }
+		if(customX == null){
+			customX = -10;
+		}
+		if(customY == null){
+			customY = -10;
+		}
+        windowDad4.x = customX;
+        windowDad4.y = customY;
+        windowDad4.stage.color = stageColor;
+        @:privateAccess
+        windowDad4.stage.addEventListener("keyDown", FlxG.keys.onKeyDown);
+        @:privateAccess
+        windowDad4.stage.addEventListener("keyUp", FlxG.keys.onKeyUp);
+        // Application.current.window.x = Std.int(display.width / 2) - 640;
+        // Application.current.window.y = Std.int(display.height / 2);
+   var coolMatrix4 = new Matrix();
+   var dadMatrix4 = new Matrix();
+   var boyfriendMatrix4 = new Matrix();
+   var gfMatrix4 = new Matrix();
+if (transparent == true)
+   {
+   windowDad4.stage.color = FlxColor.fromRGB(24,24,24);
+   FlxTransWindow.getWindowsTransparent();
+   }
+if (isImageBG == true)
+   {
+   windowDad4.stage.addChild(whatImage);
+   }
+
+        //Application.current.window.resize(640, 480);
+
+
+if (coolThing == "dad")
+   {
+        dadWin4.graphics.beginBitmapFill(dad.pixels, dadMatrix4);
+        dadWin4.graphics.drawRect(0, 0, dad.pixels.width, dad.pixels.height);
+        dadWin4.graphics.endFill();
+        dadScrollWin4.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad4.stage.addChild(dadScrollWin4);
+        dadScrollWin4.addChild(dadWin4);
+        dadScrollWin4.scaleX = 0.7;
+        dadScrollWin4.scaleY = 0.7;
+   } else if (coolThing == "boyfriend")
+             {
+        dadWin4.graphics.beginBitmapFill(boyfriend.pixels, boyfriendMatrix4);
+        dadWin4.graphics.drawRect(0, 0, boyfriend.pixels.width, boyfriend.pixels.height);
+        dadWin4.graphics.endFill();
+        dadScrollWin4.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad4.stage.addChild(dadScrollWin4);
+        dadScrollWin4.addChild(dadWin4);
+        dadScrollWin4.scaleX = 0.7;
+        dadScrollWin4.scaleY = 0.7;
+              } else if (coolThing == "gf")
+                        {
+        dadWin4.graphics.beginBitmapFill(gf.pixels, gfMatrix4);
+        dadWin4.graphics.drawRect(0, 0, gf.pixels.width, gf.pixels.height);
+        dadWin4.graphics.endFill();
+        dadScrollWin4.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad4.stage.addChild(dadScrollWin4);
+        dadScrollWin4.addChild(dadWin4);
+        dadScrollWin4.scaleX = 0.7;
+        dadScrollWin4.scaleY = 0.7;
+                        } else {
+			}
+        // dadGroup.visible = false;
+        // uncomment the line above if you want it to hide the dad ingame and make it visible via the windoe
+        Application.current.window.focus();
+	    	FlxG.autoPause = false;
+    }
+
+
+
+function popupWindow5(customWidth:Int, customHeight:Int, ?customX:Int, ?customY:Int, ?customName:String, coolThing:String, transparent:Bool, windowBorderless:Bool, stageColor:FlxColor, isImageBG:Bool = false, whatImage:Sprite) {
+        // PlayState.defaultCamZoom = 0.5;
+
+		if(customName == '' || customName == null){
+			customName = 'Opponent.hscript';
+		}
+
+        windowDad5 = Lib.application.createWindow({
+            title: customName,
+            width: customWidth,
+            height: customHeight,
+            borderless: false,
+            alwaysOnTop: true
+
+        });
+if (windowBorderless == true)
+   {
+   windowDad5.borderless = true;
+   }
+		if(customX == null){
+			customX = -10;
+		}
+		if(customY == null){
+			customY = -10;
+		}
+        windowDad5.x = customX;
+        windowDad5.y = customY;
+        windowDad5.stage.color = stageColor;
+        @:privateAccess
+        windowDad5.stage.addEventListener("keyDown", FlxG.keys.onKeyDown);
+        @:privateAccess
+        windowDad5.stage.addEventListener("keyUp", FlxG.keys.onKeyUp);
+        // Application.current.window.x = Std.int(display.width / 2) - 640;
+        // Application.current.window.y = Std.int(display.height / 2);
+   var coolMatrix5 = new Matrix();
+   var dadMatrix5 = new Matrix();
+   var boyfriendMatrix5 = new Matrix();
+   var gfMatrix5 = new Matrix();
+if (transparent == true)
+   {
+   windowDad5.stage.color = FlxColor.fromRGB(24,24,24);
+   FlxTransWindow.getWindowsTransparent();
+   }
+if (isImageBG == true)
+   {
+   windowDad5.stage.addChild(whatImage);
+   }
+
+        //Application.current.window.resize(640, 480);
+
+
+if (coolThing == "dad")
+   {
+        dadWin5.graphics.beginBitmapFill(dad.pixels, dadMatrix5);
+        dadWin5.graphics.drawRect(0, 0, dad.pixels.width, dad.pixels.height);
+        dadWin5.graphics.endFill();
+        dadScrollWin5.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad5.stage.addChild(dadScrollWin5);
+        dadScrollWin5.addChild(dadWin5);
+        dadScrollWin5.scaleX = 0.7;
+        dadScrollWin5.scaleY = 0.7;
+   } else if (coolThing == "boyfriend")
+             {
+        dadWin5.graphics.beginBitmapFill(boyfriend.pixels, boyfriendMatrix5);
+        dadWin5.graphics.drawRect(0, 0, boyfriend.pixels.width, boyfriend.pixels.height);
+        dadWin5.graphics.endFill();
+        dadScrollWin5.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad5.stage.addChild(dadScrollWin5);
+        dadScrollWin5.addChild(dadWin5);
+        dadScrollWin5.scaleX = 0.7;
+        dadScrollWin5.scaleY = 0.7;
+              } else if (coolThing == "gf")
+                        {
+        dadWin5.graphics.beginBitmapFill(gf.pixels, gfMatrix5);
+        dadWin5.graphics.drawRect(0, 0, gf.pixels.width, gf.pixels.height);
+        dadWin5.graphics.endFill();
+        dadScrollWin5.scrollRect = new Rectangle();
+	// windowDad.stage.addChild(spr);
+        windowDad5.stage.addChild(dadScrollWin5);
+        dadScrollWin5.addChild(dadWin5);
+        dadScrollWin5.scaleX = 0.7;
+        dadScrollWin5.scaleY = 0.7;
+                        } else {
+			}
+        // dadGroup.visible = false;
+        // uncomment the line above if you want it to hide the dad ingame and make it visible via the windoe
+        Application.current.window.focus();
+	    	FlxG.autoPause = false;
+    }
+
+function tweenWindow(type:Int = 0, tweenX:Int = 0, tweenY:Int = 0, time:Int = 1)
+{
+if (type == 0)
+   {
+if (windowDad != null)
+   {
+   FlxTween.tween(windowDad, {x: tweenX, y: tweenY}, time, {ease: FlxEase.expoInOut});
+   }
+   }
+if (type == 1)
+   {
+if (windowDad2 != null)
+   {
+   FlxTween.tween(windowDad2, {x: tweenX, y: tweenY}, time, {ease: FlxEase.expoInOut});
+   }
+   }
+if (type == 2)
+   {
+if (windowDad3 != null)
+   {
+   FlxTween.tween(windowDad3, {x: tweenX, y: tweenY}, time, {ease: FlxEase.expoInOut});
+   }
+   }
+if (type == 3)
+   {
+if (windowDad4 != null)
+   {
+   FlxTween.tween(windowDad4, {x: tweenX, y: tweenY}, time, {ease: FlxEase.expoInOut});
+   }
+   }
+if (type == 4)
+   {
+if (windowDad5 != null)
+   {
+   FlxTween.tween(windowDad5, {x: tweenX, y: tweenY}, time, {ease: FlxEase.expoInOut});
+   }
+   }
+ }
+
+function closeWindow(type:Int = 0)
+{
+if (type == 0)
+   {
+   if (windowDad != null)
+      {
+      windowDad.close();
+      }
+   }
+if (type == 1)
+   {
+   if (windowDad2 != null)
+      {
+   windowDad2.close();
+      }
+   }
+if (type == 2)
+   {
+   if (windowDad3 != null)
+      {
+   windowDad3.close();
+      }
+   }
+if (type == 3)
+   {
+   if (windowDad4 != null)
+      {
+   windowDad4.close();
+      }
+   }
+if (type == 4)
+   {
+   if (windowDad5 != null)
+      {
+   windowDad5.close();
+      }
+   }
+}
 }

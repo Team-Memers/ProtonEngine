@@ -260,13 +260,8 @@ class Song
 					'normal';
 			}
 		}
-		if (parsedJson.uiLayoutType == null) {
-
-			parsedJson.uiLayoutType = switch (parsedJson.song.toLowerCase()) {
-				default:
-					'normal';
-			}
-		}
+// FUCK THIS FUCKING GAME
+// SERIOUSLY CAN'T GET JACKSHIT DONE BECAUSE OF SHIT SUDDENLY BREAKING
 		if (parsedJson.stageID == null) {
 			parsedJson.stageID == 0;
 		}

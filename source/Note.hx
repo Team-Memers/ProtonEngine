@@ -114,6 +114,18 @@ typedef NoteInfo = {
 	/**
 	* Custom note path for if your note isn't in the selected note path
 	*/
+	var ?noteHit:Null<String>;
+		/**
+	 * The function for when a note is missed
+	 */
+	var ?noteMiss:Null<String>;
+	/**
+	 * The function for when a note is at the strumline
+	 */
+	var ?noteStrum:Null<String>;
+	/**
+	 * Custom note path for if your note isn't in the selected note path
+	 */
 	var ?customNotePath:Null<String>;
 }
 /**
@@ -203,6 +215,9 @@ class Note extends DynamicSprite
 	public var oppntAnim:Null<String> = null;
 	public var classes:Null<Array<String>> = [];
 	public var coolId:Null<String> = null;
+	public var noteHit:Null<String> = null;
+	public var noteMiss:Null<String> = null;
+	public var noteStrum:Null<String> = null;
 	public var oppntSing:Null<SingInfo>;
 	public var customNotePath:Null<String> = null;
 	public static var scales:Array<Float> = [0.7, 0.6, 0.55, 0.46];
@@ -285,6 +300,15 @@ class Note extends DynamicSprite
 			} 
 			if (thingie.dontStrum != null) {
 				dontStrum = thingie.dontStrum;
+			}
+			if (thingie.noteHit != null) {
+				noteHit = thingie.noteHit;
+			}
+			if (thingie.noteMiss != null) {
+				noteMiss = thingie.noteMiss;
+			}
+			if (thingie.noteStrum != null) {
+				noteStrum = thingie.noteStrum;
 			}
 			if (thingie.classes != null) {
 				classes = thingie.classes;

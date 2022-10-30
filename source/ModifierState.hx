@@ -319,7 +319,7 @@ class ModifierState extends MusicBeatState
 			desc: "Play as the enemy that wanted to beat up Boyfriend!"
 		},
 		{
-			name: "Demo Mode",
+			name: "Botplay",
 			internName: "demo",
 			value: false,
 			conflicts: ["mfc", "fc","gfc", "healthloss", "regen", "degen", "poison", "oppnt", "duo"],

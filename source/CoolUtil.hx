@@ -16,6 +16,14 @@ class CoolUtil
 	// hxs, like kotlin's kts
 	public static final HSCRIPT_EXT:Array<String> = ['hscript', 'hxs'];
 	public static final JSON_EXT:Array<String> = ['json', 'jsonc'];
+	public static var defaultDifficulties:Array<String> = [
+		'Easy',
+		'Normal',
+		'Hard'
+	];
+	public static var defaultDifficulty:String = 'Normal'; //The chart that has no suffix and starting difficulty on Freeplay/Story Mode
+
+	public static var difficulties:Array<String> = [];
 	public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:Array<String> = FNFAssets.getText(path).trim().split('\n');

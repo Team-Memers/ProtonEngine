@@ -26,6 +26,7 @@ import hscript.Parser;
 import hscript.ParserEx;
 import hscript.InterpEx;
 import hscript.ClassDeclEx;
+import lime.ui.Window;
 
 import haxe.Json;
 import tjson.TJSON;

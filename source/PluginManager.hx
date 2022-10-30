@@ -30,6 +30,7 @@ import hscript.Interp;
 import flixel.FlxG;
 import openfl.geom.Matrix;
 import flixel.input.mouse.FlxMouseEventManager;
+import lime.ui.Window;
 
 import hscript.Parser;
 import hscript.ParserEx;
@@ -153,6 +154,7 @@ class PluginManager {
                 interp.variables.set("SkewSpriteGroup", SkewSpriteGroup);
                 interp.variables.set("BlueMaskShader", BlueMaskShader);
                 interp.variables.set("callExternClass", PluginManager.interp.createScriptClassInstance); //Call modules?? :D
+                interp.variables.set("Sprite", flash.display.Sprite);
 		#if debug
 		interp.variables.set("debug", true);
 		#else

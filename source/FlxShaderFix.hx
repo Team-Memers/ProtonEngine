@@ -33,7 +33,7 @@ class FlxShaderFix extends FlxShader {
 
         if (__context != null && program == null)
         {
-            var prefix = "#version 120\n";
+            var prefix = "#version 130\n";
 
             var gl = __context.gl;
 

@@ -12,7 +12,7 @@ class DiscordClient
         #if cpp
 		trace("Discord Client starting...");
 		DiscordRpc.start({
-			clientID: "959138138951913554",
+			clientID: "1027296726643658794",
 			onReady: onReady,
 			onError: onError,
 			onDisconnected: onDisconnected
